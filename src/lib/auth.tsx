@@ -81,14 +81,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     let active = true;
+    let resolved = false; // becomes true once we've seen a real signed-in session
     // True right after an OAuth redirect (PKCE ?code= or implicit #access_token=).
     const hasOAuthCallback = /[#?&](code|access_token|error)=/.test(window.location.href);
 
     const apply = async (session: import("@supabase/supabase-js").Session | null) => {
       if (!session?.user) {
+        // During an OAuth redirect the client fires a transient null (INITIAL_SESSION)
+        // BEFORE the code exchange finishes. Ignore it so we don't bounce to /login
+        // and throw away the ?code. Real sign-outs (after resolved) still pass through.
+        if (hasOAuthCallback && !resolved) return;
         if (active) { setUser(null); clearProgressCache(); setSuperAdmin(false); setLoading(false); }
         return;
       }
+      resolved = true;
       const su = session.user;
       const name = (su.user_metadata?.name as string) || (su.email ?? "Learner").split("@")[0];
       const profile = await loadProfile(su.id, su.email ?? "", name);
@@ -107,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Safety net so we never hang on the spinner if the exchange fails.
-    const timeout = setTimeout(() => { if (active) setLoading(false); }, 6000);
+    const timeout = setTimeout(() => { if (active && !resolved) setLoading(false); }, 6000);
     return () => { active = false; clearTimeout(timeout); sub.subscription.unsubscribe(); };
   }, []);
 

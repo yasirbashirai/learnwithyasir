@@ -81,9 +81,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     let active = true;
+    // True right after an OAuth redirect (PKCE ?code= or implicit #access_token=).
+    const hasOAuthCallback = /[#?&](code|access_token|error)=/.test(window.location.href);
+
     const apply = async (session: import("@supabase/supabase-js").Session | null) => {
       if (!session?.user) {
-        if (active) { setUser(null); clearProgressCache(); setLoading(false); }
+        if (active) { setUser(null); clearProgressCache(); setSuperAdmin(false); setLoading(false); }
         return;
       }
       const su = session.user;
@@ -94,9 +97,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (active) { setUser(profile); setLoading(false); }
     };
 
-    supabase.auth.getSession().then(({ data }) => apply(data.session));
+    // Subscribe first so the SIGNED_IN event (fired after the code exchange) is caught.
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => apply(session));
-    return () => { active = false; sub.subscription.unsubscribe(); };
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) apply(data.session);
+      else if (!hasOAuthCallback) { if (active) { setUser(null); setLoading(false); } }
+      // else: an OAuth redirect is being processed — wait for onAuthStateChange.
+    });
+
+    // Safety net so we never hang on the spinner if the exchange fails.
+    const timeout = setTimeout(() => { if (active) setLoading(false); }, 6000);
+    return () => { active = false; clearTimeout(timeout); sub.subscription.unsubscribe(); };
   }, []);
 
   /* ---- Actions ---- */

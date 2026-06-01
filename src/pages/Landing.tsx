@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
 import Counter from "@/components/Counter";
+import SiteShowcase from "@/components/SiteShowcase";
 import { courses } from "@/data/courses";
 import { paths } from "@/data/paths";
 import { courseBySlug } from "@/data/courses";
@@ -266,6 +267,9 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* Work with Yasir — ecosystem showcase */}
+      <SiteShowcase />
 
       {/* Instructor / final CTA */}
       <section className="px-4 pb-16">

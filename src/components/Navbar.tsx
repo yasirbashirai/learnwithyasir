@@ -1,12 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame, ShieldCheck } from "lucide-react";
+import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame, ShieldCheck, Briefcase } from "lucide-react";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "@/lib/auth";
 import { userStats } from "@/lib/progress";
 import { useProgressTick } from "@/hooks/useProgressTick";
-
-const MAIN_SITE = "https://yasirbashiraisite.vercel.app";
+import { SERVICES_SITE } from "@/data/links";
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
@@ -25,8 +24,8 @@ export default function Navbar() {
           <Link to="/paths" className="btn-ghost text-sm hidden md:inline-flex">
             <RouteIcon className="w-4 h-4" /> Paths
           </Link>
-          <a href={MAIN_SITE} target="_blank" rel="noopener noreferrer" className="btn-ghost text-sm hidden lg:inline-flex">
-            🌐 Main site ↗
+          <a href={SERVICES_SITE} target="_blank" rel="noopener noreferrer" className="btn-ghost text-sm hidden lg:inline-flex text-teal">
+            <Briefcase className="w-4 h-4" /> Work with Yasir ↗
           </a>
           {user && stats ? (
             <>

@@ -3,7 +3,9 @@ import { Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
+import Seo from "@/components/Seo";
 import { courses, categories } from "@/data/courses";
+import { itemListJsonLd } from "@/lib/structured";
 
 export default function Catalog() {
   const [q, setQ] = useState("");
@@ -20,6 +22,12 @@ export default function Catalog() {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="All Courses — AI, Automation & Web"
+        description="Browse 24 project-first courses across AI automation, chatbots, web apps, funnels, CRM and more. One month per skill, with real projects and client guidance."
+        path="/courses"
+        jsonLd={[itemListJsonLd(courses)]}
+      />
       <Navbar />
       <section className="px-4 pt-8 pb-6">
         <div className="max-w-6xl mx-auto">

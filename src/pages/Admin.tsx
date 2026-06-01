@@ -5,6 +5,7 @@ import {
   RefreshCw, Calendar, MessageSquare, Trash2, Pin, Plus, ChevronDown, RotateCcw, X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 import { useAuth } from "@/lib/auth";
 import { supabaseEnabled } from "@/lib/supabase";
 import {
@@ -54,6 +55,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen">
+      <Seo title="Admin" description="Instructor console." path="/admin" noindex />
       <Navbar />
       <main className="px-4 py-8 max-w-6xl mx-auto">
         <div className="flex items-center gap-3 flex-wrap">

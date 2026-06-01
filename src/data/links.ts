@@ -1,4 +1,8 @@
 /** Yasir's wider presence — referenced across the LMS so it's editable in one place. */
+export const SITE_URL = "https://learnwithyasir.vercel.app";
+export const SITE_NAME = "learnwithyasir";
+export const OG_IMAGE = `${SITE_URL}/og-image.png`;
+export const TWITTER_HANDLE = "@YasirBashirai";
 export const SERVICES_SITE = "https://yasirbashiraisite.vercel.app";
 export const CHAT_SITE = "https://chatwithyasir.vercel.app";
 export const CONTACT_EMAIL = "hello@yasirbashir.com";

@@ -1,0 +1,14 @@
+{
+  "name": "learnwithyasir — Master AI, Automation & Web",
+  "short_name": "learnwithyasir",
+  "description": "Project-first courses to master AI automation, web apps, chatbots and growth systems.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f9ebdc",
+  "theme_color": "#288672",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/og-image.png", "sizes": "1200x630", "type": "image/png" }
+  ]
+}

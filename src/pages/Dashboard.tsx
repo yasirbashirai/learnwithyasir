@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
 import ProgressRing from "@/components/ProgressRing";
+import Seo from "@/components/Seo";
 import { useAuth } from "@/lib/auth";
 import { courses, courseBySlug } from "@/data/courses";
 import { courseProgress, enrolledCourses, nextLessonId, userStats, achievements } from "@/lib/progress";
@@ -32,6 +33,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen">
+      <Seo title="Dashboard" description="Your learning dashboard." path="/dashboard" noindex />
       <Navbar />
       <main className="px-4 py-8 max-w-6xl mx-auto">
         <h1 className="font-heading font-extrabold text-3xl text-ink">Hey {user.name.split(" ")[0]} 👋</h1>

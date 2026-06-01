@@ -7,6 +7,8 @@ import VideoPlayer from "@/components/VideoPlayer";
 import CourseCommunity from "@/components/CourseCommunity";
 import LiveSessionCard from "@/components/LiveSessionCard";
 import ShareCourse from "@/components/ShareCourse";
+import Seo from "@/components/Seo";
+import { courseJsonLd, breadcrumbJsonLd } from "@/lib/structured";
 import { courseBySlug } from "@/data/courses";
 import { PART_META, type Lesson } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
@@ -67,6 +69,19 @@ export default function CoursePage() {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title={`${course.title} — Course`}
+        description={course.tagline}
+        path={`/courses/${course.slug}`}
+        type="article"
+        jsonLd={[
+          courseJsonLd(course),
+          breadcrumbJsonLd([
+            { name: "Courses", path: "/courses" },
+            { name: course.title, path: `/courses/${course.slug}` },
+          ]),
+        ]}
+      />
       <Navbar />
 
       {/* Header (full width) */}

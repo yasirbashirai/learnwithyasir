@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 import { CONTACT_EMAIL } from "@/data/links";
 
 export type LegalDoc = "privacy" | "terms" | "disclaimer";
@@ -98,6 +99,7 @@ export default function Legal({ doc }: { doc: LegalDoc }) {
   const d = DOCS[doc];
   return (
     <div className="min-h-screen">
+      <Seo title={d.title} description={d.intro} path={`/${doc}`} />
       <Navbar />
       <main className="px-4 py-10 max-w-3xl mx-auto">
         <div className="glass-card p-8 md:p-10">

@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
 import Counter from "@/components/Counter";
 import SiteShowcase from "@/components/SiteShowcase";
+import Seo from "@/components/Seo";
+import { itemListJsonLd } from "@/lib/structured";
 import { courses } from "@/data/courses";
 import { paths } from "@/data/paths";
 import { courseBySlug } from "@/data/courses";
@@ -93,6 +95,12 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="learnwithyasir — Master AI, Automation & Web"
+        description="Hands-on, project-first courses in AI automation, web apps, chatbots, funnels and more. One month per skill, real projects, and a clear path from learning to landing clients."
+        path="/"
+        jsonLd={[itemListJsonLd(courses)]}
+      />
       <Navbar />
 
       {/* Hero */}

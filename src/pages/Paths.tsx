@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 import { paths } from "@/data/paths";
 import { courseBySlug } from "@/data/courses";
 import { useAuth } from "@/lib/auth";
@@ -15,6 +16,11 @@ export default function Paths() {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="Learning Paths — Guided Tracks"
+        description="Curated learning paths that stack courses in the right order — from foundations to landing real clients. Become an AI automation pro, web/app builder, growth marketer or agency owner."
+        path="/paths"
+      />
       <Navbar />
       <section className="px-4 pt-10 pb-6 max-w-6xl mx-auto">
         <span className="glass-pill text-teal">🗺️ Guided journeys</span>

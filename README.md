@@ -1,4 +1,4 @@
-# learnfromyasir 🎓
+# learnwithyasir 🎓
 
 A practical, project-first **Learning Management System (LMS)** that teaches the
 exact skills Yasir Bashir uses to build AI automation, web apps and growth
@@ -11,7 +11,7 @@ It's the third site in the family:
 | --- | --- |
 | `yasirbashiraisite` | Main services website |
 | `chatwithyasir` | Conversational onboarding / communication |
-| **`learnfromyasir`** | **This — the skill academy / LMS** |
+| **`learnwithyasir`** | **This — the skill academy / LMS** |
 
 ## The course framework
 
@@ -52,7 +52,7 @@ npm run build    # production bundle in dist/
 ## Project structure
 
 ```
-learnfromyasir/
+learnwithyasir/
 ├── public/                 # favicon
 ├── src/
 │   ├── components/         # Navbar, CourseCard, LessonBody, ProgressRing…

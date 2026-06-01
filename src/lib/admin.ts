@@ -80,7 +80,7 @@ export function exportLeadsCsv(learners: LearnerRow[]) {
   const blob = new Blob([header + rows], { type: "text/csv" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "learnfromyasir-leads.csv";
+  a.download = "learnwithyasir-leads.csv";
   a.click();
   URL.revokeObjectURL(a.href);
 }

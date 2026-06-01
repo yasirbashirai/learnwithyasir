@@ -18,7 +18,7 @@ export default function Footer() {
         </div>
       </div>
       <p className="text-center text-xs text-ink/50 mt-6">
-        © {new Date().getFullYear()} Yasir Bashir · learnfromyasir
+        © {new Date().getFullYear()} Yasir Bashir · learnwithyasir
       </p>
     </footer>
   );

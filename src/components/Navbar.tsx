@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame } from "lucide-react";
+import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame, ShieldCheck } from "lucide-react";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "@/lib/auth";
@@ -42,6 +42,12 @@ export default function Navbar() {
                 <LayoutDashboard className="w-4 h-4" />
                 <span className="hidden sm:inline">Dashboard</span>
               </Link>
+              {user.isAdmin && (
+                <Link to="/admin" className="btn-ghost text-sm text-gold" title="Instructor console">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span className="hidden sm:inline">Admin</span>
+                </Link>
+              )}
               <ThemeToggle />
               <button
                 onClick={() => { signOut(); navigate("/"); }}

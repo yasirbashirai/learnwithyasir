@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Check, ChevronLeft, ChevronRight, Lock, CheckCircle2, Circle, List } from "lucide-react";
@@ -17,6 +17,7 @@ import {
   toggleLesson,
 } from "@/lib/progress";
 import { useProgressTick } from "@/hooks/useProgressTick";
+import { loadVideos, getVideos } from "@/lib/videos";
 
 const KIND_LABEL: Record<Lesson["kind"], string> = {
   lesson: "Lesson",
@@ -31,6 +32,10 @@ export default function LessonPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   useProgressTick();
+
+  // Admin-managed video URLs (override the placeholder when set).
+  const [videoMap, setVideoMap] = useState<Record<string, string>>({});
+  useEffect(() => { loadVideos().then(() => setVideoMap(getVideos())); }, []);
 
   // Auto-enrol when a logged-in learner opens a lesson directly.
   useEffect(() => {
@@ -190,7 +195,7 @@ export default function LessonPage() {
 
           {current.lesson.hasVideo && (
             <div className="mt-5">
-              <VideoPlayer title={current.lesson.title} url={current.lesson.videoUrl} minutes={current.lesson.minutes} />
+              <VideoPlayer title={current.lesson.title} url={videoMap[current.lesson.id] ?? current.lesson.videoUrl} minutes={current.lesson.minutes} />
             </div>
           )}
 

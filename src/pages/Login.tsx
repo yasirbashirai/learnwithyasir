@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { supabaseEnabled } from "@/lib/supabase";
 import Logo from "@/components/Logo";
 
-/** Google "G" mark. */
 function GoogleIcon() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 48 48" aria-hidden>
@@ -18,19 +18,28 @@ function GoogleIcon() {
 }
 
 export default function Login() {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
   const navigate = useNavigate();
   const location = useLocation() as { state?: { from?: string } };
   const dest = location.state?.from || "/dashboard";
 
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    await signInWithGoogle({ name: name.trim(), email: email.trim() });
+    setMsg(null);
+    const res =
+      mode === "signup"
+        ? await signUpWithEmail(name.trim(), email.trim(), password)
+        : await signInWithEmail(email.trim(), password);
+    setBusy(false);
+    if (res.error) { setMsg(res.error); return; }
     navigate(dest, { replace: true });
   };
 
@@ -43,43 +52,66 @@ export default function Login() {
         className="glass-card w-full max-w-md p-8"
       >
         <div className="flex justify-center mb-6"><Logo /></div>
-        <h1 className="font-heading font-extrabold text-2xl text-center text-ink">Welcome back</h1>
-        <p className="text-center text-ink/60 text-sm mt-1">
-          Sign in to track progress and unlock modules.
-        </p>
+        <h1 className="font-heading font-extrabold text-2xl text-center text-ink">
+          {mode === "signup" ? "Create your account" : "Welcome back"}
+        </h1>
+        <p className="text-center text-soft text-sm mt-1">Track progress, unlock modules, earn certificates.</p>
 
-        <form onSubmit={submit} className="mt-7 space-y-3">
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Your name"
-            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
-            required
-          />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@email.com"
-            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
-            required
-          />
-          <button type="submit" disabled={busy} className="w-full bg-white border border-ink/15 rounded-xl py-3 font-semibold text-ink flex items-center justify-center gap-3 hover:bg-ink/[0.03] transition-colors">
+        {supabaseEnabled && (
+          <button
+            onClick={signInWithGoogle}
+            className="mt-6 w-full bg-white border border-ink/15 rounded-xl py-3 font-semibold text-[#1f1f1f] flex items-center justify-center gap-3 hover:shadow-soft transition-shadow"
+          >
             <GoogleIcon /> Continue with Google
+          </button>
+        )}
+
+        {supabaseEnabled && (
+          <div className="flex items-center gap-3 my-5 text-xs text-soft">
+            <div className="h-px flex-1 bg-line" /> or {mode === "signup" ? "sign up" : "sign in"} with email <div className="h-px flex-1 bg-line" />
+          </div>
+        )}
+
+        <form onSubmit={submit} className="space-y-3">
+          {mode === "signup" && (
+            <input
+              value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required
+              className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+            />
+          )}
+          <input
+            type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" required
+            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+          />
+          <input
+            type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required minLength={6}
+            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+          />
+          <button type="submit" disabled={busy} className="btn-primary w-full">
+            {busy && <Loader2 className="w-4 h-4 animate-spin" />}
+            {mode === "signup" ? "Create account" : "Sign in"}
           </button>
         </form>
 
-        <div className="mt-5 flex items-start gap-2 text-xs text-ink/55">
+        {msg && <p className="mt-3 text-sm text-center text-gold-dark bg-gold/10 border border-gold/30 rounded-xl px-3 py-2">{msg}</p>}
+
+        <p className="text-center text-sm text-soft mt-5">
+          {mode === "signup" ? "Already have an account?" : "New here?"}{" "}
+          <button onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setMsg(null); }} className="text-teal font-semibold">
+            {mode === "signup" ? "Sign in" : "Create one"}
+          </button>
+        </p>
+
+        <div className="mt-5 flex items-start gap-2 text-xs text-soft">
           <ShieldCheck className="w-4 h-4 shrink-0 text-teal mt-0.5" />
           <p>
-            Demo mode — your details are stored locally on this device. Real Google
-            sign-in &amp; secure accounts arrive when Supabase is connected.
+            {supabaseEnabled
+              ? "Secured by Supabase. Your progress syncs across devices."
+              : "Demo mode — set Supabase env vars to enable real accounts."}
           </p>
         </div>
 
-        <p className="text-center text-xs text-ink/50 mt-5">
-          By continuing you agree to learn, build and ship. <Link to="/" className="text-teal">Back home</Link>
-        </p>
+        <p className="text-center text-xs text-soft mt-4"><Link to="/" className="text-teal">← Back home</Link></p>
       </motion.div>
     </div>
   );

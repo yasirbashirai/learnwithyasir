@@ -1,52 +1,62 @@
 /**
- * Auth layer — intentionally thin and swappable.
+ * Auth layer — Supabase-backed (with a localStorage fallback when env vars
+ * aren't set, so the app still runs offline / in previews).
  *
- * TODAY: a mock "Continue with Google" that stores a local session. This lets
- * the whole LMS (protected routes, progress, admin) work end-to-end now.
- *
- * LATER (Supabase): replace the body of `signInWithGoogle`, `signOut` and the
- * session bootstrap with Supabase Auth calls. Nothing else in the app needs to
- * change — components only touch this hook. See README → "Swapping to Supabase".
+ * Components only ever touch this hook, so the rest of the app is auth-agnostic.
  */
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { supabase, supabaseEnabled } from "./supabase";
+import { hydrateProgress, clearProgressCache } from "./progress";
 
 export interface User {
   id: string;
   name: string;
   email: string;
   avatarUrl?: string;
-  /** Yasir (admin) sees instructor-only controls. */
   isAdmin: boolean;
-  /** The "vibe" a learner picks at onboarding — captured for newsletter/segmenting. */
   vibe?: string;
+}
+
+interface AuthResult {
+  error?: string;
 }
 
 interface AuthState {
   user: User | null;
   loading: boolean;
-  signInWithGoogle: (opts?: { name?: string; email?: string }) => Promise<void>;
-  signOut: () => void;
+  signInWithGoogle: () => Promise<void>;
+  signInWithEmail: (email: string, password: string) => Promise<AuthResult>;
+  signUpWithEmail: (name: string, email: string, password: string) => Promise<AuthResult>;
+  signOut: () => Promise<void>;
   setVibe: (vibe: string) => void;
 }
 
-const STORAGE_KEY = "lfy.session.v1";
-/** The single admin email (Yasir). Mirrors chatwithyasir's admin model. */
+/** The single admin (Yasir). Also flagged via profiles.is_admin in the DB. */
 const ADMIN_EMAIL = "yasirbashirai@gmail.com";
+const MOCK_KEY = "lfy.session.v1";
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
-function readSession(): User | null {
+/* ---------------- Supabase profile helpers ---------------- */
+async function loadProfile(id: string, email: string, name: string): Promise<User> {
+  const base: User = { id, email, name, isAdmin: email.toLowerCase() === ADMIN_EMAIL };
+  if (!supabase) return base;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as User) : null;
+    const { data } = await supabase.from("profiles").select("*").eq("id", id).maybeSingle();
+    if (!data) {
+      // First sign-in → create the profile row.
+      await supabase.from("profiles").insert({ id, email, name, is_admin: base.isAdmin });
+      return base;
+    }
+    return {
+      id,
+      email: data.email ?? email,
+      name: data.name ?? name,
+      isAdmin: Boolean(data.is_admin) || base.isAdmin,
+      vibe: data.vibe ?? undefined,
+    };
   } catch {
-    return null;
+    return base;
   }
 }
 
@@ -54,40 +64,88 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  /* ---- Supabase session bootstrap ---- */
   useEffect(() => {
-    setUser(readSession());
-    setLoading(false);
+    if (!supabaseEnabled || !supabase) {
+      // Offline fallback: read mock session.
+      try {
+        const raw = localStorage.getItem(MOCK_KEY);
+        if (raw) setUser(JSON.parse(raw));
+      } catch { /* ignore */ }
+      setLoading(false);
+      return;
+    }
+
+    let active = true;
+    const apply = async (session: import("@supabase/supabase-js").Session | null) => {
+      if (!session?.user) {
+        if (active) { setUser(null); clearProgressCache(); setLoading(false); }
+        return;
+      }
+      const su = session.user;
+      const name = (su.user_metadata?.name as string) || (su.email ?? "Learner").split("@")[0];
+      const profile = await loadProfile(su.id, su.email ?? "", name);
+      await hydrateProgress(su.id);
+      if (active) { setUser(profile); setLoading(false); }
+    };
+
+    supabase.auth.getSession().then(({ data }) => apply(data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => apply(session));
+    return () => { active = false; sub.subscription.unsubscribe(); };
   }, []);
 
-  const persist = (u: User | null) => {
-    setUser(u);
-    if (u) localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
-    else localStorage.removeItem(STORAGE_KEY);
-  };
-
-  const signInWithGoogle: AuthState["signInWithGoogle"] = async (opts) => {
-    // MOCK: stand-in for Supabase `signInWithOAuth({ provider: 'google' })`.
-    const email = (opts?.email || "you@example.com").toLowerCase();
-    const name = opts?.name || email.split("@")[0];
-    const existing = readSession();
-    persist({
-      id: existing?.id ?? `u_${email}`,
-      name,
-      email,
-      isAdmin: email === ADMIN_EMAIL,
-      vibe: existing?.vibe,
+  /* ---- Actions ---- */
+  const signInWithGoogle = async () => {
+    if (!supabase) return;
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/dashboard` },
     });
   };
 
-  const signOut = () => persist(null);
+  const signInWithEmail = async (email: string, password: string): Promise<AuthResult> => {
+    if (!supabase) { mockSignIn(email, email.split("@")[0]); return {}; }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    return error ? { error: error.message } : {};
+  };
+
+  const signUpWithEmail = async (name: string, email: string, password: string): Promise<AuthResult> => {
+    if (!supabase) { mockSignIn(email, name); return {}; }
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name }, emailRedirectTo: `${window.location.origin}/dashboard` },
+    });
+    if (error) return { error: error.message };
+    if (!data.session) return { error: "Check your email to confirm your account, then sign in." };
+    return {};
+  };
+
+  const mockSignIn = (email: string, name: string) => {
+    const u: User = { id: `u_${email}`, email, name, isAdmin: email.toLowerCase() === ADMIN_EMAIL };
+    localStorage.setItem(MOCK_KEY, JSON.stringify(u));
+    setUser(u);
+    hydrateProgress(u.id);
+  };
+
+  const signOut = async () => {
+    if (supabase) await supabase.auth.signOut();
+    localStorage.removeItem(MOCK_KEY);
+    clearProgressCache();
+    setUser(null);
+  };
 
   const setVibe = (vibe: string) => {
     if (!user) return;
-    persist({ ...user, vibe });
+    setUser({ ...user, vibe });
+    if (supabase) supabase.from("profiles").update({ vibe }).eq("id", user.id).then(() => {});
+    else localStorage.setItem(MOCK_KEY, JSON.stringify({ ...user, vibe }));
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signOut, setVibe }}>
+    <AuthContext.Provider
+      value={{ user, loading, signInWithGoogle, signInWithEmail, signUpWithEmail, signOut, setVibe }}
+    >
       {children}
     </AuthContext.Provider>
   );

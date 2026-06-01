@@ -11,6 +11,7 @@ const Catalog = lazy(() => import("@/pages/Catalog"));
 const CoursePage = lazy(() => import("@/pages/CoursePage"));
 const LessonPage = lazy(() => import("@/pages/LessonPage"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Admin = lazy(() => import("@/pages/Admin"));
 const Paths = lazy(() => import("@/pages/Paths"));
 const Certificate = lazy(() => import("@/pages/Certificate"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
@@ -66,6 +67,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute adminOnly>
+                    <Admin />
                   </ProtectedRoute>
                 }
               />

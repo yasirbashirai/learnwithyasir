@@ -26,6 +26,19 @@ interface Data {
 /** Synchronous cache for the active user. */
 let cache: { userId: string; data: Data } | null = null;
 
+/**
+ * Super-admin (Yasir) sees EVERYTHING unlocked — no enrollment or module-lock
+ * gates. Set from the auth layer when the admin signs in.
+ */
+let superAdmin = false;
+export function setSuperAdmin(value: boolean) {
+  superAdmin = value;
+  window.dispatchEvent(new CustomEvent("lfy:progress"));
+}
+export function isSuperAdmin() {
+  return superAdmin;
+}
+
 function readLS(userId: string): Data {
   try {
     const raw = localStorage.getItem(lsKey(userId));
@@ -127,6 +140,7 @@ export function isModuleComplete(userId: string, module: Module): boolean {
 }
 
 export function isModuleUnlocked(userId: string, course: Course, moduleIndex: number): boolean {
+  if (superAdmin) return true; // Yasir: everything unlocked
   if (!isEnrolled(userId, course.slug)) return moduleIndex === 0;
   if (moduleIndex === 0) return true;
   return isModuleComplete(userId, course.modules[moduleIndex - 1]);

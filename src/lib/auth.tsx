@@ -6,7 +6,7 @@
  */
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { supabase, supabaseEnabled } from "./supabase";
-import { hydrateProgress, clearProgressCache } from "./progress";
+import { hydrateProgress, clearProgressCache, setSuperAdmin } from "./progress";
 
 export interface User {
   id: string;
@@ -70,7 +70,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Offline fallback: read mock session.
       try {
         const raw = localStorage.getItem(MOCK_KEY);
-        if (raw) setUser(JSON.parse(raw));
+        if (raw) {
+          const u = JSON.parse(raw) as User;
+          setSuperAdmin(u.isAdmin);
+          setUser(u);
+        }
       } catch { /* ignore */ }
       setLoading(false);
       return;
@@ -85,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const su = session.user;
       const name = (su.user_metadata?.name as string) || (su.email ?? "Learner").split("@")[0];
       const profile = await loadProfile(su.id, su.email ?? "", name);
+      setSuperAdmin(profile.isAdmin);
       await hydrateProgress(su.id);
       if (active) { setUser(profile); setLoading(false); }
     };
@@ -124,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const mockSignIn = (email: string, name: string) => {
     const u: User = { id: `u_${email}`, email, name, isAdmin: email.toLowerCase() === ADMIN_EMAIL };
     localStorage.setItem(MOCK_KEY, JSON.stringify(u));
+    setSuperAdmin(u.isAdmin);
     setUser(u);
     hydrateProgress(u.id);
   };
@@ -131,6 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     if (supabase) await supabase.auth.signOut();
     localStorage.removeItem(MOCK_KEY);
+    setSuperAdmin(false);
     clearProgressCache();
     setUser(null);
   };

@@ -3,6 +3,7 @@ import { useEffect, lazy, Suspense } from "react";
 import { AuthProvider } from "@/lib/auth";
 import { ThemeProvider } from "@/lib/theme";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ChatLauncher from "@/components/ChatLauncher";
 import Landing from "@/pages/Landing";
 
 // Lazy-load everything past the landing page to keep the first paint fast.
@@ -85,6 +86,7 @@ export default function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          <ChatLauncher />
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>

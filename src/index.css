@@ -18,7 +18,7 @@
     --teal-light: 167 60% 46%;
     --gold: 38 80% 56%;
     --glass: 0 0% 100%;
-    --glass-alpha: 0.66;
+    --glass-alpha: 0.9;
     --glass-border: 0 0% 100%;
     --mesh-1: rgba(54, 200, 169, 0.18);
     --mesh-2: rgba(226, 169, 60, 0.16);
@@ -36,7 +36,7 @@
     --teal-light: 167 75% 64%;
     --gold: 42 85% 62%;
     --glass: 174 30% 12%;
-    --glass-alpha: 0.5;
+    --glass-alpha: 0.82;
     --glass-border: 168 30% 40%;
     --mesh-1: rgba(54, 200, 169, 0.16);
     --mesh-2: rgba(226, 169, 60, 0.12);

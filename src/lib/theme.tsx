@@ -7,11 +7,9 @@ const ThemeContext = createContext<{ theme: Theme; toggle: () => void } | undefi
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
+    // Default to LIGHT; dark mode is opt-in via the toggle (remembered after).
     const saved = (typeof localStorage !== "undefined" && localStorage.getItem(KEY)) as Theme | null;
-    if (saved) return saved;
-    return typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return saved === "dark" ? "dark" : "light";
   });
 
   useEffect(() => {

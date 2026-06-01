@@ -58,13 +58,20 @@ export default function CoursePage() {
     if (next) navigate(`/courses/${course.slug}/lesson/${next}`);
   };
 
+  const faqs = [
+    { q: "Do I need experience?", a: `This course is built for ${course.level === "Advanced" ? "people with some grounding who want to go deep" : "beginners — I start from zero and build up"}.` },
+    { q: "How long does it take?", a: "It's a focused one month (4 parts), but self-paced — go faster or slower, progress is saved." },
+    { q: "Are the videos ready?", a: "The full curriculum and written lessons are here now. Video lessons appear in each lesson's player as they're recorded." },
+    { q: "Will I get a certificate?", a: "Yes — finish all four parts and you'll unlock a shareable certificate of completion." },
+  ];
+
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Header */}
+      {/* Header (full width) */}
       <section className="px-4 pt-8 pb-6">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <Link to="/courses" className="text-sm text-ink/60 hover:text-teal">← All courses</Link>
           <div className="glass-card p-7 mt-3 flex flex-col md:flex-row gap-6">
             <div className="grid place-items-center w-20 h-20 rounded-3xl text-5xl bg-cream shrink-0">{course.icon}</div>
@@ -103,156 +110,124 @@ export default function CoursePage() {
         </div>
       </section>
 
-      {/* Outcomes + tools */}
-      <section className="px-4 pb-6">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-4">
-          <div className="glass-card p-6">
-            <h2 className="font-heading font-bold text-lg text-ink mb-3">What you'll be able to do</h2>
-            <ul className="space-y-2">
-              {course.outcomes.map((o, i) => (
-                <li key={i} className="flex gap-2.5 text-ink/80 text-sm">
-                  <CheckCircle2 className="w-5 h-5 text-teal shrink-0" /> {o}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="glass-card p-6">
-            <h2 className="font-heading font-bold text-lg text-ink mb-3">Tools you'll master</h2>
-            <div className="flex flex-wrap gap-2">
-              {course.tools.map((t) => (
-                <span key={t.name} className="glass-pill text-sm">{t.name}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Two-column body: LEFT = curriculum/session/share/community · RIGHT = overview */}
+      <section className="px-4 pb-12">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-6 items-start">
 
-      {/* What you'll build */}
-      {projectLessons.length > 0 && (
-        <section className="px-4 pb-6">
-          <div className="max-w-5xl mx-auto glass-card p-6">
-            <h2 className="font-heading font-bold text-lg text-ink mb-3 flex items-center gap-2"><Hammer className="w-5 h-5 text-teal" /> What you'll build</h2>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {projectLessons.map((l) => (
-                <div key={l.id} className="rounded-2xl border border-line bg-surface/50 p-4">
-                  <div className="text-sm font-semibold text-ink">{l.title.replace(/^Project:\s*/, "")}</div>
-                  <p className="text-xs text-soft mt-1 line-clamp-2">{l.summary}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Instructor */}
-      <section className="px-4 pb-6">
-        <div className="max-w-5xl mx-auto glass-card p-6 flex flex-col sm:flex-row gap-5 items-start">
-          <div className="grid place-items-center w-16 h-16 rounded-2xl text-white text-2xl font-extrabold shrink-0" style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}>Y</div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="font-heading font-bold text-lg text-ink">Your instructor — Yasir Bashir</h2>
-              <span className="inline-flex items-center gap-1 text-xs text-gold font-semibold"><Star className="w-3.5 h-3.5 fill-current" /> Practitioner, not just a teacher</span>
-            </div>
-            <p className="text-sm text-soft mt-1.5 max-w-2xl">
-              I build {course.category.toLowerCase()} systems for real clients — and I teach this the way I actually
-              work, not from theory. Everything in this course is something I've shipped and been paid for. Let's get you there too.
-            </p>
-            <a href="https://yasirbashiraisite.vercel.app" target="_blank" rel="noopener noreferrer" className="text-teal text-sm font-semibold mt-2 inline-flex items-center gap-1">See my work ↗</a>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="px-4 pb-6">
-        <div className="max-w-5xl mx-auto glass-card p-6">
-          <h2 className="font-heading font-bold text-lg text-ink mb-3">FAQ</h2>
-          <div className="space-y-3">
-            {[
-              { q: "Do I need experience?", a: `This course is built for ${course.level === "Advanced" ? "people with some grounding who want to go deep" : "beginners — I start from zero and build up"}.` },
-              { q: "How long does it take?", a: "It's designed as a focused one month (4 parts), but it's self-paced — go faster or slower, your progress is saved." },
-              { q: "Are the videos ready?", a: "The full curriculum and written lessons are here now. Video lessons are being recorded and will appear in each lesson's player." },
-              { q: "Will I get a certificate?", a: "Yes — finish all four parts and you'll unlock a shareable certificate of completion." },
-            ].map((f) => (
-              <details key={f.q} className="rounded-xl border border-line bg-surface/50 p-4 group">
-                <summary className="font-semibold text-ink cursor-pointer list-none flex items-center justify-between">
-                  {f.q} <span className="text-teal group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="text-sm text-soft mt-2">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Live session */}
-      <section className="px-4 pb-6">
-        <div className="max-w-5xl mx-auto">
-          <LiveSessionCard courseSlug={course.slug} />
-        </div>
-      </section>
-
-      {/* Curriculum — 4 parts */}
-      <section className="px-4 pb-10">
-        <div className="max-w-5xl mx-auto space-y-4">
-          <h2 className="font-heading font-bold text-2xl text-ink">Curriculum</h2>
-          {course.modules.map((module, idx) => {
-            const unlocked = user ? isModuleUnlocked(user.id, course, idx) : idx === 0;
-            const mp = user ? moduleProgress(user.id, module) : { done: 0, total: module.lessons.length, pct: 0 };
-            const meta = PART_META[module.part];
-            return (
-              <div key={module.id} className={`glass-card overflow-hidden ${!unlocked ? "opacity-80" : ""}`}>
-                <div className="p-5 flex items-center gap-4 border-b border-teal/10">
-                  <div className="grid place-items-center w-11 h-11 rounded-2xl bg-teal/10 text-xl shrink-0">{meta.icon}</div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-bold uppercase tracking-wide text-teal">Part {module.part} · {meta.title}</div>
-                    <h3 className="font-heading font-bold text-ink">{module.title}</h3>
-                    <p className="text-sm text-ink/60 mt-0.5">{module.goal}</p>
+          {/* LEFT (main) */}
+          <div className="space-y-6 min-w-0 order-2 lg:order-1">
+            {/* Curriculum */}
+            <div className="space-y-4">
+              <h2 className="font-heading font-bold text-2xl text-ink">Curriculum</h2>
+              {course.modules.map((module, idx) => {
+                const unlocked = user ? isModuleUnlocked(user.id, course, idx) : idx === 0;
+                const mp = user ? moduleProgress(user.id, module) : { done: 0, total: module.lessons.length, pct: 0 };
+                const meta = PART_META[module.part];
+                return (
+                  <div key={module.id} className={`glass-card overflow-hidden ${!unlocked ? "opacity-80" : ""}`}>
+                    <div className="p-5 flex items-center gap-4 border-b border-teal/10">
+                      <div className="grid place-items-center w-11 h-11 rounded-2xl bg-teal/10 text-xl shrink-0">{meta.icon}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-bold uppercase tracking-wide text-teal">Part {module.part} · {meta.title}</div>
+                        <h3 className="font-heading font-bold text-ink">{module.title}</h3>
+                        <p className="text-sm text-ink/60 mt-0.5">{module.goal}</p>
+                      </div>
+                      {unlocked ? (
+                        <span className="text-sm font-semibold text-ink/60 shrink-0">{mp.done}/{mp.total}</span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-sm text-ink/50 shrink-0"><Lock className="w-4 h-4" /> Locked</span>
+                      )}
+                    </div>
+                    {unlocked ? (
+                      <ul className="divide-y divide-teal/5">
+                        {module.lessons.map((l) => {
+                          const done = user ? isLessonComplete(user.id, l.id) : false;
+                          return (
+                            <li key={l.id}>
+                              <Link to={user ? `/courses/${course.slug}/lesson/${l.id}` : "/login"} className="flex items-center gap-3 px-5 py-3 hover:bg-teal/[0.04] transition-colors">
+                                {done ? <CheckCircle2 className="w-5 h-5 text-teal shrink-0" /> : <Circle className="w-5 h-5 text-ink/25 shrink-0" />}
+                                <span className="flex-1 min-w-0"><span className="text-ink/85">{l.title}</span></span>
+                                <span className="text-[11px] font-semibold uppercase tracking-wide text-ink/45 shrink-0 hidden sm:inline">{lessonKindLabel[l.kind]}</span>
+                                <span className="text-xs text-ink/45 shrink-0 inline-flex items-center gap-1"><Clock className="w-3 h-3" />{l.minutes}m</span>
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      <div className="px-5 py-6 text-center text-sm text-ink/55">
+                        <Lock className="w-5 h-5 mx-auto mb-1.5 text-ink/30" />
+                        Complete <b>Part {module.part - 1}</b> to unlock this module.
+                      </div>
+                    )}
                   </div>
-                  {unlocked ? (
-                    <span className="text-sm font-semibold text-ink/60 shrink-0">{mp.done}/{mp.total}</span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 text-sm text-ink/50 shrink-0"><Lock className="w-4 h-4" /> Locked</span>
-                  )}
-                </div>
+                );
+              })}
+            </div>
 
-                {unlocked ? (
-                  <ul className="divide-y divide-teal/5">
-                    {module.lessons.map((l) => {
-                      const done = user ? isLessonComplete(user.id, l.id) : false;
-                      return (
-                        <li key={l.id}>
-                          <Link
-                            to={user ? `/courses/${course.slug}/lesson/${l.id}` : "/login"}
-                            className="flex items-center gap-3 px-5 py-3 hover:bg-teal/[0.04] transition-colors"
-                          >
-                            {done ? <CheckCircle2 className="w-5 h-5 text-teal shrink-0" /> : <Circle className="w-5 h-5 text-ink/25 shrink-0" />}
-                            <span className="flex-1 min-w-0">
-                              <span className="text-ink/85">{l.title}</span>
-                            </span>
-                            <span className="text-[11px] font-semibold uppercase tracking-wide text-ink/45 shrink-0 hidden sm:inline">{lessonKindLabel[l.kind]}</span>
-                            <span className="text-xs text-ink/45 shrink-0 inline-flex items-center gap-1"><Clock className="w-3 h-3" />{l.minutes}m</span>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <div className="px-5 py-6 text-center text-sm text-ink/55">
-                    <Lock className="w-5 h-5 mx-auto mb-1.5 text-ink/30" />
-                    Complete <b>Part {module.part - 1}</b> to unlock this module.
-                  </div>
-                )}
+            <LiveSessionCard courseSlug={course.slug} />
+            <ShareCourse slug={course.slug} title={course.title} />
+            <CourseCommunity courseSlug={course.slug} />
+          </div>
+
+          {/* RIGHT (sidebar) */}
+          <aside className="space-y-4 order-1 lg:order-2">
+            <div className="glass-card p-6">
+              <h2 className="font-heading font-bold text-lg text-ink mb-3">What you'll be able to do</h2>
+              <ul className="space-y-2">
+                {course.outcomes.map((o, i) => (
+                  <li key={i} className="flex gap-2.5 text-ink/80 text-sm"><CheckCircle2 className="w-5 h-5 text-teal shrink-0" /> {o}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="glass-card p-6">
+              <h2 className="font-heading font-bold text-lg text-ink mb-3">Tools you'll master</h2>
+              <div className="flex flex-wrap gap-2">
+                {course.tools.map((t) => <span key={t.name} className="glass-pill text-sm">{t.name}</span>)}
               </div>
-            );
-          })}
-        </div>
-      </section>
+            </div>
 
-      {/* Share + Community */}
-      <section className="px-4 pb-10">
-        <div className="max-w-5xl mx-auto space-y-6">
-          <ShareCourse slug={course.slug} title={course.title} />
-          <CourseCommunity courseSlug={course.slug} />
+            {projectLessons.length > 0 && (
+              <div className="glass-card p-6">
+                <h2 className="font-heading font-bold text-lg text-ink mb-3 flex items-center gap-2"><Hammer className="w-5 h-5 text-teal" /> What you'll build</h2>
+                <div className="space-y-2.5">
+                  {projectLessons.map((l) => (
+                    <div key={l.id} className="rounded-2xl border border-line bg-surface/50 p-3.5">
+                      <div className="text-sm font-semibold text-ink">{l.title.replace(/^Project:\s*/, "")}</div>
+                      <p className="text-xs text-soft mt-1 line-clamp-2">{l.summary}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="glass-card p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="grid place-items-center w-9 h-9 rounded-xl text-white font-extrabold text-sm shrink-0" style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}>YB</span>
+                <h2 className="font-heading font-bold text-base text-ink">Yasir Bashir</h2>
+              </div>
+              <div className="inline-flex items-center gap-1 text-xs text-gold font-semibold mb-1.5"><Star className="w-3.5 h-3.5 fill-current" /> Practitioner, not just a teacher</div>
+              <p className="text-sm text-soft">
+                I build {course.category.toLowerCase()} systems for real clients and teach exactly how I work — everything here is something I've shipped and been paid for.
+              </p>
+              <a href="https://yasirbashiraisite.vercel.app" target="_blank" rel="noopener noreferrer" className="text-teal text-sm font-semibold mt-2 inline-flex items-center gap-1">Work with Yasir ↗</a>
+            </div>
+
+            <div className="glass-card p-6">
+              <h2 className="font-heading font-bold text-lg text-ink mb-3">FAQ</h2>
+              <div className="space-y-2">
+                {faqs.map((f) => (
+                  <details key={f.q} className="rounded-xl border border-line bg-surface/50 p-3.5 group">
+                    <summary className="font-semibold text-sm text-ink cursor-pointer list-none flex items-center justify-between gap-2">
+                      {f.q} <span className="text-teal group-open:rotate-45 transition-transform shrink-0">+</span>
+                    </summary>
+                    <p className="text-sm text-soft mt-2">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
 

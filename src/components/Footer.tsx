@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import SocialIcon from "./SocialIcon";
 import { SERVICES_SITE, CHAT_SITE, CONTACT_EMAIL, socials } from "@/data/links";
@@ -33,14 +34,19 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-2 text-sm">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
           <a href={SERVICES_SITE} target="_blank" rel="noopener noreferrer" className="text-soft hover:text-teal">Work with Yasir ↗</a>
+          <Link to="/privacy" className="text-soft hover:text-teal">Privacy Policy</Link>
           <a href={CHAT_SITE} target="_blank" rel="noopener noreferrer" className="text-soft hover:text-teal">Chat with Yasir ↗</a>
+          <Link to="/terms" className="text-soft hover:text-teal">Terms &amp; Conditions</Link>
           <a href={`mailto:${CONTACT_EMAIL}`} className="text-soft hover:text-teal">Contact</a>
+          <Link to="/disclaimer" className="text-soft hover:text-teal">Disclaimer</Link>
         </div>
       </div>
       <p className="text-center text-xs text-soft mt-6">
-        © {new Date().getFullYear()} Yasir Bashir · learnwithyasir
+        © {new Date().getFullYear()} {""}
+        <b className="text-ink/70">Yasir Bashir</b> · learnwithyasir. All rights reserved. All course content is
+        protected by copyright — unauthorised copying, redistribution or resale is prohibited.
       </p>
     </footer>
   );

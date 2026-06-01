@@ -14,6 +14,7 @@ const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const Paths = lazy(() => import("@/pages/Paths"));
 const Certificate = lazy(() => import("@/pages/Certificate"));
+const Legal = lazy(() => import("@/pages/Legal"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 function ScrollToTop() {
@@ -46,6 +47,9 @@ export default function App() {
               <Route path="/courses" element={<Catalog />} />
               <Route path="/paths" element={<Paths />} />
               <Route path="/courses/:slug" element={<CoursePage />} />
+              <Route path="/privacy" element={<Legal doc="privacy" />} />
+              <Route path="/terms" element={<Legal doc="terms" />} />
+              <Route path="/disclaimer" element={<Legal doc="disclaimer" />} />
               <Route
                 path="/courses/:slug/lesson/:lessonId"
                 element={

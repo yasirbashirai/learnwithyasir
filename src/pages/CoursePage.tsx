@@ -6,6 +6,7 @@ import ProgressRing from "@/components/ProgressRing";
 import VideoPlayer from "@/components/VideoPlayer";
 import CourseCommunity from "@/components/CourseCommunity";
 import LiveSessionCard from "@/components/LiveSessionCard";
+import ShareCourse from "@/components/ShareCourse";
 import { courseBySlug } from "@/data/courses";
 import { PART_META, type Lesson } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
@@ -247,9 +248,10 @@ export default function CoursePage() {
         </div>
       </section>
 
-      {/* Community */}
+      {/* Share + Community */}
       <section className="px-4 pb-10">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <ShareCourse slug={course.slug} title={course.title} />
           <CourseCommunity courseSlug={course.slug} />
         </div>
       </section>

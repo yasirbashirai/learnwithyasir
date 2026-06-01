@@ -104,24 +104,27 @@ export default function Dashboard() {
               <Link to="/courses" className="btn-primary mt-4 inline-flex">Browse courses <ArrowRight className="w-4 h-4" /></Link>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {myCourses.map((c) => {
                 const prog = courseProgress(user.id, c);
                 const next = nextLessonId(user.id, c);
                 const finished = prog.pct === 100;
                 return (
-                  <div key={c.slug} className="glass-card p-5 flex items-center gap-4">
-                    <div className="grid place-items-center w-12 h-12 rounded-2xl text-2xl bg-cream shrink-0">{c.icon}</div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-heading font-bold text-ink truncate">{c.title}</h3>
-                      <p className="text-sm text-soft">{prog.done} / {prog.total} lessons · {prog.pct}%</p>
+                  <div key={c.slug} className="glass-card card-hover p-5 flex flex-col">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="grid place-items-center w-14 h-14 rounded-2xl text-3xl bg-cream shrink-0">{c.icon}</div>
+                      <ProgressRing pct={prog.pct} size={46} />
                     </div>
-                    <ProgressRing pct={prog.pct} />
+                    <h3 className="font-heading font-bold text-ink mt-3 leading-tight">{c.title}</h3>
+                    <p className="text-sm text-soft mt-1">{prog.done} / {prog.total} lessons · {prog.pct}%</p>
+                    <div className="mt-3 h-1.5 rounded-full bg-teal/10 overflow-hidden">
+                      <div className="h-full rounded-full transition-all duration-700" style={{ width: `${prog.pct}%`, background: "linear-gradient(90deg,#288672,#36c8a9)" }} />
+                    </div>
                     {finished ? (
-                      <Link to={`/courses/${c.slug}/certificate`} className="btn-gold text-sm py-2.5 shrink-0"><Award className="w-4 h-4" /> Certificate</Link>
+                      <Link to={`/courses/${c.slug}/certificate`} className="btn-gold text-sm mt-4 w-full"><Award className="w-4 h-4" /> Get certificate</Link>
                     ) : (
-                      <Link to={next ? `/courses/${c.slug}/lesson/${next}` : `/courses/${c.slug}`} className="btn-primary text-sm py-2.5 shrink-0">
-                        {prog.pct === 0 ? "Start" : "Continue"} <ArrowRight className="w-4 h-4" />
+                      <Link to={next ? `/courses/${c.slug}/lesson/${next}` : `/courses/${c.slug}`} className="btn-primary text-sm mt-4 w-full">
+                        {prog.pct === 0 ? "Start course" : "Continue"} <ArrowRight className="w-4 h-4" />
                       </Link>
                     )}
                   </div>

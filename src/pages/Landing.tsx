@@ -1,14 +1,22 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, BookOpen, Hammer, Briefcase, Rocket, Lock, CheckCircle2 } from "lucide-react";
+import { ArrowRight, BookOpen, Hammer, Briefcase, Rocket, Lock, CheckCircle2, PlayCircle, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
 import { courses } from "@/data/courses";
+import { paths } from "@/data/paths";
 import { PART_META } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
 
 const partIcons = [BookOpen, Hammer, Briefcase, Rocket];
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.6, ease: [0.32, 0.72, 0, 1] as const },
+};
 
 export default function Landing() {
   const { user } = useAuth();
@@ -20,95 +28,128 @@ export default function Landing() {
       <Navbar />
 
       {/* Hero */}
-      <section className="px-4 pt-10 pb-16">
+      <section className="px-4 pt-12 pb-16">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="glass-pill text-teal">🎓 The Yasir skill academy</span>
-            <h1 className="font-heading font-extrabold text-4xl md:text-6xl leading-[1.05] mt-5 text-ink">
+            <span className="glass-pill text-teal">🎓 The Yasir skill academy · {courses.length} courses</span>
+            <h1 className="font-heading font-extrabold text-4xl md:text-6xl lg:text-7xl leading-[1.04] mt-6 text-ink">
               Learn the exact skills <br className="hidden md:block" />
-              I use to <span className="gradient-text">build & earn</span>.
+              I use to <span className="gradient-text">build &amp; earn</span>.
             </h1>
-            <p className="text-ink/70 text-lg max-w-2xl mx-auto mt-5">
-              {courses.length} hands-on courses across AI, automation and web. One month per skill,
-              real projects, and a clear path from learning to landing clients.
+            <p className="text-soft text-lg md:text-xl max-w-2xl mx-auto mt-6">
+              Hands-on, video-first courses across AI, automation and web. One month per skill —
+              real projects, and a clear path from <i>learning</i> to <i>landing clients</i>.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-              <Link to={user ? "/dashboard" : "/login"} className="btn-primary">
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-9">
+              <Link to={user ? "/dashboard" : "/login"} className="btn-primary text-base">
                 {user ? "Go to dashboard" : "Start learning free"} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link to="/courses" className="btn-ghost border border-teal/20">Browse all courses</Link>
+              <Link to="/courses" className="btn-outline text-base"><PlayCircle className="w-4 h-4" /> Browse courses</Link>
             </div>
-            <div className="flex items-center justify-center gap-6 mt-8 text-sm text-ink/60">
+            <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 mt-9 text-sm text-soft">
               <span>📚 {courses.length} courses</span>
               <span>🎯 {lessonTotal}+ lessons</span>
+              <span>🛤️ {paths.length} guided paths</span>
               <span>🔓 Unlock as you learn</span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* The 4-part framework */}
-      <section className="px-4 pb-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-9">
-            <h2 className="font-heading font-bold text-3xl text-ink">Every course, four parts</h2>
-            <p className="text-ink/65 mt-2">A proven path from zero to paid — not just theory.</p>
+      {/* 4-part framework */}
+      <section className="px-4 pb-20">
+        <motion.div {...fadeUp} className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink">Every course, four parts</h2>
+            <p className="text-soft mt-2">A proven path from zero to paid — not just theory.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {([1, 2, 3, 4] as const).map((p, i) => {
               const Icon = partIcons[i];
               return (
-                <div key={p} className="glass-card p-6">
-                  <div className="grid place-items-center w-12 h-12 rounded-2xl bg-teal/10 text-teal mb-3">
-                    <Icon className="w-6 h-6" />
-                  </div>
+                <div key={p} className="glass-card card-hover p-6">
+                  <div className="grid place-items-center w-12 h-12 rounded-2xl bg-teal/10 text-teal mb-3"><Icon className="w-6 h-6" /></div>
                   <div className="text-xs font-bold text-teal uppercase tracking-wide">Part {p}</div>
                   <h3 className="font-heading font-bold text-ink text-lg mt-0.5">{PART_META[p].title}</h3>
-                  <p className="text-sm text-ink/65 mt-1.5">{PART_META[p].blurb}</p>
+                  <p className="text-sm text-soft mt-1.5">{PART_META[p].blurb}</p>
                 </div>
               );
             })}
           </div>
-        </div>
+        </motion.div>
+      </section>
+
+      {/* Learning paths */}
+      <section className="px-4 pb-20">
+        <motion.div {...fadeUp} className="max-w-6xl mx-auto">
+          <div className="flex items-end justify-between mb-7">
+            <div>
+              <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink">Guided learning paths</h2>
+              <p className="text-soft mt-2">Stack the right courses in the right order toward one outcome.</p>
+            </div>
+            <Link to="/paths" className="text-teal font-semibold text-sm hidden sm:inline-flex items-center gap-1">All paths <ArrowRight className="w-4 h-4" /></Link>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {paths.map((p) => (
+              <Link key={p.slug} to="/paths" className="glass-card card-hover p-5">
+                <div className="grid place-items-center w-12 h-12 rounded-2xl text-2xl text-white" style={{ background: p.gradient }}>{p.icon}</div>
+                <h3 className="font-heading font-bold text-ink mt-3">{p.title}</h3>
+                <p className="text-sm text-soft mt-1">{p.blurb}</p>
+                <p className="text-xs text-teal font-semibold mt-3">{p.courseSlugs.length} courses →</p>
+              </Link>
+            ))}
+          </div>
+        </motion.div>
       </section>
 
       {/* How unlocking works */}
-      <section className="px-4 pb-16">
-        <div className="max-w-4xl mx-auto glass-card p-8 grid md:grid-cols-2 gap-6 items-center">
+      <section className="px-4 pb-20">
+        <motion.div {...fadeUp} className="max-w-4xl mx-auto glass-card p-8 md:p-10 grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <h2 className="font-heading font-bold text-2xl text-ink">Learn it properly — modules unlock as you go</h2>
-            <p className="text-ink/70 mt-3">
-              No skipping ahead. Finish a module to unlock the next, so you actually build the
-              foundations before the advanced work. Your progress is saved automatically.
+            <h2 className="font-heading font-bold text-2xl md:text-3xl text-ink">Learn it properly — modules unlock as you go</h2>
+            <p className="text-soft mt-3">
+              No skipping ahead. Finish a module to unlock the next, so you actually build the foundations
+              before the advanced work. Earn XP, keep a streak, and collect a certificate at the end.
             </p>
           </div>
           <div className="space-y-3">
-            <div className="flex items-center gap-3 rounded-xl bg-teal/5 border border-teal/15 px-4 py-3">
-              <CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 1 — Foundations <b className="text-teal">unlocked</b></span>
-            </div>
-            <div className="flex items-center gap-3 rounded-xl bg-white/60 border border-ink/10 px-4 py-3">
-              <CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 2 — Practice <b className="text-teal">unlocked</b></span>
-            </div>
-            <div className="flex items-center gap-3 rounded-xl bg-white/40 border border-ink/10 px-4 py-3 opacity-70">
-              <Lock className="w-5 h-5 text-ink/40" /> <span className="text-ink/60">Part 3 — Career &amp; Clients <i>locked</i></span>
-            </div>
+            <div className="flex items-center gap-3 rounded-xl bg-teal/5 border border-teal/15 px-4 py-3"><CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 1 — Foundations <b className="text-teal">unlocked</b></span></div>
+            <div className="flex items-center gap-3 rounded-xl bg-surface/60 border border-line px-4 py-3"><CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 2 — Practice <b className="text-teal">unlocked</b></span></div>
+            <div className="flex items-center gap-3 rounded-xl bg-surface/40 border border-line px-4 py-3 opacity-70"><Lock className="w-5 h-5 text-ink/40" /> <span className="text-soft">Part 3 — Career &amp; Clients <i>locked</i></span></div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Featured courses */}
-      <section className="px-4 pb-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between mb-6">
-            <h2 className="font-heading font-bold text-3xl text-ink">Popular courses</h2>
-            <Link to="/courses" className="text-teal font-semibold text-sm inline-flex items-center gap-1">
-              All {courses.length} courses <ArrowRight className="w-4 h-4" />
-            </Link>
+      <section className="px-4 pb-20">
+        <motion.div {...fadeUp} className="max-w-6xl mx-auto">
+          <div className="flex items-end justify-between mb-7">
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink">Popular courses</h2>
+            <Link to="/courses" className="text-teal font-semibold text-sm inline-flex items-center gap-1">All {courses.length} courses <ArrowRight className="w-4 h-4" /></Link>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {featured.map((c) => <CourseCard key={c.slug} course={c} />)}
           </div>
-        </div>
+        </motion.div>
+      </section>
+
+      {/* Instructor / final CTA */}
+      <section className="px-4 pb-16">
+        <motion.div {...fadeUp} className="max-w-5xl mx-auto glass-card p-8 md:p-12 text-center relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(54,200,169,0.3), transparent 70%)" }} aria-hidden />
+          <div className="relative">
+            <div className="grid place-items-center w-16 h-16 rounded-2xl mx-auto text-white text-2xl font-extrabold" style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}>Y</div>
+            <div className="mt-4 inline-flex items-center gap-1.5 text-sm text-gold font-semibold"><Star className="w-4 h-4 fill-current" /> Taught by a practitioner who ships</div>
+            <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-ink mt-3">Stop watching. Start building.</h2>
+            <p className="text-soft mt-3 max-w-xl mx-auto">
+              I'll teach you the exact systems I use for clients — and how to get paid for them.
+              Your first lesson is one click away.
+            </p>
+            <Link to={user ? "/courses" : "/login"} className="btn-primary text-base mt-7 inline-flex">
+              {user ? "Explore courses" : "Create your free account"} <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </motion.div>
       </section>
 
       <Footer />

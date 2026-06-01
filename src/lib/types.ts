@@ -25,6 +25,8 @@ export type ContentBlock =
   | { kind: "list"; items: string[] }
   | { kind: "steps"; items: string[] }
   | { kind: "callout"; tone?: "tip" | "warn" | "note"; text: string }
+  | { kind: "yasir"; text: string } // a personal, first-person note from Yasir
+  | { kind: "checklist"; items: string[] }
   | { kind: "resources"; items: ResourceLink[] };
 
 export interface Lesson {
@@ -33,6 +35,10 @@ export interface Lesson {
   kind: LessonKind;
   minutes: number;
   summary: string;
+  /** True when this lesson has a video slot (placeholder until Yasir uploads). */
+  hasVideo?: boolean;
+  /** Optional video URL — when empty the player shows a "coming soon" placeholder. */
+  videoUrl?: string;
   body?: ContentBlock[];
 }
 

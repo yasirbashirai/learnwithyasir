@@ -33,7 +33,7 @@ export default function Catalog() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Search courses…"
-                className="w-full rounded-full border border-teal/20 bg-white/80 pl-10 pr-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+                className="w-full rounded-full border border-teal/20 bg-surface/80 pl-10 pr-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
               />
             </div>
           </div>
@@ -46,7 +46,7 @@ export default function Catalog() {
                 className={`rounded-full px-4 py-1.5 text-sm font-semibold border transition-colors ${
                   cat === c
                     ? "bg-teal text-white border-teal"
-                    : "bg-white/60 text-ink/70 border-teal/15 hover:border-teal"
+                    : "bg-surface/60 text-ink/70 border-teal/15 hover:border-teal"
                 }`}
               >
                 {c}

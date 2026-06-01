@@ -1,16 +1,13 @@
 /**
  * buildCourse — expands a compact CourseSpec into a complete 4-part course
- * (Learn & Scope · Practice · Career & Clients · Advancement). This keeps the
- * 23 courses consistent and editable from one place. Flagship courses can pass
- * `extraModules` / richer lessons to override the generated baseline.
+ * (Learn & Scope · Practice · Career & Clients · Advancement).
+ *
+ * The generated lessons are written in Yasir's first-person voice — like he's
+ * sitting next to you teaching — and each core lesson carries a video slot
+ * (placeholder until the real recording is uploaded). Keeping it all in one
+ * generator means the 24 courses stay consistent and are editable in one place.
  */
-import type {
-  Course,
-  Lesson,
-  Module,
-  ContentBlock,
-  ToolGuide,
-} from "@/lib/types";
+import type { Course, Lesson, Module, ContentBlock, ToolGuide } from "@/lib/types";
 
 export interface CourseSpec {
   slug: string;
@@ -19,21 +16,13 @@ export interface CourseSpec {
   category: string;
   tagline: string;
   level: Course["level"];
-  /** One-line outcomes a learner can do by the end. */
   outcomes: string[];
-  /** Step-by-step setup guides — one per core tool. */
   tools: ToolGuide[];
-  /** Core concepts taught in Part 1. */
   concepts: { title: string; text: string }[];
-  /** Hands-on builds in Part 2. */
   projects: { title: string; brief: string; steps: string[] }[];
-  /** Who buys this skill — drives Part 3. */
   clientNiche: string;
-  /** Typical price range to anchor packaging in Part 3. */
   priceAnchor: string;
-  /** Advanced techniques for Part 4. */
   advanced: string[];
-  /** Communities / feeds to stay current — Part 4. */
   stayCurrent: { label: string; href: string }[];
   flagship?: boolean;
 }
@@ -48,12 +37,13 @@ function lesson(
   minutes: number,
   summary: string,
   body: ContentBlock[],
+  hasVideo = false,
 ): Lesson {
-  return { id: lid(slug), title, kind, minutes, summary, body };
+  return { id: lid(slug), title, kind, minutes, summary, body, hasVideo };
 }
 
 export function buildCourse(spec: CourseSpec): Course {
-  const { slug } = spec;
+  const { slug, title } = spec;
   lessonCounter = 0;
 
   /* ---------- PART 1 — Learn & Scope ---------- */
@@ -61,37 +51,40 @@ export function buildCourse(spec: CourseSpec): Course {
     id: `${slug}-m1`,
     part: 1,
     title: "Foundations & Scope",
-    goal: `Understand what ${spec.title} really is, where it fits, and the exact scope you'll master.`,
+    goal: `Get the real picture of ${title} — what it is, where the money is, and exactly what we're mastering.`,
     lessons: [
-      lesson(slug, `What is ${spec.title} — and why it pays`, "lesson", 12,
-        `The big picture: what ${spec.title} solves and the opportunity around it.`,
+      lesson(slug, `Welcome — what ${title} really is`, "lesson", 10,
+        `My honest intro to ${title} and how this month will go.`,
         [
-          { kind: "p", text: `${spec.tagline} In this opening lesson we frame the skill end-to-end so every later module has a place to land.` },
-          { kind: "h", text: "Why this skill is in demand" },
-          { kind: "p", text: `Businesses pay for outcomes, not tools. ${spec.title} sits in the "${spec.category}" space where the outcome is measurable — and that is exactly why ${spec.clientNiche} will pay ${spec.priceAnchor} for it.` },
-          { kind: "list", items: spec.outcomes.map((o) => `By the end you can: ${o}`) },
-          { kind: "callout", tone: "tip", text: "Don't try to learn every tool. Learn the workflow; tools are swappable. This course teaches the workflow first, tools second." },
-        ]),
-      lesson(slug, `The ${spec.category} landscape in 2026`, "lesson", 14,
-        "The current tools, players and where the money is moving.",
+          { kind: "yasir", text: `Hey, I'm Yasir. ${spec.tagline} I've used this skill to get real results for real clients — and in this course I'm going to teach it to you exactly the way I wish someone had taught me.` },
+          { kind: "p", text: `Before we touch a single tool, I want you to see the whole map. ${title} lives in the "${spec.category}" world, and the reason it pays is simple: it produces an outcome a business can feel.` },
+          { kind: "h", text: "What you'll walk away able to do" },
+          { kind: "list", items: spec.outcomes.map((o) => o) },
+          { kind: "callout", tone: "tip", text: "Treat this like a gym, not a library. Watch a bit, then go do it. The people who finish this course and land work are the ones who build along with me." },
+        ], true),
+      lesson(slug, `The ${spec.category} landscape in 2026`, "lesson", 13,
+        "The tools that actually matter right now — and what's just noise.",
         [
-          { kind: "p", text: `Here's the honest map of the ${spec.category} space right now — what's hype, what's durable, and the stack we'll actually use.` },
-          { kind: "h", text: "The tools we'll master" },
+          { kind: "p", text: `There are a hundred tools in this space. You don't need a hundred — you need the right handful. Here's the stack I actually reach for.` },
           { kind: "list", items: spec.tools.map((t) => `${t.name} — ${t.what}`) },
-          { kind: "callout", tone: "note", text: "Tool pricing and features move fast. Treat versions/prices here as a starting point and verify on the official site (linked in each setup guide)." },
-        ]),
+          { kind: "yasir", text: `My rule: learn the workflow, not the tool. Tools change every few months; the thinking doesn't. If you understand why a step exists, you can swap tools any time and never feel lost.` },
+          { kind: "callout", tone: "note", text: "Prices and features in this space move fast. I'll always link the official source so you can check the latest — never trust a number in a course (including mine) without verifying." },
+        ], true),
       ...spec.concepts.map((c) =>
-        lesson(slug, c.title, "lesson", 10, c.text.slice(0, 90) + "…",
-          [{ kind: "p", text: c.text }]),
+        lesson(slug, c.title, "lesson", 9, c.text.slice(0, 80) + "…",
+          [
+            { kind: "p", text: c.text },
+            { kind: "yasir", text: `This one trips people up early, so don't rush it — it pays off in every project later.` },
+          ], true),
       ),
       lesson(slug, "Scope check", "quiz", 5,
-        "Confirm you can define the skill and its boundaries before building.",
+        "A 60-second gut-check before we start building.",
         [
-          { kind: "p", text: "Quick self-check before you touch a tool. If you can answer these out loud, you're ready for Part 2." },
-          { kind: "list", items: [
-            `In one sentence, what outcome does ${spec.title} deliver for a client?`,
-            `Name the 2–3 core tools and what each is for.`,
-            `What is explicitly OUT of scope for this skill?`,
+          { kind: "p", text: "If you can answer these out loud, you've got the foundation. If not, rewatch — no shame, this is the part everyone skips and regrets." },
+          { kind: "checklist", items: [
+            `In one sentence: what outcome does ${title} deliver for a client?`,
+            `Can you name the 2–3 core tools and what each is for?`,
+            `What is clearly OUT of scope for this skill?`,
           ] },
         ]),
     ],
@@ -100,49 +93,55 @@ export function buildCourse(spec: CourseSpec): Course {
   /* ---------- PART 2 — Practice ---------- */
   const toolGuides: Lesson[] = spec.tools.map((t) =>
     lesson(slug, `Setup guide: ${t.name}`, "guide", 12,
-      `Step-by-step: get ${t.name} ready to build.`,
+      `I'll walk you through getting ${t.name} set up the right way.`,
       [
         { kind: "p", text: `${t.name} — ${t.what}` },
-        { kind: "h", text: "Step-by-step setup" },
+        { kind: "h", text: "Follow along, step by step" },
         { kind: "steps", items: t.steps },
         { kind: "resources", items: t.links },
-        { kind: "callout", tone: "tip", text: `Bookmark the docs. 80% of being "good with a tool" is knowing where its docs and templates live.` },
-      ]),
+        { kind: "yasir", text: `Bookmark these docs right now. Honestly, 80% of "being good with a tool" is just knowing where its docs and templates live so you're never stuck.` },
+      ], true),
   );
 
   const projects: Lesson[] = spec.projects.map((p) =>
-    lesson(slug, `Project: ${p.title}`, "project", 35,
-      p.brief,
+    lesson(slug, `Project: ${p.title}`, "project", 35, p.brief,
       [
         { kind: "p", text: p.brief },
-        { kind: "h", text: "Build it" },
+        { kind: "h", text: "Let's build it together" },
         { kind: "steps", items: p.steps },
-        { kind: "callout", tone: "note", text: "Ship a rough version first, then improve. A finished imperfect build beats a perfect unfinished one — and becomes a portfolio piece." },
-      ]),
+        { kind: "yasir", text: `Ship a rough version first, then make it nice. A finished imperfect build beats a perfect unfinished one every time — and this becomes a portfolio piece you'll show clients in Part 3.` },
+        { kind: "callout", tone: "tip", text: "Stuck for more than 15 minutes? That's normal. Re-read the step, check the docs, then ask in the community. Getting unstuck is a skill too." },
+      ], true),
   );
 
   const part2: Module = {
     id: `${slug}-m2`,
     part: 2,
     title: "Hands-On Practice",
-    goal: `Set up every tool and build ${spec.projects.length} real projects you can show.`,
+    goal: `Set up every tool and build ${spec.projects.length} real things you can actually show people.`,
     lessons: [
-      lesson(slug, "How to practice so it sticks", "lesson", 8,
-        "The build-in-public method we'll use across all projects.",
+      lesson(slug, "How to practice so it actually sticks", "lesson", 7,
+        "The build-along method I use with every student.",
         [
-          { kind: "p", text: "You learn this skill by shipping, not watching. Every project below ends with something real you can screenshot for your portfolio." },
+          { kind: "yasir", text: `Quick promise from me: if you only watch, you'll forget this in a week. If you build along, you'll own it. So open the tool in a second window and let's go hands-on.` },
           { kind: "list", items: [
-            "Build along live — pause the lesson, do the step, then continue.",
-            "Break it on purpose once, then fix it. That's where understanding comes from.",
-            "Save every build — these become your proof when you pitch clients in Part 3.",
+            "Pause the video, do the step, then continue. Every time.",
+            "Break something on purpose once, then fix it — that's where real understanding lives.",
+            "Save every build. These are your proof when you pitch clients later.",
           ] },
-        ]),
+        ], true),
       ...toolGuides,
       ...projects,
       lesson(slug, "Practice checkpoint", "quiz", 5,
-        "Prove you can build unaided before moving to clients.",
+        "Prove to yourself you can build without hand-holding.",
         [
-          { kind: "p", text: "You should now be able to rebuild at least one project from scratch with the docs open but no lesson playing. If not, repeat the project — this is the gate to Part 3." },
+          { kind: "p", text: "Here's the gate to Part 3: rebuild one project from scratch with the docs open but no video playing." },
+          { kind: "checklist", items: [
+            "I rebuilt a project from a blank canvas.",
+            "I fixed at least one thing that broke, on my own.",
+            "I saved a screenshot/recording for my portfolio.",
+          ] },
+          { kind: "yasir", text: `If that felt hard — good. That struggle is the exact moment the skill becomes yours.` },
         ]),
     ],
   };
@@ -152,61 +151,60 @@ export function buildCourse(spec: CourseSpec): Course {
     id: `${slug}-m3`,
     part: 3,
     title: "Career, Clients & Real Projects",
-    goal: `Package ${spec.title}, find ${spec.clientNiche}, win the work and deliver it.`,
+    goal: `Turn ${title} into income — package it, find ${spec.clientNiche}, win the work, and deliver like a pro.`,
     lessons: [
-      lesson(slug, `Packaging ${spec.title} as a service`, "lesson", 14,
-        "Turn the skill into a clear, priced offer.",
+      lesson(slug, `Packaging ${title} as a service`, "lesson", 13,
+        "Turn the skill into a clear, priced offer people can say yes to.",
         [
-          { kind: "p", text: `Clients don't buy "${spec.title}" — they buy an outcome with a price and a timeline. Here's how to package it.` },
-          { kind: "h", text: "A simple 3-tier offer" },
+          { kind: "p", text: `Nobody buys "${title}". They buy an outcome, a price and a timeline. So let's package it.` },
+          { kind: "h", text: "The 3-tier offer I use" },
           { kind: "list", items: [
-            `Starter — a single quick win (anchor near the low end of ${spec.priceAnchor}).`,
-            "Core — the full build, your main offer.",
-            "Retainer — ongoing management/optimisation (the real money).",
+            `Starter — one quick win (anchor near the low end of ${spec.priceAnchor}).`,
+            "Core — the full build. This is your main offer.",
+            "Retainer — ongoing management/optimisation. This is where the real money is.",
           ] },
-          { kind: "callout", tone: "tip", text: "Always offer three options. Most clients pick the middle — so design the middle to be your ideal project." },
-        ]),
-      lesson(slug, `Where to find ${spec.clientNiche}`, "lesson", 14,
-        "Concrete channels to get your first and tenth client.",
+          { kind: "yasir", text: `Always show three options. Most people pick the middle — so design the middle to be the project you actually want.` },
+        ], true),
+      lesson(slug, `Where to find ${spec.clientNiche}`, "lesson", 13,
+        "The exact channels I'd use to get your first and tenth client.",
         [
-          { kind: "p", text: `Your buyers are ${spec.clientNiche}. Go where they already are.` },
+          { kind: "p", text: `Your buyers are ${spec.clientNiche}. The trick isn't being everywhere — it's going where they already hang out.` },
           { kind: "list", items: [
-            "Warm outreach: 10 people you already know who run businesses.",
-            "Communities & groups where your niche hangs out (Slack/Discord/FB/LinkedIn).",
-            "Content: post your project builds publicly — proof attracts inbound.",
+            "Warm first: 10 people you already know who run businesses.",
+            "Communities your niche lives in (Slack/Discord/FB/LinkedIn groups).",
+            "Content: post your Part-2 builds publicly. Proof attracts inbound.",
             "Marketplaces (Upwork/Fiverr) to start, then graduate to direct outreach.",
-            "Partnerships: agencies/freelancers in adjacent skills who can refer you.",
+            "Partnerships: freelancers in adjacent skills who can refer you.",
           ] },
           { kind: "resources", items: [
             { label: "Upwork", href: "https://www.upwork.com" },
-            { label: "Fiverr", href: "https://www.fiverr.com" },
             { label: "LinkedIn", href: "https://www.linkedin.com" },
           ] },
-        ]),
-      lesson(slug, "Winning the client: outreach, proposals & calls", "lesson", 16,
-        "Communication scripts that turn leads into signed projects.",
+        ], true),
+      lesson(slug, "Winning the client: outreach, calls & proposals", "lesson", 15,
+        "My word-for-word flow from first message to signed.",
         [
-          { kind: "p", text: "Winning work is mostly communication. Here's the flow from first message to signed." },
-          { kind: "h", text: "The flow" },
+          { kind: "p", text: "Winning work is mostly communication, not skill. Here's the flow that's worked for me again and again." },
           { kind: "steps", items: [
-            "Lead with a specific observation about their business, not a pitch.",
-            "Offer a tiny free insight (an audit, a quick idea) to build trust.",
-            "Book a short call — goal is to understand their problem, not to sell.",
-            "Send a one-page proposal: problem, outcome, 3 options, timeline, price.",
-            "Follow up twice. Most deals are won in the follow-up.",
+            "Open with a specific observation about their business — not a pitch.",
+            "Give a tiny free insight (a quick idea or mini-audit) to earn trust.",
+            "Book a short call. Your only goal: understand their problem.",
+            "Send a one-page proposal — problem, outcome, 3 options, timeline, price.",
+            "Follow up twice. Most deals are won in the follow-up, I promise you.",
           ] },
-          { kind: "callout", tone: "warn", text: "Never quote a price before you understand the outcome they want. Diagnose first, prescribe second." },
-        ]),
-      lesson(slug, "Deliver, get paid & turn it into a retainer", "lesson", 12,
-        "Delivery, testimonials and recurring revenue.",
+          { kind: "callout", tone: "warn", text: "Never quote a price before you understand the outcome they want. Diagnose first, prescribe second — exactly like a doctor." },
+        ], true),
+      lesson(slug, "Deliver, get paid & turn it into a retainer", "lesson", 11,
+        "How I keep clients happy, paid-up and coming back.",
         [
-          { kind: "list", items: [
-            "Set scope + milestones in writing. Take a deposit upfront.",
-            "Over-communicate progress — clients rate communication over code.",
-            "At handoff, record a Loom walkthrough and ask for a testimonial.",
-            "Pitch the retainer at the moment of success, not months later.",
+          { kind: "checklist", items: [
+            "Scope + milestones agreed in writing, deposit taken upfront.",
+            "I over-communicate progress (clients rate communication over code).",
+            "At handoff I record a Loom walkthrough and ask for a testimonial.",
+            "I pitch the retainer at the moment of success — not months later.",
           ] },
-        ]),
+          { kind: "yasir", text: `One happy client who trusts you is worth more than ten cold leads. Treat delivery as marketing for your next project.` },
+        ], true),
     ],
   };
 
@@ -215,31 +213,32 @@ export function buildCourse(spec: CourseSpec): Course {
     id: `${slug}-m4`,
     part: 4,
     title: "Advancement & Roadmap",
-    goal: `Go from competent to expert with advanced techniques and a clear roadmap.`,
+    goal: `Go from "can do it" to "the person people recommend" — advanced moves and your roadmap.`,
     lessons: [
-      lesson(slug, `Advanced ${spec.title} techniques`, "lesson", 16,
-        "Level-up moves that separate pros from beginners.",
+      lesson(slug, `Advanced ${title} techniques`, "lesson", 16,
+        "The level-up moves that let you charge more and deliver faster.",
         [
-          { kind: "p", text: `Once the basics are automatic, these are the techniques that let you charge more and deliver faster.` },
+          { kind: "p", text: `Once the basics are automatic, these are the moves that separate pros from beginners.` },
           { kind: "list", items: spec.advanced },
-        ]),
-      lesson(slug, "Staying current (this field moves fast)", "lesson", 8,
-        "Feeds, communities and changelogs to never fall behind.",
+          { kind: "yasir", text: `Don't try all of these at once. Pick one, get good, then add the next. Depth beats breadth in the beginning.` },
+        ], true),
+      lesson(slug, "How to never fall behind", "lesson", 7,
+        "The feeds and communities I follow to stay current.",
         [
-          { kind: "p", text: "The half-life of tactics in this space is short. Build a habit of following primary sources." },
+          { kind: "p", text: "This field moves fast. The fix isn't to read everything — it's to follow a few primary sources and ignore the rest." },
           { kind: "resources", items: spec.stayCurrent },
-        ]),
+        ], true),
       lesson(slug, "Your 90-day mastery roadmap", "project", 12,
         "A concrete plan for the three months after this course.",
         [
           { kind: "h", text: "Month 1 — Reps" },
-          { kind: "p", text: "Rebuild every Part-2 project from scratch and publish each one. Volume builds fluency." },
-          { kind: "h", text: "Month 2 — Real client" },
+          { kind: "p", text: "Rebuild every Part-2 project from scratch and publish each one. Volume builds fluency faster than anything else." },
+          { kind: "h", text: "Month 2 — First real client" },
           { kind: "p", text: "Land one paid (or free-for-testimonial) project using the Part-3 playbook. Document it as a case study." },
           { kind: "h", text: "Month 3 — Productise" },
-          { kind: "p", text: "Turn your best build into a repeatable offer with a fixed price and a templated delivery. Pitch a retainer." },
-          { kind: "callout", tone: "tip", text: "Come back and mark this complete only when you've shipped a real project. That's the true finish line of the course." },
-        ]),
+          { kind: "p", text: "Turn your best build into a repeatable offer with a fixed price and a templated delivery, then pitch a retainer." },
+          { kind: "yasir", text: `Come back and mark this complete only when you've shipped something real. That's the true finish line — and the moment you can call yourself a ${title} pro.` },
+        ], true),
     ],
   };
 

@@ -53,7 +53,7 @@ export default function Login() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name"
-            className="w-full rounded-xl border border-teal/20 bg-white/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
             required
           />
           <input
@@ -61,7 +61,7 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@email.com"
-            className="w-full rounded-xl border border-teal/20 bg-white/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
             required
           />
           <button type="submit" disabled={busy} className="w-full bg-white border border-ink/15 rounded-xl py-3 font-semibold text-ink flex items-center justify-center gap-3 hover:bg-ink/[0.03] transition-colors">

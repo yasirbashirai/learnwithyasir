@@ -4,10 +4,12 @@ import { motion } from "framer-motion";
 import { Check, ChevronLeft, ChevronRight, Lock, CheckCircle2, Circle, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import LessonBody from "@/components/LessonBody";
+import VideoPlayer from "@/components/VideoPlayer";
 import { courseBySlug } from "@/data/courses";
-import { PART_META } from "@/lib/types";
+import { PART_META, type Lesson } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
 import {
+  courseProgress,
   enroll,
   isEnrolled,
   isLessonComplete,
@@ -15,6 +17,13 @@ import {
   toggleLesson,
 } from "@/lib/progress";
 import { useProgressTick } from "@/hooks/useProgressTick";
+
+const KIND_LABEL: Record<Lesson["kind"], string> = {
+  lesson: "Lesson",
+  guide: "Setup guide",
+  project: "Project",
+  quiz: "Checkpoint",
+};
 
 export default function LessonPage() {
   const { slug = "", lessonId = "" } = useParams();
@@ -37,6 +46,22 @@ export default function LessonPage() {
       m.lessons.map((l) => ({ lesson: l, module: m, moduleIndex: mi })),
     );
   }, [course]);
+
+  // Keyboard navigation: ← / → move between lessons.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+      const p = flat.findIndex((f) => f.lesson.id === lessonId);
+      if (p < 0) return;
+      if (e.key === "ArrowRight" && p < flat.length - 1)
+        navigate(`/courses/${slug}/lesson/${flat[p + 1].lesson.id}`);
+      if (e.key === "ArrowLeft" && p > 0)
+        navigate(`/courses/${slug}/lesson/${flat[p - 1].lesson.id}`);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [flat, lessonId, slug, navigate]);
 
   if (!course) {
     return (
@@ -85,6 +110,7 @@ export default function LessonPage() {
   const prev = pos > 0 ? flat[pos - 1] : null;
   const next = pos < flat.length - 1 ? flat[pos + 1] : null;
   const meta = PART_META[current.module.part];
+  const cprog = user ? courseProgress(user.id, course) : { pct: 0, done: 0, total: 0 };
 
   const markAndAdvance = () => {
     if (!user) return;
@@ -101,9 +127,17 @@ export default function LessonPage() {
         {/* Sidebar curriculum */}
         <aside className="hidden lg:block">
           <div className="glass-card p-4 sticky top-24 max-h-[80vh] overflow-y-auto">
-            <Link to={`/courses/${course.slug}`} className="flex items-center gap-2 font-heading font-bold text-ink mb-3 hover:text-teal">
+            <Link to={`/courses/${course.slug}`} className="flex items-center gap-2 font-heading font-bold text-ink mb-2 hover:text-teal">
               <List className="w-4 h-4" /> {course.title}
             </Link>
+            <div className="mb-4">
+              <div className="flex justify-between text-[11px] text-soft mb-1">
+                <span>Course progress</span><span>{cprog.pct}%</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-teal/10 overflow-hidden">
+                <div className="h-full rounded-full transition-all duration-700" style={{ width: `${cprog.pct}%`, background: "linear-gradient(90deg,#288672,#36c8a9)" }} />
+              </div>
+            </div>
             {course.modules.map((m, mi) => {
               const open = user ? isModuleUnlocked(user.id, course, mi) : mi === 0;
               return (
@@ -145,13 +179,22 @@ export default function LessonPage() {
           transition={{ duration: 0.35 }}
           className="glass-card p-7 md:p-10"
         >
-          <div className="text-xs font-bold uppercase tracking-wide text-teal">
-            {meta.icon} Part {current.module.part} · {current.module.title}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs font-bold uppercase tracking-wide text-teal">
+              {meta.icon} Part {current.module.part} · {current.module.title}
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wide bg-teal/10 text-teal px-2 py-0.5 rounded-full">{KIND_LABEL[current.lesson.kind]}</span>
           </div>
-          <h1 className="font-heading font-extrabold text-3xl text-ink mt-1.5">{current.lesson.title}</h1>
-          <p className="text-ink/60 mt-1 text-sm">{current.lesson.minutes} min · {current.lesson.summary}</p>
+          <h1 className="font-heading font-extrabold text-3xl text-ink mt-2">{current.lesson.title}</h1>
+          <p className="text-soft mt-1 text-sm">{current.lesson.minutes} min · {current.lesson.summary}</p>
 
-          <hr className="my-6 border-teal/10" />
+          {current.lesson.hasVideo && (
+            <div className="mt-5">
+              <VideoPlayer title={current.lesson.title} url={current.lesson.videoUrl} minutes={current.lesson.minutes} />
+            </div>
+          )}
+
+          <hr className="my-6 border-line" />
 
           {current.lesson.body ? <LessonBody blocks={current.lesson.body} /> : <p className="text-ink/70">Content coming soon.</p>}
 

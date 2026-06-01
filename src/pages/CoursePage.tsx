@@ -1,8 +1,9 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Lock, CheckCircle2, Circle, Clock, BookOpen, ArrowRight } from "lucide-react";
+import { Lock, CheckCircle2, Circle, Clock, BookOpen, ArrowRight, Award, Hammer, Star } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProgressRing from "@/components/ProgressRing";
+import VideoPlayer from "@/components/VideoPlayer";
 import { courseBySlug } from "@/data/courses";
 import { PART_META, type Lesson } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
@@ -45,6 +46,7 @@ export default function CoursePage() {
 
   const enrolled = user ? isEnrolled(user.id, course.slug) : false;
   const prog = user ? courseProgress(user.id, course) : null;
+  const projectLessons = course.modules.flatMap((m) => m.lessons).filter((l) => l.kind === "project");
 
   const handleEnroll = () => {
     if (!user) return navigate("/login", { state: { from: `/courses/${course.slug}` } });
@@ -75,7 +77,7 @@ export default function CoursePage() {
                 <span className="inline-flex items-center gap-1.5"><Clock className="w-4 h-4" /> {course.durationWeeks} weeks</span>
                 <span className="inline-flex items-center gap-1.5"><BookOpen className="w-4 h-4" /> {course.modules.reduce((n, m) => n + m.lessons.length, 0)} lessons</span>
               </div>
-              <div className="mt-5 flex items-center gap-4">
+              <div className="mt-5 flex items-center gap-4 flex-wrap">
                 {enrolled ? (
                   <button onClick={handleEnroll} className="btn-primary">
                     {prog && prog.pct > 0 ? "Continue learning" : "Start course"} <ArrowRight className="w-4 h-4" />
@@ -83,9 +85,17 @@ export default function CoursePage() {
                 ) : (
                   <button onClick={handleEnroll} className="btn-primary">Enroll free <ArrowRight className="w-4 h-4" /></button>
                 )}
+                {enrolled && prog && prog.pct === 100 && (
+                  <Link to={`/courses/${course.slug}/certificate`} className="btn-gold"><Award className="w-4 h-4" /> Get certificate</Link>
+                )}
                 {enrolled && prog && <ProgressRing pct={prog.pct} size={48} />}
               </div>
             </div>
+          </div>
+
+          {/* Course trailer */}
+          <div className="mt-4">
+            <VideoPlayer title={`${course.title} — course trailer`} />
           </div>
         </div>
       </section>
@@ -110,6 +120,63 @@ export default function CoursePage() {
                 <span key={t.name} className="glass-pill text-sm">{t.name}</span>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What you'll build */}
+      {projectLessons.length > 0 && (
+        <section className="px-4 pb-6">
+          <div className="max-w-5xl mx-auto glass-card p-6">
+            <h2 className="font-heading font-bold text-lg text-ink mb-3 flex items-center gap-2"><Hammer className="w-5 h-5 text-teal" /> What you'll build</h2>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {projectLessons.map((l) => (
+                <div key={l.id} className="rounded-2xl border border-line bg-surface/50 p-4">
+                  <div className="text-sm font-semibold text-ink">{l.title.replace(/^Project:\s*/, "")}</div>
+                  <p className="text-xs text-soft mt-1 line-clamp-2">{l.summary}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Instructor */}
+      <section className="px-4 pb-6">
+        <div className="max-w-5xl mx-auto glass-card p-6 flex flex-col sm:flex-row gap-5 items-start">
+          <div className="grid place-items-center w-16 h-16 rounded-2xl text-white text-2xl font-extrabold shrink-0" style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}>Y</div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="font-heading font-bold text-lg text-ink">Your instructor — Yasir Bashir</h2>
+              <span className="inline-flex items-center gap-1 text-xs text-gold font-semibold"><Star className="w-3.5 h-3.5 fill-current" /> Practitioner, not just a teacher</span>
+            </div>
+            <p className="text-sm text-soft mt-1.5 max-w-2xl">
+              I build {course.category.toLowerCase()} systems for real clients — and I teach this the way I actually
+              work, not from theory. Everything in this course is something I've shipped and been paid for. Let's get you there too.
+            </p>
+            <a href="https://yasirbashiraisite.vercel.app" target="_blank" rel="noopener noreferrer" className="text-teal text-sm font-semibold mt-2 inline-flex items-center gap-1">See my work ↗</a>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="px-4 pb-6">
+        <div className="max-w-5xl mx-auto glass-card p-6">
+          <h2 className="font-heading font-bold text-lg text-ink mb-3">FAQ</h2>
+          <div className="space-y-3">
+            {[
+              { q: "Do I need experience?", a: `This course is built for ${course.level === "Advanced" ? "people with some grounding who want to go deep" : "beginners — I start from zero and build up"}.` },
+              { q: "How long does it take?", a: "It's designed as a focused one month (4 parts), but it's self-paced — go faster or slower, your progress is saved." },
+              { q: "Are the videos ready?", a: "The full curriculum and written lessons are here now. Video lessons are being recorded and will appear in each lesson's player." },
+              { q: "Will I get a certificate?", a: "Yes — finish all four parts and you'll unlock a shareable certificate of completion." },
+            ].map((f) => (
+              <details key={f.q} className="rounded-xl border border-line bg-surface/50 p-4 group">
+                <summary className="font-semibold text-ink cursor-pointer list-none flex items-center justify-between">
+                  {f.q} <span className="text-teal group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="text-sm text-soft mt-2">{f.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

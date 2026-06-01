@@ -1,4 +1,4 @@
-import { Lightbulb, AlertTriangle, Info, ExternalLink } from "lucide-react";
+import { Lightbulb, AlertTriangle, Info, ExternalLink, CheckSquare } from "lucide-react";
 import type { ContentBlock } from "@/lib/types";
 
 const calloutStyle = {
@@ -48,9 +48,35 @@ export default function LessonBody({ blocks }: { blocks: ContentBlock[] }) {
               </div>
             );
           }
+          case "yasir":
+            return (
+              <div key={i} className="rounded-2xl border border-teal/25 bg-teal/[0.06] p-4 flex gap-3.5">
+                <span
+                  className="grid place-items-center w-10 h-10 rounded-full text-white font-extrabold shrink-0 shadow-soft"
+                  style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}
+                >
+                  Y
+                </span>
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-wide text-teal mb-0.5">Yasir's take</div>
+                  <p className="text-ink/85 leading-relaxed italic">{b.text}</p>
+                </div>
+              </div>
+            );
+          case "checklist":
+            return (
+              <ul key={i} className="space-y-2">
+                {b.items.map((it, j) => (
+                  <li key={j} className="flex gap-2.5 items-start rounded-xl border border-line bg-surface/50 px-3.5 py-2.5">
+                    <CheckSquare className="w-5 h-5 text-teal shrink-0 mt-0.5" />
+                    <span className="text-ink/80">{it}</span>
+                  </li>
+                ))}
+              </ul>
+            );
           case "resources":
             return (
-              <div key={i} className="rounded-2xl border border-teal/15 bg-white/60 p-4">
+              <div key={i} className="rounded-2xl border border-teal/15 bg-surface/60 p-4">
                 <p className="text-xs font-bold uppercase tracking-wide text-teal mb-2">Resources</p>
                 <div className="flex flex-wrap gap-2">
                   {b.items.map((r, j) => (

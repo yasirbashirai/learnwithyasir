@@ -1,41 +1,50 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, LayoutDashboard, BookOpen } from "lucide-react";
+import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame } from "lucide-react";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "@/lib/auth";
+import { userStats } from "@/lib/progress";
+import { useProgressTick } from "@/hooks/useProgressTick";
 
 const MAIN_SITE = "https://yasirbashiraisite.vercel.app";
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  useProgressTick();
+  const stats = user ? userStats(user.id) : null;
 
   return (
     <header className="sticky top-0 z-40 px-4 py-3">
-      <nav className="glass max-w-6xl mx-auto rounded-2xl px-4 py-2.5 flex items-center gap-3">
+      <nav className="glass max-w-6xl mx-auto rounded-2xl px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3">
         <Logo />
-        <div className="ml-auto flex items-center gap-1.5">
+        <div className="ml-auto flex items-center gap-1 sm:gap-1.5">
           <Link to="/courses" className="btn-ghost text-sm hidden sm:inline-flex">
             <BookOpen className="w-4 h-4" /> Courses
           </Link>
-          <a
-            href={MAIN_SITE}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-ghost text-sm hidden md:inline-flex"
-          >
+          <Link to="/paths" className="btn-ghost text-sm hidden md:inline-flex">
+            <RouteIcon className="w-4 h-4" /> Paths
+          </Link>
+          <a href={MAIN_SITE} target="_blank" rel="noopener noreferrer" className="btn-ghost text-sm hidden lg:inline-flex">
             🌐 Main site ↗
           </a>
-          {user ? (
+          {user && stats ? (
             <>
+              {stats.streak > 0 && (
+                <span className="glass-pill text-xs hidden sm:inline-flex" title={`${stats.streak}-day streak`}>
+                  <Flame className="w-3.5 h-3.5 text-gold" /> {stats.streak}
+                </span>
+              )}
+              <span className="glass-pill text-xs" title={`${stats.xp} XP`}>
+                ⚡ Lv {stats.level}
+              </span>
               <Link to="/dashboard" className="btn-ghost text-sm">
                 <LayoutDashboard className="w-4 h-4" />
                 <span className="hidden sm:inline">Dashboard</span>
               </Link>
+              <ThemeToggle />
               <button
-                onClick={() => {
-                  signOut();
-                  navigate("/");
-                }}
+                onClick={() => { signOut(); navigate("/"); }}
                 className="btn-ghost text-sm"
                 title="Sign out"
               >
@@ -50,9 +59,10 @@ export default function Navbar() {
               </span>
             </>
           ) : (
-            <Link to="/login" className="btn-primary text-sm py-2">
-              Get started
-            </Link>
+            <>
+              <ThemeToggle />
+              <Link to="/login" className="btn-primary text-sm py-2">Get started</Link>
+            </>
           )}
         </div>
       </nav>

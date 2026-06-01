@@ -70,6 +70,37 @@ export async function loadAdminData(): Promise<AdminData | { error: string }> {
   }
 }
 
+/* ---------- Per-student drilldown + management ---------- */
+export interface StudentDetail {
+  id: string;
+  completedLessonIds: string[];
+  enrolledSlugs: string[];
+}
+
+export async function getStudentDetail(userId: string): Promise<StudentDetail> {
+  if (!supabase) return { id: userId, completedLessonIds: [], enrolledSlugs: [] };
+  const [{ data: enr }, { data: prog }] = await Promise.all([
+    supabase.from("enrollments").select("course_slug").eq("user_id", userId),
+    supabase.from("lesson_progress").select("lesson_id").eq("user_id", userId),
+  ]);
+  return {
+    id: userId,
+    enrolledSlugs: (enr ?? []).map((r: { course_slug: string }) => r.course_slug),
+    completedLessonIds: (prog ?? []).map((r: { lesson_id: string }) => r.lesson_id),
+  };
+}
+
+/** Wipe a student's lesson progress (admin only — RLS enforced). */
+export async function resetStudentProgress(userId: string) {
+  if (!supabase) return;
+  await supabase.from("lesson_progress").delete().eq("user_id", userId);
+}
+
+export async function removeStudentEnrollment(userId: string, slug: string) {
+  if (!supabase) return;
+  await supabase.from("enrollments").delete().eq("user_id", userId).eq("course_slug", slug);
+}
+
 /** Build + download a CSV of learner emails for the newsletter. */
 export function exportLeadsCsv(learners: LearnerRow[]) {
   const header = "name,email,vibe,signed_up,enrollments,lessons_done\n";

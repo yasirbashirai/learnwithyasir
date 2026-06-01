@@ -195,7 +195,13 @@ export default function LessonPage() {
 
           {current.lesson.hasVideo && (
             <div className="mt-5">
-              <VideoPlayer title={current.lesson.title} url={videoMap[current.lesson.id] ?? current.lesson.videoUrl} minutes={current.lesson.minutes} />
+              <VideoPlayer
+                title={current.lesson.title}
+                url={videoMap[current.lesson.id] ?? current.lesson.videoUrl}
+                minutes={current.lesson.minutes}
+                icon={course.icon}
+                partLabel={`Part ${current.module.part} · ${meta.title}`}
+              />
             </div>
           )}
 

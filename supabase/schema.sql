@@ -78,3 +78,67 @@ drop policy if exists "videos admin write" on public.lesson_videos;
 create policy "videos admin write" on public.lesson_videos
   for all using ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com')
   with check ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');
+
+-- ============================================================
+-- Community discussions (one board per course)
+-- ============================================================
+create table if not exists public.discussions (
+  id uuid primary key default gen_random_uuid(),
+  course_slug text not null,
+  user_id uuid references auth.users on delete cascade,
+  user_name text,
+  body text not null,
+  pinned boolean default false,
+  created_at timestamptz default now()
+);
+alter table public.discussions enable row level security;
+
+drop policy if exists "discussions read" on public.discussions;
+create policy "discussions read" on public.discussions
+  for select using (true);
+
+drop policy if exists "discussions insert own" on public.discussions;
+create policy "discussions insert own" on public.discussions
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "discussions delete own or admin" on public.discussions;
+create policy "discussions delete own or admin" on public.discussions
+  for delete using (auth.uid() = user_id or (auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');
+
+drop policy if exists "discussions admin update" on public.discussions;
+create policy "discussions admin update" on public.discussions
+  for update using ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');
+
+-- ============================================================
+-- Weekly live sessions (per course, or global when course_slug is null)
+-- ============================================================
+create table if not exists public.live_sessions (
+  id uuid primary key default gen_random_uuid(),
+  course_slug text,
+  title text not null,
+  description text,
+  starts_at timestamptz not null,
+  join_url text,
+  created_at timestamptz default now()
+);
+alter table public.live_sessions enable row level security;
+
+drop policy if exists "sessions read" on public.live_sessions;
+create policy "sessions read" on public.live_sessions
+  for select using (true);
+
+drop policy if exists "sessions admin write" on public.live_sessions;
+create policy "sessions admin write" on public.live_sessions
+  for all using ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com')
+  with check ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');
+
+-- ============================================================
+-- Super-admin full control: manage ANY student's enrollment/progress.
+-- ============================================================
+drop policy if exists "admin manage progress" on public.lesson_progress;
+create policy "admin manage progress" on public.lesson_progress
+  for delete using ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');
+
+drop policy if exists "admin manage enrollments" on public.enrollments;
+create policy "admin manage enrollments" on public.enrollments
+  for delete using ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');

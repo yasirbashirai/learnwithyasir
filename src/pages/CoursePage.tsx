@@ -4,6 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProgressRing from "@/components/ProgressRing";
 import VideoPlayer from "@/components/VideoPlayer";
+import CourseCommunity from "@/components/CourseCommunity";
+import LiveSessionCard from "@/components/LiveSessionCard";
 import { courseBySlug } from "@/data/courses";
 import { PART_META, type Lesson } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
@@ -95,7 +97,7 @@ export default function CoursePage() {
 
           {/* Course trailer */}
           <div className="mt-4">
-            <VideoPlayer title={`${course.title} — course trailer`} />
+            <VideoPlayer title={`${course.title} — course trailer`} icon={course.icon} partLabel="Course trailer" minutes={2} />
           </div>
         </div>
       </section>
@@ -181,6 +183,13 @@ export default function CoursePage() {
         </div>
       </section>
 
+      {/* Live session */}
+      <section className="px-4 pb-6">
+        <div className="max-w-5xl mx-auto">
+          <LiveSessionCard courseSlug={course.slug} />
+        </div>
+      </section>
+
       {/* Curriculum — 4 parts */}
       <section className="px-4 pb-10">
         <div className="max-w-5xl mx-auto space-y-4">
@@ -235,6 +244,13 @@ export default function CoursePage() {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* Community */}
+      <section className="px-4 pb-10">
+        <div className="max-w-5xl mx-auto">
+          <CourseCommunity courseSlug={course.slug} />
         </div>
       </section>
 

@@ -170,3 +170,9 @@
   .mesh-bg, .shimmer { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* Marquee (infinite horizontal scroll) */
+.marquee { display: flex; gap: 0.75rem; width: max-content; animation: marquee 32s linear infinite; }
+.marquee-wrap:hover .marquee { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee { animation: none; } }

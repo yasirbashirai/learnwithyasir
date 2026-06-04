@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame, ShieldCheck, Briefcase } from "lucide-react";
+import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame, ShieldCheck, Briefcase, Compass } from "lucide-react";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "@/lib/auth";
@@ -20,6 +20,9 @@ export default function Navbar() {
         <div className="ml-auto flex items-center gap-1 sm:gap-1.5">
           <Link to="/courses" className="btn-ghost text-sm hidden sm:inline-flex">
             <BookOpen className="w-4 h-4" /> Courses
+          </Link>
+          <Link to="/quiz" className="btn-ghost text-sm hidden sm:inline-flex text-teal">
+            <Compass className="w-4 h-4" /> Find your skill
           </Link>
           <Link to="/paths" className="btn-ghost text-sm hidden md:inline-flex">
             <RouteIcon className="w-4 h-4" /> Paths

@@ -1,5 +1,5 @@
 /**
- * Admin data layer — read-all queries for the instructor dashboard.
+ * Admin data layer, read-all queries for the instructor dashboard.
  * Requires the admin-read RLS policies in supabase/schema.sql so Yasir can see
  * every learner's rows (normal users only see their own).
  */
@@ -47,8 +47,8 @@ export async function loadAdminData(): Promise<AdminData | { error: string }> {
     const learners: LearnerRow[] = profiles
       .map((p) => ({
         id: p.id,
-        name: p.name ?? "—",
-        email: p.email ?? "—",
+        name: p.name ?? ", ",
+        email: p.email ?? ", ",
         vibe: p.vibe ?? undefined,
         createdAt: p.created_at ?? undefined,
         enrollments: enrollBy.get(p.id) ?? 0,
@@ -90,7 +90,7 @@ export async function getStudentDetail(userId: string): Promise<StudentDetail> {
   };
 }
 
-/** Wipe a student's lesson progress (admin only — RLS enforced). */
+/** Wipe a student's lesson progress (admin only, RLS enforced). */
 export async function resetStudentProgress(userId: string) {
   if (!supabase) return;
   await supabase.from("lesson_progress").delete().eq("user_id", userId);

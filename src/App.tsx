@@ -10,6 +10,7 @@ import Landing from "@/pages/Landing";
 const Login = lazy(() => import("@/pages/Login"));
 const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
 const Catalog = lazy(() => import("@/pages/Catalog"));
+const Quiz = lazy(() => import("@/pages/Quiz"));
 const CoursePage = lazy(() => import("@/pages/CoursePage"));
 const LessonPage = lazy(() => import("@/pages/LessonPage"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
@@ -48,6 +49,7 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/courses" element={<Catalog />} />
+              <Route path="/quiz" element={<Quiz />} />
               <Route path="/paths" element={<Paths />} />
               <Route path="/courses/:slug" element={<CoursePage />} />
               <Route path="/privacy" element={<Legal doc="privacy" />} />

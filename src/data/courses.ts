@@ -1,5 +1,5 @@
 /**
- * The course catalogue — one course per skill on yasirbashir.com.
+ * The course catalogue, one course per skill on yasirbashir.com.
  * Each entry is a compact CourseSpec; buildCourse() expands it into the full
  * 4-part curriculum. Content is real and practical; time-sensitive details
  * (pricing, exact UI steps) should be verified with deep research over time.
@@ -24,7 +24,7 @@ const specs: CourseSpec[] = [
     tools: [
       {
         name: "n8n",
-        what: "Open-source workflow automation — the core tool of this course.",
+        what: "Open-source workflow automation, the core tool of this course.",
         steps: [
           "Create a free n8n Cloud account (or skip to self-host below).",
           "Open the canvas and add a Manual Trigger node.",
@@ -54,7 +54,7 @@ const specs: CourseSpec[] = [
       },
     ],
     concepts: [
-      { title: "Triggers, nodes & connections", text: "A workflow is a graph: a trigger starts it, nodes transform data, connections pass items along. Everything in n8n is a list of JSON items — once you internalise that, every node makes sense." },
+      { title: "Triggers, nodes & connections", text: "A workflow is a graph: a trigger starts it, nodes transform data, connections pass items along. Everything in n8n is a list of JSON items, once you internalise that, every node makes sense." },
       { title: "Webhooks vs polling vs schedule", text: "Three ways to start a workflow: webhooks (instant, push), polling (check on an interval), and schedule (cron). Choosing the right trigger is half of good automation design." },
       { title: "Error handling & idempotency", text: "Production automations fail. You'll add Error Trigger workflows, retries and idempotency keys so a re-run never double-charges or double-sends." },
     ],
@@ -103,7 +103,7 @@ const specs: CourseSpec[] = [
     tools: [
       {
         name: "OpenAI API",
-        what: "The LLM brain — generates on-brand answers and structured data.",
+        what: "The LLM brain, generates on-brand answers and structured data.",
         steps: [
           "Create an API key at platform.openai.com.",
           "Test a chat completion in the playground.",
@@ -170,7 +170,7 @@ const specs: CourseSpec[] = [
     icon: "🎯",
     title: "GoHighLevel",
     category: "CRM & Funnels",
-    tagline: "Run an entire agency stack — CRM, funnels, pipelines, automations — in one platform.",
+    tagline: "Run an entire agency stack, CRM, funnels, pipelines, automations, in one platform.",
     level: "Intermediate",
     outcomes: [
       "Build funnels, pipelines and automations inside GHL",
@@ -246,7 +246,7 @@ const specs: CourseSpec[] = [
     ],
     concepts: [
       { title: "Hook–retain–CTA structure", text: "Short-form lives or dies on the first 2 seconds. You'll script hooks that stop the scroll." },
-      { title: "Faceless vs UGC vs avatar", text: "Three formats with different costs and trust levels — pick per client and budget." },
+      { title: "Faceless vs UGC vs avatar", text: "Three formats with different costs and trust levels, pick per client and budget." },
       { title: "Batch production", text: "Pros don't make one video; they make ten in one session with templates." },
     ],
     projects: [
@@ -296,12 +296,12 @@ const specs: CourseSpec[] = [
       ], links: [{ label: "Elementor", href: "https://elementor.com" }] },
     ],
     concepts: [
-      { title: "Themes, plugins & the block editor", text: "How WordPress is assembled — and which plugins to trust vs avoid for speed/security." },
+      { title: "Themes, plugins & the block editor", text: "How WordPress is assembled, and which plugins to trust vs avoid for speed/security." },
       { title: "Performance & Core Web Vitals", text: "Caching, image optimisation and lazy loading to pass Google's speed checks." },
       { title: "Security basics", text: "Updates, strong logins, backups and a firewall plugin keep client sites safe." },
     ],
     projects: [
-      { title: "5-page business site", brief: "Home, About, Services, Portfolio, Contact — fast and responsive.", steps: [
+      { title: "5-page business site", brief: "Home, About, Services, Portfolio, Contact, fast and responsive.", steps: [
         "Set up hosting + WordPress.",
         "Build pages in Elementor.",
         "Add a contact form + SEO + caching.",
@@ -484,7 +484,7 @@ const specs: CourseSpec[] = [
     ],
     concepts: [
       { title: "List health & deliverability", text: "Clean lists, authentication (SPF/DKIM) and engagement keep you out of spam." },
-      { title: "The core sequences", text: "Welcome, nurture, sales, win-back — the flows every business needs." },
+      { title: "The core sequences", text: "Welcome, nurture, sales, win-back, the flows every business needs." },
       { title: "Subject lines & copy", text: "Open rate is the subject line's job; clicks are the body's. You'll practise both." },
     ],
     projects: [
@@ -534,7 +534,7 @@ const specs: CourseSpec[] = [
     ],
     concepts: [
       { title: "Events & conversions", text: "GA4 is event-based; you'll define what counts as a conversion and why." },
-      { title: "Attribution basics", text: "Understanding which channel gets credit — and the limits of tracking." },
+      { title: "Attribution basics", text: "Understanding which channel gets credit, and the limits of tracking." },
       { title: "Dashboards that drive action", text: "Reports nobody reads are waste; you'll build ones that change decisions." },
     ],
     projects: [
@@ -631,7 +631,7 @@ const specs: CourseSpec[] = [
     concepts: [
       { title: "Pipeline design", text: "Stages should mirror how deals actually move, not wishful thinking." },
       { title: "Automation vs manual", text: "Automate reminders/routing; keep judgement human." },
-      { title: "Adoption is the hard part", text: "A CRM only works if the team uses it — you'll plan for that." },
+      { title: "Adoption is the hard part", text: "A CRM only works if the team uses it, you'll plan for that." },
     ],
     projects: [
       { title: "CRM from scratch", brief: "Pipeline, automations and a clean import for one business.", steps: [
@@ -679,7 +679,7 @@ const specs: CourseSpec[] = [
     ],
     concepts: [
       { title: "Templates + merge data", text: "The core pattern: a template plus a data source equals infinite documents." },
-      { title: "Where docs leak time", text: "Proposals, invoices, reports, onboarding — the repetitive paperwork to automate." },
+      { title: "Where docs leak time", text: "Proposals, invoices, reports, onboarding, the repetitive paperwork to automate." },
       { title: "Signatures & compliance", text: "Legally-sound e-sign flows and record-keeping." },
     ],
     projects: [
@@ -727,7 +727,7 @@ const specs: CourseSpec[] = [
       ], links: [{ label: "Canva", href: "https://www.canva.com" }] },
     ],
     concepts: [
-      { title: "Brand systems, not just logos", text: "Identity is colour, type, voice and usage — you'll deliver the system." },
+      { title: "Brand systems, not just logos", text: "Identity is colour, type, voice and usage, you'll deliver the system." },
       { title: "Prompting for consistency", text: "Style refs and seeds keep AI visuals on-brand." },
       { title: "Taste + tools", text: "AI does the pixels; your design judgement is the value." },
     ],
@@ -919,7 +919,7 @@ const specs: CourseSpec[] = [
       ], links: [{ label: "Stripe Docs", href: "https://stripe.com/docs" }] },
     ],
     concepts: [
-      { title: "The SaaS stack", text: "Frontend, backend, auth, DB, payments — how they fit together." },
+      { title: "The SaaS stack", text: "Frontend, backend, auth, DB, payments, how they fit together." },
       { title: "Multi-tenancy & security", text: "Keeping each customer's data isolated and safe." },
       { title: "MVP scope discipline", text: "Ship the smallest thing that delivers the core value." },
     ],
@@ -1013,7 +1013,7 @@ const specs: CourseSpec[] = [
       ], links: [{ label: "Microsoft Clarity", href: "https://clarity.microsoft.com" }, { label: "Hotjar", href: "https://www.hotjar.com" }] },
     ],
     concepts: [
-      { title: "The conversion equation", text: "Motivation, friction and anxiety — the levers you'll pull." },
+      { title: "The conversion equation", text: "Motivation, friction and anxiety, the levers you'll pull." },
       { title: "Qualitative + quantitative", text: "Recordings tell you why; analytics tell you how much." },
       { title: "Prioritisation frameworks", text: "ICE/PIE to decide what to fix first." },
     ],
@@ -1057,7 +1057,7 @@ const specs: CourseSpec[] = [
       ], links: [{ label: "Framer", href: "https://www.framer.com" }, { label: "Webflow", href: "https://webflow.com" }] },
     ],
     concepts: [
-      { title: "Funnel types", text: "Lead, sales, webinar, booking — match the funnel to the goal." },
+      { title: "Funnel types", text: "Lead, sales, webinar, booking, match the funnel to the goal." },
       { title: "Landing page anatomy", text: "Hook, proof, offer, objection-handling, CTA." },
       { title: "Message-match", text: "Ad → page → offer consistency is what converts." },
     ],
@@ -1217,6 +1217,608 @@ const specs: CourseSpec[] = [
     stayCurrent: [
       { label: "Anthropic Engineering", href: "https://www.anthropic.com/engineering" },
       { label: "OpenAI Blog", href: "https://openai.com/blog" },
+    ],
+  },
+
+  /* ================================================================
+     NEW for 2026, future-facing AI skills. The IT world moved fast,
+     so these are the skills with the most demand and the longest runway.
+     ================================================================ */
+
+  {
+    slug: "ai-ugc-ads",
+    icon: "🎥",
+    title: "AI UGC & Ad Creatives",
+    category: "AI Media",
+    tagline: "Turn AI avatars and short clips into scroll-stopping ads, without ever being on camera.",
+    level: "Beginner",
+    flagship: true,
+    outcomes: [
+      "Script and produce UGC-style video ads without filming yourself",
+      "Spin up ten ad variations in an afternoon using AI avatars and voices",
+      "Package ad creative as a monthly service brands keep paying for",
+    ],
+    tools: [
+      { name: "HeyGen", what: "AI avatars and talking-head videos in many languages.", steps: [
+        "Create a free account and open the avatar library.",
+        "Paste a short script and pick an avatar and voice.",
+        "Generate, then download the clip.",
+        "Swap the script to make a second angle of the same ad.",
+      ], links: [ { label: "HeyGen", href: "https://www.heygen.com" } ] },
+      { name: "Arcads / Captions", what: "Generate UGC-style ad videos and auto-captions fast.", steps: [
+        "Write three hooks for the same product.",
+        "Generate a UGC clip per hook.",
+        "Add bold captions and a clear call to action.",
+      ], links: [ { label: "Captions", href: "https://www.captions.ai" } ] },
+      { name: "CapCut", what: "Free editor for hooks, captions, trims and sound.", steps: [
+        "Drop your clips on the timeline.",
+        "Cut the first two seconds to the strongest hook.",
+        "Add captions, b-roll and a trending sound.",
+      ], links: [ { label: "CapCut", href: "https://www.capcut.com" } ] },
+    ],
+    concepts: [
+      { title: "Hook, retain, call to action", text: "Short-form ads live or die in the first two seconds. You will learn to write hooks that stop the scroll, then hold attention to the offer." },
+      { title: "Angles and variations", text: "One product, many angles. Pros never run one ad, they run ten variations and let the numbers pick the winner." },
+      { title: "Rough beats polished", text: "Authentic, slightly rough UGC usually out-performs glossy ads. You will learn why, and how to fake real on purpose." },
+    ],
+    projects: [
+      { title: "Ten ad variations for one product", brief: "Batch produce ten short ad variations from a single brief.", steps: [
+        "Pick a product and write ten hooks.",
+        "Generate a clip per hook with an AI avatar.",
+        "Caption and export all ten.",
+        "Lay them out so a client can pick favourites.",
+      ] },
+      { title: "AI testimonial set", brief: "A set of believable AI testimonial videos for a brand.", steps: [
+        "Write three short testimonial scripts.",
+        "Generate each with a different avatar and voice.",
+        "Add captions and brand colours.",
+      ] },
+    ],
+    clientNiche: "e-commerce brands, app founders and local businesses running paid ads",
+    priceAnchor: "$50 to $300 per video, or $1.5k to $4k a month creative packages",
+    advanced: [
+      "A reusable batch system that outputs ten ads from one brief",
+      "A swipe file of winning ad structures by niche",
+      "Reading ad performance and feeding it back into the next batch",
+    ],
+    stayCurrent: [
+      { label: "HeyGen Blog", href: "https://www.heygen.com/blog" },
+      { label: "Meta Business News", href: "https://www.facebook.com/business/news" },
+    ],
+  },
+
+  {
+    slug: "ai-voice-agents",
+    icon: "📞",
+    title: "AI Voice Agents",
+    category: "AI",
+    tagline: "Build AI phone agents that answer calls, book appointments and qualify leads, all day and night.",
+    level: "Intermediate",
+    flagship: true,
+    outcomes: [
+      "Design a voice agent that handles real phone conversations",
+      "Connect it to calendars, CRMs and your other tools",
+      "Sell it as a receptionist that never sleeps and never misses a call",
+    ],
+    tools: [
+      { name: "Vapi", what: "Build, test and deploy AI voice agents.", steps: [
+        "Create an account and start a new assistant.",
+        "Write the agent's goal and a few simple rules.",
+        "Give it a phone number and call it yourself.",
+        "Read the transcript and tighten the prompt.",
+      ], links: [ { label: "Vapi", href: "https://vapi.ai" } ] },
+      { name: "ElevenLabs", what: "Natural AI voices and languages for the agent.", steps: [
+        "Pick a voice that fits the brand.",
+        "Test how it reads numbers, names and prices.",
+        "Plug the voice into your agent.",
+      ], links: [ { label: "ElevenLabs", href: "https://elevenlabs.io" } ] },
+      { name: "n8n or Make", what: "The backend that books the calendar and updates the CRM.", steps: [
+        "Catch the agent's result with a webhook.",
+        "Create the booking in a calendar.",
+        "Log the caller in a CRM or sheet.",
+      ], links: [ { label: "n8n", href: "https://n8n.io" } ] },
+    ],
+    concepts: [
+      { title: "Latency and turn-taking", text: "A good voice agent feels natural because it responds fast and does not talk over people. You will learn what makes a call feel human." },
+      { title: "Intents and guardrails", text: "Agents need clear jobs and firm limits, so they book the meeting and never promise things they should not." },
+      { title: "Handoff to a human", text: "The pro move is knowing when to pass a tricky call to a real person, smoothly." },
+    ],
+    projects: [
+      { title: "AI receptionist for a clinic", brief: "A voice agent that answers, books appointments and answers common questions.", steps: [
+        "Map the five most common caller questions.",
+        "Build the agent and connect a calendar.",
+        "Test ten real-sounding calls and fix the gaps.",
+      ] },
+      { title: "Outbound lead-qualifying caller", brief: "An agent that calls new leads and qualifies them.", steps: [
+        "Write the qualifying questions and scoring.",
+        "Connect it to a lead list.",
+        "Route hot leads to a human or a booking link.",
+      ] },
+    ],
+    clientNiche: "clinics, salons, real estate, home services and busy agencies",
+    priceAnchor: "$1k to $5k setup plus $200 to $1,000 a month",
+    advanced: [
+      "Multi-language agents for diverse customer bases",
+      "Call analytics, transcripts and quality scoring",
+      "Consent, recording rules and compliance per region",
+    ],
+    stayCurrent: [
+      { label: "Vapi Docs", href: "https://docs.vapi.ai" },
+      { label: "ElevenLabs Blog", href: "https://elevenlabs.io/blog" },
+    ],
+  },
+
+  {
+    slug: "aeo-optimization",
+    icon: "🔮",
+    title: "Answer Engine Optimization (AEO)",
+    category: "Marketing",
+    tagline: "Get brands quoted inside ChatGPT, Perplexity and Google AI answers, this is the new SEO.",
+    level: "Intermediate",
+    flagship: true,
+    outcomes: [
+      "Make a brand the source AI assistants actually cite",
+      "Structure content the way answer engines like to quote it",
+      "Measure and grow a brand's visibility inside AI answers",
+    ],
+    tools: [
+      { name: "ChatGPT and Perplexity", what: "Your testing ground, see who gets cited and why.", steps: [
+        "Ask the questions a brand's customers would ask.",
+        "Note which sites get cited in the answer.",
+        "Spot the pattern in what those sources do well.",
+      ], links: [ { label: "Perplexity", href: "https://www.perplexity.ai" } ] },
+      { name: "Structured data (Schema)", what: "Markup that helps machines understand a page.", steps: [
+        "Add FAQ and Article schema to key pages.",
+        "Write clear question-and-answer blocks.",
+        "Validate the markup before publishing.",
+      ], links: [ { label: "Schema.org", href: "https://schema.org" } ] },
+      { name: "AI visibility tracking", what: "Track how often a brand appears in AI answers.", steps: [
+        "List the 20 questions that matter for the brand.",
+        "Check answers across ChatGPT, Perplexity and Google.",
+        "Log mentions weekly to see progress.",
+      ], links: [ { label: "Google Search Central", href: "https://developers.google.com/search" } ] },
+    ],
+    concepts: [
+      { title: "How answer engines pick sources", text: "AI answers favour clear, well-structured, trustworthy pages that answer the exact question. You will learn to become that page." },
+      { title: "From keywords to questions", text: "Old SEO chased keywords. AEO answers real questions cleanly, because that is what gets quoted." },
+      { title: "Entities and trust", text: "Being a clear, consistent entity across the web makes AI confident enough to cite you." },
+    ],
+    projects: [
+      { title: "AEO audit and fix plan", brief: "Audit how a brand shows up in AI answers and plan the fixes.", steps: [
+        "Test 20 buyer questions across the main AI tools.",
+        "Score where the brand appears and where rivals win.",
+        "Deliver a prioritised plan to get cited more.",
+      ] },
+      { title: "An answer-ready content hub", brief: "Build a cluster of pages designed to be quoted.", steps: [
+        "Map the top questions into a content cluster.",
+        "Write clear question-and-answer pages with schema.",
+        "Re-test the AI answers after a few weeks.",
+      ] },
+    ],
+    clientNiche: "brands losing traffic to AI answers, SaaS and local service businesses",
+    priceAnchor: "$1k to $5k audits plus monthly retainers",
+    advanced: [
+      "Building a brand knowledge graph across the web",
+      "Monitoring how often AI tools mention a brand",
+      "Blending AEO with classic SEO for full coverage",
+    ],
+    stayCurrent: [
+      { label: "Google Search Central", href: "https://developers.google.com/search/blog" },
+      { label: "Perplexity Blog", href: "https://www.perplexity.ai/hub" },
+    ],
+  },
+
+  {
+    slug: "ai-app-building",
+    icon: "⚡",
+    title: "No-Code AI App Building",
+    category: "Web",
+    tagline: "Ship niche web apps in days using AI builders, with little to no hand coding.",
+    level: "Intermediate",
+    outcomes: [
+      "Turn an idea into a working web app using AI builders",
+      "Add logins, data and payments without deep coding",
+      "Sell custom tools and small apps to real clients",
+    ],
+    tools: [
+      { name: "Lovable", what: "Describe an app in plain English and it builds it.", steps: [
+        "Describe the app you want in a few sentences.",
+        "Refine it screen by screen.",
+        "Connect a database and publish.",
+      ], links: [ { label: "Lovable", href: "https://lovable.dev" } ] },
+      { name: "Bolt.new or v0", what: "Fast AI app and interface builders.", steps: [
+        "Generate a first version from a prompt.",
+        "Tweak the layout and logic.",
+        "Export or deploy the result.",
+      ], links: [ { label: "Bolt.new", href: "https://bolt.new" } ] },
+      { name: "Supabase", what: "The database, logins and storage behind your app.", steps: [
+        "Create a project and a simple table.",
+        "Turn on email or Google login.",
+        "Connect it to your app.",
+      ], links: [ { label: "Supabase", href: "https://supabase.com" } ] },
+    ],
+    concepts: [
+      { title: "Think in features", text: "Ship one small working feature at a time instead of a giant plan, the AI builder works best this way too." },
+      { title: "Prompt the builder well", text: "Clear context, constraints and examples get far better apps out of an AI builder." },
+      { title: "Know enough to fix it", text: "You do not need to write every line, but you must read it and verify it works." },
+    ],
+    projects: [
+      { title: "A niche tool app, live", brief: "Take a small useful idea to a deployed app.", steps: [
+        "Pick one clear job the app does.",
+        "Build it with an AI builder.",
+        "Add login and publish it on a real link.",
+      ] },
+      { title: "A simple client dashboard", brief: "A small dashboard a client logs into.", steps: [
+        "Design the one screen that matters.",
+        "Wire it to a database.",
+        "Hand it over with a short guide.",
+      ] },
+    ],
+    clientNiche: "founders and small businesses needing a custom tool fast",
+    priceAnchor: "$800 to $8,000 per app",
+    advanced: [
+      "Calling APIs and AI features from inside your app",
+      "Multi-page apps with roles and permissions",
+      "A clean handoff and maintenance plan for clients",
+    ],
+    stayCurrent: [
+      { label: "Lovable Changelog", href: "https://lovable.dev" },
+      { label: "Supabase Blog", href: "https://supabase.com/blog" },
+    ],
+  },
+
+  {
+    slug: "3d-virtual-spaces",
+    icon: "🏛️",
+    title: "3D & Virtual Spaces",
+    category: "3D & Games",
+    tagline: "Create 3D product scenes and virtual property tours people can walk right through.",
+    level: "Intermediate",
+    flagship: true,
+    outcomes: [
+      "Make 3D models and scenes using AI, fast",
+      "Build virtual walkthroughs for real estate and retail",
+      "Put interactive 3D on a website that loads smoothly",
+    ],
+    tools: [
+      { name: "Spline", what: "Design and publish interactive 3D for the web.", steps: [
+        "Open a new scene and add a basic shape.",
+        "Add materials, lighting and a camera.",
+        "Export an embed for a webpage.",
+      ], links: [ { label: "Spline", href: "https://spline.design" } ] },
+      { name: "Luma AI or Meshy", what: "Turn photos or text into 3D models.", steps: [
+        "Capture an object from many angles, or type a prompt.",
+        "Generate the 3D model.",
+        "Clean it up and export it.",
+      ], links: [ { label: "Luma AI", href: "https://lumalabs.ai" } ] },
+      { name: "Blender (basics)", what: "The free 3D tool for fixing and finishing models.", steps: [
+        "Import your model.",
+        "Fix scale, materials and lighting.",
+        "Export in a web-friendly format.",
+      ], links: [ { label: "Blender", href: "https://www.blender.org" } ] },
+    ],
+    concepts: [
+      { title: "Meshes, materials and light", text: "Three things make a scene feel real, the shape, the surface and the lighting. You will learn to balance all three." },
+      { title: "Capture versus generate", text: "Sometimes you photograph a real object into 3D, sometimes you generate it from a prompt, you will know when to use each." },
+      { title: "Performance on the web", text: "A beautiful scene is useless if it will not load. You will learn to keep 3D light and fast." },
+    ],
+    projects: [
+      { title: "A virtual walkthrough", brief: "A tour of a property or shop people can explore.", steps: [
+        "Capture or build the space.",
+        "Add hotspots and a smooth camera path.",
+        "Publish it as a shareable link.",
+      ] },
+      { title: "An interactive 3D product", brief: "A product people can spin and explore on a webpage.", steps: [
+        "Model or capture the product.",
+        "Add it to a Spline scene.",
+        "Embed it on a simple page.",
+      ] },
+    ],
+    clientNiche: "real estate, interior design, retail and product brands",
+    priceAnchor: "$500 to $5,000 per scene or tour",
+    advanced: [
+      "Augmented reality previews on a phone",
+      "Spatial and WebXR experiences",
+      "Heavy optimization so 3D runs on any device",
+    ],
+    stayCurrent: [
+      { label: "Spline Blog", href: "https://spline.design/blog" },
+      { label: "Luma AI", href: "https://lumalabs.ai" },
+    ],
+  },
+
+  {
+    slug: "ai-game-creation",
+    icon: "🎮",
+    title: "AI Game Creation",
+    category: "3D & Games",
+    tagline: "Design fun, shareable games fast with AI, from simple web games to playable worlds.",
+    level: "Intermediate",
+    outcomes: [
+      "Design a small game that is genuinely fun to play",
+      "Build it quickly with AI-assisted tools",
+      "Publish it and share it with a simple link",
+    ],
+    tools: [
+      { name: "Rosebud AI", what: "Describe a game and play a first version fast.", steps: [
+        "Describe a simple game idea in plain words.",
+        "Play the first version it builds.",
+        "Refine the rules and the look.",
+      ], links: [ { label: "Rosebud AI", href: "https://rosebud.ai" } ] },
+      { name: "AI coding assistant", what: "Cursor or similar to build web games with help.", steps: [
+        "Start a small game with a clear goal.",
+        "Ask the assistant to add one feature at a time.",
+        "Test after every change.",
+      ], links: [ { label: "Cursor", href: "https://cursor.com" } ] },
+      { name: "Web game frameworks", what: "Phaser or Three.js for browser games.", steps: [
+        "Set up a blank game canvas.",
+        "Add a player and one mechanic.",
+        "Add scoring and a restart.",
+      ], links: [ { label: "Phaser", href: "https://phaser.io" } ] },
+    ],
+    concepts: [
+      { title: "The core game loop", text: "Every game is a loop of action, feedback and reward. Get that loop fun and the rest follows." },
+      { title: "Juice and feedback", text: "Small touches, sounds, shakes and pops, are what make a game feel good to play." },
+      { title: "Ship small", text: "One great mechanic beats ten half-built ones. You will learn to scope a game you can actually finish." },
+    ],
+    projects: [
+      { title: "A shareable web game", brief: "A simple game you can send to a friend with a link.", steps: [
+        "Pick one fun mechanic.",
+        "Build it with AI help.",
+        "Publish it and share the link.",
+      ] },
+      { title: "A branded mini-game", brief: "A small game for a marketing campaign.", steps: [
+        "Tie the game to a brand or offer.",
+        "Add a score and a share button.",
+        "Launch it as a campaign page.",
+      ] },
+    ],
+    clientNiche: "brands wanting interactive campaigns, indie creators and educators",
+    priceAnchor: "$500 to $10,000 per game or campaign",
+    advanced: [
+      "Simple multiplayer and leaderboards",
+      "Ways to monetize a game",
+      "Using AI to generate game art and sound",
+    ],
+    stayCurrent: [
+      { label: "Rosebud AI", href: "https://rosebud.ai" },
+      { label: "Unity Blog", href: "https://unity.com/blog" },
+    ],
+  },
+
+  {
+    slug: "genz-brand-marketing",
+    icon: "🛹",
+    title: "Gen Z Marketing & Brand Voice",
+    category: "Marketing",
+    tagline: "Build a brand voice and creative that actually lands with Gen Z, not cringe.",
+    level: "Beginner",
+    outcomes: [
+      "Craft a brand voice and personality people want to follow",
+      "Write scroll-native creative and copy that feels real",
+      "Plan culture-first campaigns that ride trends at the right moment",
+    ],
+    tools: [
+      { name: "TikTok Creative Center", what: "See what is trending and why, free.", steps: [
+        "Browse trending sounds, hashtags and formats.",
+        "Spot a trend that fits a brand.",
+        "Save three formats to try this week.",
+      ], links: [ { label: "TikTok Creative Center", href: "https://ads.tiktok.com/business/creativecenter" } ] },
+      { name: "CapCut and Canva", what: "Make native-looking content fast.", steps: [
+        "Start from a trending template.",
+        "Swap in the brand's angle and words.",
+        "Keep it rough and real, not corporate.",
+      ], links: [ { label: "Canva", href: "https://www.canva.com" } ] },
+      { name: "ChatGPT or Claude", what: "Brainstorm voice, hooks and captions.", steps: [
+        "Describe the brand and the audience.",
+        "Generate ten hooks in the brand voice.",
+        "Pick and sharpen the best three by hand.",
+      ], links: [ { label: "Claude", href: "https://claude.ai" } ] },
+    ],
+    concepts: [
+      { title: "Native, not an ad", text: "Gen Z scrolls past anything that looks like an ad. You will learn to make content that fits the feed and still sells." },
+      { title: "Memes, trends and timing", text: "Riding a trend a day late is worse than not at all. You will learn to spot and act on culture quickly." },
+      { title: "Community over broadcast", text: "Talking with people beats talking at them. You will build brands people feel part of." },
+    ],
+    projects: [
+      { title: "Brand voice guide plus ten posts", brief: "A short voice guide and a first batch of content.", steps: [
+        "Define the brand's personality and words.",
+        "Write ten posts in that voice.",
+        "Show how each one fits a platform.",
+      ] },
+      { title: "A trend-led short campaign", brief: "A small campaign built on a current trend.", steps: [
+        "Pick a trend that fits the brand.",
+        "Make three pieces of native content.",
+        "Plan the post timing and the hook.",
+      ] },
+    ],
+    clientNiche: "youth brands, DTC products, apps and creators targeting under-30s",
+    priceAnchor: "$500 to $3,000 a month for brand and content",
+    advanced: [
+      "Creator collaborations and UGC at scale",
+      "Building a real community around a brand",
+      "Measuring whether content truly fits the culture",
+    ],
+    stayCurrent: [
+      { label: "TikTok Newsroom", href: "https://newsroom.tiktok.com" },
+      { label: "Later Blog", href: "https://later.com/blog" },
+    ],
+  },
+
+  {
+    slug: "ai-personalized-outreach",
+    icon: "🎯",
+    title: "AI Personalized Outreach",
+    category: "Marketing",
+    tagline: "Send outreach that feels handwritten to thousands, using AI personalization at scale.",
+    level: "Intermediate",
+    outcomes: [
+      "Build targeted lead lists that fit a real offer",
+      "Write AI-personalized messages that actually get replies",
+      "Run compliant multi-step sequences that book meetings",
+    ],
+    tools: [
+      { name: "Clay", what: "Pull data and write AI-personalized lines at scale.", steps: [
+        "Import a list of target companies.",
+        "Enrich each with real details.",
+        "Use AI to write a personal first line per lead.",
+      ], links: [ { label: "Clay", href: "https://www.clay.com" } ] },
+      { name: "Smartlead or Instantly", what: "Send and warm up email at scale, safely.", steps: [
+        "Connect and warm up sending inboxes.",
+        "Load your personalized sequence.",
+        "Send in small daily batches.",
+      ], links: [ { label: "Smartlead", href: "https://www.smartlead.ai" } ] },
+      { name: "ChatGPT or Claude", what: "Draft and refine the angle and copy.", steps: [
+        "Describe the offer and the buyer.",
+        "Generate three message angles.",
+        "Tighten the best one to sound human.",
+      ], links: [ { label: "ChatGPT", href: "https://chat.openai.com" } ] },
+    ],
+    concepts: [
+      { title: "Relevance over volume", text: "A hundred relevant messages beat ten thousand generic ones. You will learn to target sharply." },
+      { title: "Real personalization", text: "A genuine first line about the actual person beats a fake mail merge every time." },
+      { title: "Deliverability and rules", text: "Stay in the inbox and on the right side of the law, warm up domains and always offer an opt-out." },
+    ],
+    projects: [
+      { title: "A campaign that books calls", brief: "A personalized email campaign for one clear offer.", steps: [
+        "Build a tight target list.",
+        "Write a personalized three-step sequence.",
+        "Send in batches and track replies.",
+      ] },
+      { title: "A multi-touch sequence", brief: "A combined email and LinkedIn sequence.", steps: [
+        "Map the touches across a week.",
+        "Personalize the first line of each.",
+        "Route warm replies to a booking link.",
+      ] },
+    ],
+    clientNiche: "B2B services, agencies and founders who need a steady pipeline",
+    priceAnchor: "$1k to $5k setup plus per-meeting or retainer",
+    advanced: [
+      "Signal-based outreach that triggers on real events",
+      "AI that drafts replies for you to approve",
+      "Testing many angles at once and scaling the winner",
+    ],
+    stayCurrent: [
+      { label: "Clay Blog", href: "https://www.clay.com/blog" },
+      { label: "Smartlead Resources", href: "https://www.smartlead.ai/blog" },
+    ],
+  },
+
+  {
+    slug: "ai-influencers",
+    icon: "🧑‍🎤",
+    title: "AI Influencers & Virtual Personas",
+    category: "AI Media",
+    tagline: "Create consistent AI characters and virtual influencers a brand can build on.",
+    level: "Intermediate",
+    outcomes: [
+      "Design an AI persona that looks the same in every post",
+      "Produce its photos and videos at will",
+      "Grow and earn from a virtual character, ethically",
+    ],
+    tools: [
+      { name: "Midjourney or Flux", what: "Generate a consistent character's images.", steps: [
+        "Design the character's look and vibe.",
+        "Use references and seeds to keep it consistent.",
+        "Build a small library of base images.",
+      ], links: [ { label: "Midjourney", href: "https://www.midjourney.com" } ] },
+      { name: "AI video tools", what: "Bring the persona to life in motion.", steps: [
+        "Animate a base image into a short clip.",
+        "Keep the face and style consistent.",
+        "Add a voice that matches the character.",
+      ], links: [ { label: "Kling AI", href: "https://klingai.com" } ] },
+      { name: "Consistency workflow", what: "Keep the character identical across content.", steps: [
+        "Save your best references and prompts.",
+        "Reuse the same seed and style settings.",
+        "Check every post against the reference.",
+      ], links: [ { label: "Flux", href: "https://blackforestlabs.ai" } ] },
+    ],
+    concepts: [
+      { title: "Character consistency", text: "The whole game is making the same face and style appear every time, with references, seeds and trained models." },
+      { title: "Storytelling and cadence", text: "A persona people follow has a personality and a posting rhythm, not just pretty pictures." },
+      { title: "Disclosure and ethics", text: "Be clear that a character is AI. Trust and honesty are what keep a virtual brand alive." },
+    ],
+    projects: [
+      { title: "Launch an AI persona", brief: "A new virtual character with a first feed of twelve posts.", steps: [
+        "Design the look and personality.",
+        "Produce twelve consistent posts.",
+        "Write the bio and a clear AI disclosure.",
+      ] },
+      { title: "A brand spokesperson", brief: "A virtual face for a product or service.", steps: [
+        "Match the persona to the brand.",
+        "Produce a set of product posts and a video.",
+        "Hand over a simple content kit.",
+      ] },
+    ],
+    clientNiche: "brands wanting an always-on face, creators and agencies",
+    priceAnchor: "$1k to $10k to build plus content retainers",
+    advanced: [
+      "Custom-trained character models for perfect consistency",
+      "Landing brand deals for a virtual persona",
+      "Running the persona across many platforms at once",
+    ],
+    stayCurrent: [
+      { label: "Midjourney Updates", href: "https://www.midjourney.com/updates" },
+      { label: "Kling AI", href: "https://klingai.com" },
+    ],
+  },
+
+  {
+    slug: "ai-music-voice",
+    icon: "🎧",
+    title: "AI Music & Voice",
+    category: "AI Media",
+    tagline: "Produce original music, jingles and voiceovers with AI for content and brands.",
+    level: "Beginner",
+    outcomes: [
+      "Generate original tracks and jingles from a simple prompt",
+      "Create natural voiceovers in many voices and languages",
+      "Sell audio for ads, podcasts and videos",
+    ],
+    tools: [
+      { name: "Suno", what: "Generate original songs and jingles from text.", steps: [
+        "Describe the mood, style and lyrics.",
+        "Generate a few versions.",
+        "Pick the best and export it.",
+      ], links: [ { label: "Suno", href: "https://suno.com" } ] },
+      { name: "ElevenLabs", what: "Natural voiceovers and dubbing in many languages.", steps: [
+        "Pick or design a voice.",
+        "Paste your script and generate.",
+        "Dub the same script into another language.",
+      ], links: [ { label: "ElevenLabs", href: "https://elevenlabs.io" } ] },
+      { name: "CapCut or Adobe Podcast", what: "Clean up and balance the final audio.", steps: [
+        "Remove noise and balance the levels.",
+        "Add the voice over the music.",
+        "Export a clean final file.",
+      ], links: [ { label: "Adobe Podcast", href: "https://podcast.adobe.com" } ] },
+    ],
+    concepts: [
+      { title: "From prompt to song", text: "A good music prompt names the mood, the style and the structure. You will learn to steer the result, not just gamble." },
+      { title: "Voice cloning and consent", text: "Cloning a voice is powerful and sensitive, you will learn to do it only with clear permission." },
+      { title: "Mixing for clarity", text: "Most amateur audio fails on balance. You will learn to make voice and music sit together cleanly." },
+    ],
+    projects: [
+      { title: "A brand jingle and variations", brief: "An original jingle with three versions.", steps: [
+        "Capture the brand's mood in a prompt.",
+        "Generate and pick the best track.",
+        "Export three lengths for different uses.",
+      ] },
+      { title: "A multilingual voiceover", brief: "One ad voiced in several languages.", steps: [
+        "Write the script and pick a voice.",
+        "Generate the main language.",
+        "Dub it into two more languages.",
+      ] },
+    ],
+    clientNiche: "content creators, podcasters, ad agencies and small brands",
+    priceAnchor: "$50 to $500 per track or voiceover, or content retainers",
+    advanced: [
+      "Licensing and rights you can actually sell",
+      "Building a full audio brand, a sound a brand owns",
+      "Batch dubbing pipelines for lots of content",
+    ],
+    stayCurrent: [
+      { label: "Suno", href: "https://suno.com" },
+      { label: "ElevenLabs Blog", href: "https://elevenlabs.io/blog" },
     ],
   },
 ];

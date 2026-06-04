@@ -63,7 +63,7 @@ export default function VideoPlayer({
           <Play className="w-7 h-7 translate-x-0.5 fill-current" />
         </button>
         <h3 className="mt-5 text-white font-heading font-bold text-lg md:text-2xl max-w-lg leading-tight drop-shadow">{title}</h3>
-        <p className="mt-1.5 text-white/55 text-xs font-medium">learnwithyasir · Yasir is recording this lesson</p>
+        <p className="mt-1.5 text-white/55 text-xs font-medium">learnwithyasir · Yasir is recording this lesson. The full written version is ready under Read.</p>
       </div>
 
       {/* control bar */}
@@ -72,7 +72,7 @@ export default function VideoPlayer({
         <div className="flex-1 h-1 rounded-full bg-white/20 overflow-hidden">
           <div className="h-full w-0 rounded-full" style={{ background: thumbAccent }} />
         </div>
-        <span className="text-white/70 text-xs tabular-nums">{minutes ? `${minutes}:00` : "—:—"}</span>
+        <span className="text-white/70 text-xs tabular-nums">{minutes ? `${minutes}:00` : "0:00"}</span>
       </div>
     </div>
   );

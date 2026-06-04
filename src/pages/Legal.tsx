@@ -24,7 +24,7 @@ const DOCS: Record<LegalDoc, Doc> = {
         "Technical data: standard log and device information your browser sends.",
       ] },
       { h: "How we use it", p: [
-        "To run the platform — authenticate you, save your progress, unlock modules and issue certificates.",
+        "To run the platform, authenticate you, save your progress, unlock modules and issue certificates.",
         "To improve the courses and your experience.",
         "To contact you about your account, new courses, live sessions and occasional updates. You can opt out of marketing emails at any time.",
       ] },
@@ -51,7 +51,7 @@ const DOCS: Record<LegalDoc, Doc> = {
         "You must provide accurate information and be old enough to form a binding contract in your jurisdiction.",
       ] },
       { h: "Licence to use the content", p: [
-        `All course content — videos, text, lessons, guides, graphics, code samples and curriculum structure — is the exclusive property of ${OWNER} and is protected by copyright and other intellectual-property laws.`,
+        `All course content, videos, text, lessons, guides, graphics, code samples and curriculum structure, is the exclusive property of ${OWNER} and is protected by copyright and other intellectual-property laws.`,
         "You're granted a personal, non-exclusive, non-transferable, revocable licence to access the content for your own learning.",
       ] },
       { h: "What you may NOT do", p: [
@@ -60,7 +60,7 @@ const DOCS: Record<LegalDoc, Doc> = {
         "You may not share your account or course access with others. Each account is for one person.",
       ] },
       { h: "Sharing (the allowed kind)", p: [
-        "You're welcome — encouraged! — to share links to course pages publicly to recommend them. Sharing the actual paid/locked content is not permitted.",
+        "You're welcome, encouraged!, to share links to course pages publicly to recommend them. Sharing the actual paid/locked content is not permitted.",
       ] },
       { h: "Payments & access", p: [
         "Where courses or features are paid, access is granted on the terms shown at purchase. Free content may change or be withdrawn at any time.",
@@ -85,7 +85,7 @@ const DOCS: Record<LegalDoc, Doc> = {
         "Nothing here constitutes legal, financial, tax or professional advice. Consult a qualified professional for your specific situation.",
       ] },
       { h: "Third-party tools & links", p: [
-        "We reference third-party tools (e.g. n8n, OpenAI, Shopify, GoHighLevel) and link to external resources. We don't control them and aren't responsible for their content, pricing, availability or changes. Tool details can change at any time — always verify on the official source.",
+        "We reference third-party tools (e.g. n8n, OpenAI, Shopify, GoHighLevel) and link to external resources. We don't control them and aren't responsible for their content, pricing, availability or changes. Tool details can change at any time, always verify on the official source.",
       ] },
       { h: "Accuracy", p: [
         "We work to keep content accurate and current, but make no warranty that it is complete, error-free or up to date at all times.",

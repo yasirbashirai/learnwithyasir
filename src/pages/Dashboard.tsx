@@ -76,7 +76,7 @@ export default function Dashboard() {
           <div className="mt-4 rounded-2xl border border-gold/40 bg-gold/10 p-4 flex items-center gap-3">
             <ShieldCheck className="w-5 h-5 text-gold" />
             <p className="text-sm text-ink/80">
-              <b>Instructor mode</b> — you're signed in as admin. Course management &amp; learner analytics will live here once Supabase is connected.
+              <b>Instructor mode</b>, you're signed in as admin. Course management &amp; learner analytics will live here once Supabase is connected.
             </p>
           </div>
         )}

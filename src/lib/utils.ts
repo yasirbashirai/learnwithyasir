@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/** Deterministic colour from a string — used for default avatars. */
+/** Deterministic colour from a string, used for default avatars. */
 export function colorFromString(str: string): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);

@@ -1,5 +1,5 @@
 /**
- * Auth layer — Supabase-backed (with a localStorage fallback when env vars
+ * Auth layer, Supabase-backed (with a localStorage fallback when env vars
  * aren't set, so the app still runs offline / in previews).
  *
  * Components only ever touch this hook, so the rest of the app is auth-agnostic.
@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) apply(data.session);
       else if (!hasOAuthCallback) { if (active) { setUser(null); setLoading(false); } }
-      // else: an OAuth redirect is being processed — wait for onAuthStateChange.
+      // else: an OAuth redirect is being processed, wait for onAuthStateChange.
     });
 
     // Safety net so we never hang on the spinner if the exchange fails.

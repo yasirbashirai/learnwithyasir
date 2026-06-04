@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check, ChevronLeft, ChevronRight, Lock, CheckCircle2, Circle, List } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Lock, CheckCircle2, Circle, List, BookOpen, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import LessonBody from "@/components/LessonBody";
 import VideoPlayer from "@/components/VideoPlayer";
@@ -36,6 +36,11 @@ export default function LessonPage() {
   // Admin-managed video URLs (override the placeholder when set).
   const [videoMap, setVideoMap] = useState<Record<string, string>>({});
   useEffect(() => { loadVideos().then(() => setVideoMap(getVideos())); }, []);
+
+  // Learner chooses how to consume each lesson: Read (text) or Watch (video).
+  // Written content is complete, so Read is the default. Reset on lesson change.
+  const [mode, setMode] = useState<"read" | "watch">("read");
+  useEffect(() => { setMode("read"); }, [lessonId]);
 
   // Auto-enrol when a logged-in learner opens a lesson directly.
   useEffect(() => {
@@ -120,7 +125,7 @@ export default function LessonPage() {
   const markAndAdvance = () => {
     if (!user) return;
     if (!done) toggleLesson(user.id, current.lesson.id, true);
-    // Advance — if the next lesson belongs to the next module it will now be unlocked.
+    // Advance, if the next lesson belongs to the next module it will now be unlocked.
     if (next) navigate(`/courses/${course.slug}/lesson/${next.lesson.id}`);
     else navigate(`/courses/${course.slug}`);
   };
@@ -193,8 +198,28 @@ export default function LessonPage() {
           <h1 className="font-heading font-extrabold text-3xl text-ink mt-2">{current.lesson.title}</h1>
           <p className="text-soft mt-1 text-sm">{current.lesson.minutes} min · {current.lesson.summary}</p>
 
+          {/* Read / Watch chooser, learn however suits you */}
           {current.lesson.hasVideo && (
-            <div className="mt-5">
+            <div className="mt-5 inline-flex rounded-full border border-teal/20 bg-surface/60 p-1">
+              <button
+                onClick={() => setMode("read")}
+                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${mode === "read" ? "bg-teal text-white shadow-soft" : "text-ink/60 hover:text-teal"}`}
+              >
+                <BookOpen className="w-4 h-4" /> Read
+              </button>
+              <button
+                onClick={() => setMode("watch")}
+                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${mode === "watch" ? "bg-teal text-white shadow-soft" : "text-ink/60 hover:text-teal"}`}
+              >
+                <Play className="w-4 h-4" /> Watch
+              </button>
+            </div>
+          )}
+
+          <hr className="my-6 border-line" />
+
+          {current.lesson.hasVideo && mode === "watch" ? (
+            <div>
               <VideoPlayer
                 title={current.lesson.title}
                 url={videoMap[current.lesson.id] ?? current.lesson.videoUrl}
@@ -202,12 +227,17 @@ export default function LessonPage() {
                 icon={course.icon}
                 partLabel={`Part ${current.module.part} · ${meta.title}`}
               />
+              <p className="text-soft text-sm mt-3 text-center">
+                Prefer reading?{" "}
+                <button onClick={() => setMode("read")} className="text-teal font-semibold hover:underline">Switch to the written lesson</button>
+                , it covers everything in the video.
+              </p>
             </div>
+          ) : current.lesson.body ? (
+            <LessonBody blocks={current.lesson.body} />
+          ) : (
+            <p className="text-ink/70">Content coming soon.</p>
           )}
-
-          <hr className="my-6 border-line" />
-
-          {current.lesson.body ? <LessonBody blocks={current.lesson.body} /> : <p className="text-ink/70">Content coming soon.</p>}
 
           {/* Complete + nav */}
           <div className="mt-10 flex flex-col sm:flex-row items-center gap-3 pt-6 border-t border-teal/10">

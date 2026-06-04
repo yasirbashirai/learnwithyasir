@@ -8,7 +8,7 @@
  * to pull the user's rows into the cache. If Supabase is unavailable the app
  * still works fully offline via localStorage.
  *
- * Locking rule: modules unlock in order — module N unlocks once every lesson in
+ * Locking rule: modules unlock in order, module N unlocks once every lesson in
  * module N-1 is complete. The first module is unlocked once enrolled.
  */
 import type { Course, Module } from "./types";
@@ -27,7 +27,7 @@ interface Data {
 let cache: { userId: string; data: Data } | null = null;
 
 /**
- * Super-admin (Yasir) sees EVERYTHING unlocked — no enrollment or module-lock
+ * Super-admin (Yasir) sees EVERYTHING unlocked, no enrollment or module-lock
  * gates. Set from the auth layer when the admin signs in.
  */
 let superAdmin = false;

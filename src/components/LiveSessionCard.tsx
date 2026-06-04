@@ -28,7 +28,7 @@ export default function LiveSessionCard({ courseSlug }: { courseSlug: string }) 
       <div className="glass-card p-6">
         <div className="flex items-center gap-2"><Calendar className="w-5 h-5 text-teal" /><h2 className="font-heading font-bold text-lg text-ink">Weekly live session</h2></div>
         <p className="text-sm text-soft mt-2">
-          Live Q&amp;A and build-alongs run weekly with the community. No session scheduled right now — check back soon.
+          Live Q&amp;A and build-alongs run weekly with the community. No session scheduled right now, check back soon.
         </p>
       </div>
     );

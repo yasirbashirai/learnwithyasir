@@ -1,4 +1,4 @@
-/** Yasir's wider presence — referenced across the LMS so it's editable in one place. */
+/** Yasir's wider presence, referenced across the LMS so it's editable in one place. */
 export const SITE_URL = "https://learnwithyasir.vercel.app";
 export const SITE_NAME = "learnwithyasir";
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;

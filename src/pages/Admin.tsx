@@ -65,7 +65,7 @@ export default function Admin() {
         </div>
 
         {!supabaseEnabled && <Banner>Supabase isn't configured, so there's no live data yet.</Banner>}
-        {err && <Banner>{err} — did you run <code>supabase/schema.sql</code> (incl. admin policies)?</Banner>}
+        {err && <Banner>{err}, did you run <code>supabase/schema.sql</code> (incl. admin policies)?</Banner>}
 
         <div className="mt-6 flex gap-2 flex-wrap">
           {tabs.map((t) => (
@@ -126,7 +126,7 @@ function Overview({ data }: { data: AdminData | null }) {
               );
             })}
           </div>
-        ) : <p className="text-soft text-sm">No data yet — goals appear as students sign up.</p>}
+        ) : <p className="text-soft text-sm">No data yet, goals appear as students sign up.</p>}
       </div>
     </div>
   );
@@ -207,7 +207,7 @@ function Leads({ data }: { data: AdminData | null }) {
   return (
     <div className="glass-card p-5">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-soft text-sm">{learners.length} contacts — your newsletter list.</p>
+        <p className="text-soft text-sm">{learners.length} contacts, your newsletter list.</p>
         <button onClick={() => exportLeadsCsv(learners)} disabled={!learners.length} className="btn-primary text-sm py-2"><Download className="w-4 h-4" /> Export CSV</button>
       </div>
       {learners.length === 0 ? <p className="text-soft text-sm py-8 text-center">No contacts yet.</p> : (
@@ -323,7 +323,7 @@ function Videos() {
 
   return (
     <div className="space-y-3">
-      <p className="text-soft text-sm">Paste a video embed URL (YouTube/Vimeo/Loom) into any lesson — it replaces the thumbnail placeholder live. Blank + save to clear.</p>
+      <p className="text-soft text-sm">Paste a video embed URL (YouTube/Vimeo/Loom) into any lesson, it replaces the thumbnail placeholder live. Blank + save to clear.</p>
       {courses.map((c) => {
         const videoLessons = c.modules.flatMap((m) => m.lessons).filter((l) => l.hasVideo);
         const filled = videoLessons.filter((l) => videos[l.id]).length;

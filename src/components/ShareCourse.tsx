@@ -9,7 +9,7 @@ import SocialIcon from "./SocialIcon";
 export default function ShareCourse({ slug, title }: { slug: string; title: string }) {
   const [copied, setCopied] = useState(false);
   const url = typeof window !== "undefined" ? `${window.location.origin}/courses/${slug}` : `/courses/${slug}`;
-  const text = `I'm learning ${title} on learnwithyasir 🎓 — practical, project-first. Check it out:`;
+  const text = `I'm learning ${title} on learnwithyasir 🎓, practical, project-first. Check it out:`;
 
   const intents = [
     { key: "linkedin" as const, label: "LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` },

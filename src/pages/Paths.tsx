@@ -17,8 +17,8 @@ export default function Paths() {
   return (
     <div className="min-h-screen">
       <Seo
-        title="Learning Paths — Guided Tracks"
-        description="Curated learning paths that stack courses in the right order — from foundations to landing real clients. Become an AI automation pro, web/app builder, growth marketer or agency owner."
+        title="Learning Paths, Guided Tracks"
+        description="Curated learning paths that stack courses in the right order, from foundations to landing real clients. Become an AI automation pro, web/app builder, growth marketer or agency owner."
         path="/paths"
       />
       <Navbar />
@@ -26,8 +26,7 @@ export default function Paths() {
         <span className="glass-pill text-teal">🗺️ Guided journeys</span>
         <h1 className="font-heading font-extrabold text-4xl md:text-5xl text-ink mt-4">Learning Paths</h1>
         <p className="text-soft mt-2 max-w-2xl text-lg">
-          Not sure where to start? Follow a curated track that stacks courses in the right order —
-          from foundations to landing real clients.
+          Not sure where to start? Follow a curated track that stacks courses in the right order,           from foundations to landing real clients.
         </p>
       </section>
 

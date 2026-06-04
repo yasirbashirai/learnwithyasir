@@ -1,5 +1,5 @@
 /**
- * Lesson video URLs — admin-managed via the `lesson_videos` table.
+ * Lesson video URLs, admin-managed via the `lesson_videos` table.
  * Loaded once into a cache and read synchronously by the lesson player.
  * When empty for a lesson, the player shows the "coming soon" placeholder.
  */

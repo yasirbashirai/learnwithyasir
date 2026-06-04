@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================================
-   learnwithyasir — design tokens (light + dark)
+   learnwithyasir, design tokens (light + dark)
    Teal / cream / gold brand, tuned for a premium 2026 feel.
 ============================================================ */
 @layer base {
@@ -63,7 +63,7 @@
 }
 
 /* ============================================================
-   Backgrounds — animated gradient mesh + grid + grain
+   Backgrounds, animated gradient mesh + grid + grain
 ============================================================ */
 @layer components {
   .mesh-bg {
@@ -120,7 +120,7 @@
   }
   .card-hover:hover { transform: translateY(-4px); box-shadow: 0 28px 70px -28px hsl(var(--teal) / 0.42); border-color: hsl(var(--teal) / 0.4); }
 
-  /* Buttons — rounded-radius, consistent height & alignment.
+  /* Buttons, rounded-radius, consistent height & alignment.
      Base layout applies to every variant so `btn-primary` works on its own. */
   .btn, .btn-primary, .btn-gold, .btn-outline, .btn-ghost {
     display: inline-flex;

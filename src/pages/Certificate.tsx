@@ -54,7 +54,7 @@ export default function Certificate() {
         </div>
 
         <p className="text-center text-sm text-soft mt-6 print:hidden">
-          🎉 Huge congrats! Share this win on LinkedIn and tag Yasir — and start your next course.
+          🎉 Huge congrats! Share this win on LinkedIn and tag Yasir, and start your next course.
         </p>
       </div>
     </div>

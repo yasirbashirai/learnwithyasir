@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 /**
  * Re-render when progress changes anywhere (lib/progress dispatches "lfy:progress").
- * Returns a tick number components can ignore — its only job is to force refresh.
+ * Returns a tick number components can ignore, its only job is to force refresh.
  */
 export function useProgressTick(): number {
   const [tick, setTick] = useState(0);

@@ -49,7 +49,7 @@ function ChatPreview() {
         <span className="ml-auto rounded-full bg-teal/15 text-teal text-[9px] font-bold px-2 py-0.5">📞 WhatsApp</span>
       </div>
       <div className="space-y-2 mt-3">
-        <div className="max-w-[80%] rounded-2xl rounded-bl-sm bg-surface border border-line px-3 py-2 text-[10px] text-ink">Hey 👋 I'm Yasir's site — let's skip the boring scroll. What do you need?</div>
+        <div className="max-w-[80%] rounded-2xl rounded-bl-sm bg-surface border border-line px-3 py-2 text-[10px] text-ink">Hey 👋 I'm Yasir's site, let's skip the boring scroll. What do you need?</div>
         <div className="flex gap-1.5 flex-wrap">
           {["See portfolio", "Pricing", "Book a call"].map((c) => (
             <span key={c} className="rounded-full border border-teal/30 bg-surface px-2 py-1 text-[9px] font-semibold text-teal">{c}</span>
@@ -73,7 +73,7 @@ export default function SiteShowcase() {
           <span className="glass-pill text-teal"><Sparkles className="w-4 h-4" /> Beyond the courses</span>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink mt-4">Want it done for you? Work with Yasir.</h2>
           <p className="text-soft mt-2 max-w-2xl mx-auto">
-            Learning here, but need it built now? I take on client projects — AI automation, web apps,
+            Learning here, but need it built now? I take on client projects, AI automation, web apps,
             chatbots and growth systems. Here's where to find me.
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function SiteShowcase() {
             <div className="flex items-center justify-between mt-4">
               <div>
                 <h3 className="font-heading font-bold text-ink">Chat with Yasir</h3>
-                <p className="text-sm text-soft">Ask anything, see work, book a call — instantly.</p>
+                <p className="text-sm text-soft">Ask anything, see work, book a call, instantly.</p>
               </div>
               <a href={CHAT_SITE} target="_blank" rel="noopener noreferrer" className="btn-outline text-sm shrink-0"><MessageCircle className="w-4 h-4" /> Start chat</a>
             </div>

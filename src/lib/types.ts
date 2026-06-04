@@ -6,7 +6,7 @@
  *
  * Modules unlock progressively: a module is locked until the previous one is
  * complete. Progress is stored via the swappable store in lib/progress.ts
- * (localStorage today, Supabase later — no model changes required).
+ * (localStorage today, Supabase later, no model changes required).
  */
 
 export type PartId = 1 | 2 | 3 | 4;
@@ -18,7 +18,7 @@ export interface ResourceLink {
   href: string;
 }
 
-/** A block of rich lesson content — rendered by LessonBody. */
+/** A block of rich lesson content, rendered by LessonBody. */
 export type ContentBlock =
   | { kind: "p"; text: string }
   | { kind: "h"; text: string }
@@ -37,7 +37,7 @@ export interface Lesson {
   summary: string;
   /** True when this lesson has a video slot (placeholder until Yasir uploads). */
   hasVideo?: boolean;
-  /** Optional video URL — when empty the player shows a "coming soon" placeholder. */
+  /** Optional video URL, when empty the player shows a "coming soon" placeholder. */
   videoUrl?: string;
   body?: ContentBlock[];
 }

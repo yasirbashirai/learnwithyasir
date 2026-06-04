@@ -41,7 +41,7 @@ export async function postDiscussion(courseSlug: string, userId: string, userNam
   await supabase.from("discussions").insert({ course_slug: courseSlug, user_id: userId, user_name: userName, body });
 }
 
-/** Admin moderation — recent posts across every course. */
+/** Admin moderation, recent posts across every course. */
 export async function listAllDiscussions(limit = 100): Promise<Discussion[]> {
   if (!supabase) return [];
   const { data } = await supabase

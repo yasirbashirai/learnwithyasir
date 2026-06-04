@@ -107,7 +107,7 @@ export default function Login() {
           <p>
             {supabaseEnabled
               ? "Secured by Supabase. Your progress syncs across devices."
-              : "Demo mode — set Supabase env vars to enable real accounts."}
+              : "Demo mode, set Supabase env vars to enable real accounts."}
           </p>
         </div>
 

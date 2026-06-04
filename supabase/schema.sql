@@ -142,3 +142,33 @@ create policy "admin manage progress" on public.lesson_progress
 drop policy if exists "admin manage enrollments" on public.enrollments;
 create policy "admin manage enrollments" on public.enrollments
   for delete using ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');
+
+-- ============================================================
+-- Skill-Fit quiz leads (public funnel — anyone can submit)
+-- Captures the lead + their full assessment result.
+-- ============================================================
+create table if not exists public.quiz_leads (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  phone text,
+  goal text,
+  archetype text,
+  top_skills jsonb,
+  path_slug text,
+  profile jsonb,
+  practical jsonb,
+  answers jsonb,
+  created_at timestamptz default now()
+);
+alter table public.quiz_leads enable row level security;
+
+-- Anyone (anon) may submit their own quiz result; nobody can read them back
+-- from the client except the admin (leads are private).
+drop policy if exists "quiz_leads insert anon" on public.quiz_leads;
+create policy "quiz_leads insert anon" on public.quiz_leads
+  for insert with check (true);
+
+drop policy if exists "quiz_leads admin read" on public.quiz_leads;
+create policy "quiz_leads admin read" on public.quiz_leads
+  for select using ((auth.jwt() ->> 'email') = 'yasirbashirai@gmail.com');

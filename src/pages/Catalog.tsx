@@ -23,8 +23,8 @@ export default function Catalog() {
   return (
     <div className="min-h-screen">
       <Seo
-        title="All Courses — AI, Automation & Web"
-        description="Browse 24 project-first courses across AI automation, chatbots, web apps, funnels, CRM and more. One month per skill, with real projects and client guidance."
+        title="All Courses, AI, Automation & Web"
+        description="Browse 34 project-first courses across AI automation, AI agents, UGC and ad creatives, 3D and games, AEO, web apps, funnels, CRM and more. One month per skill, with real projects and client guidance."
         path="/courses"
         jsonLd={[itemListJsonLd(courses)]}
       />

@@ -46,7 +46,7 @@ export default function Footer() {
       <p className="text-center text-xs text-soft mt-6">
         © {new Date().getFullYear()} {""}
         <b className="text-ink/70">Yasir Bashir</b> · learnwithyasir. All rights reserved. All course content is
-        protected by copyright — unauthorised copying, redistribution or resale is prohibited.
+        protected by copyright, unauthorised copying, redistribution or resale is prohibited.
       </p>
     </footer>
   );

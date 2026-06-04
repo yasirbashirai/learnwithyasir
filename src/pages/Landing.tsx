@@ -34,7 +34,7 @@ const GOALS = [
 const TESTIMONIALS = [
   { name: "Areeba", role: "Freelancer", text: "Went from zero to my first $500 automation client in 3 weeks. The client-finding part is gold." },
   { name: "Daniyal", role: "Agency owner", text: "I templated my whole delivery from the GoHighLevel course. Retainers basically sell themselves now." },
-  { name: "Sana", role: "Career switcher", text: "The 4-part structure made it click. Learn, build, get paid, level up — exactly in that order." },
+  { name: "Sana", role: "Career switcher", text: "The 4-part structure made it click. Learn, build, get paid, level up, exactly in that order." },
   { name: "Bilal", role: "Store owner", text: "Rebuilt my Shopify funnel from the CRO lessons and recovered a ton of abandoned carts." },
 ];
 
@@ -96,7 +96,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen">
       <Seo
-        title="learnwithyasir — Master AI, Automation & Web"
+        title="learnwithyasir, Master AI, Automation & Web"
         description="Hands-on, project-first courses in AI automation, web apps, chatbots, funnels and more. One month per skill, real projects, and a clear path from learning to landing clients."
         path="/"
         jsonLd={[itemListJsonLd(courses)]}
@@ -113,8 +113,7 @@ export default function Landing() {
               I use to <span className="gradient-text">build &amp; earn</span>.
             </h1>
             <p className="text-soft text-lg md:text-xl max-w-2xl mx-auto mt-6">
-              Hands-on, video-first courses across AI, automation and web. One month per skill —
-              real projects, and a clear path from <i>learning</i> to <i>landing clients</i>.
+              Hands-on, video-first courses across AI, automation and web. One month per skill,               real projects, and a clear path from <i>learning</i> to <i>landing clients</i>.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 mt-9">
               <Link to={user ? "/dashboard" : "/login"} className="btn-primary text-base">
@@ -170,7 +169,7 @@ export default function Landing() {
         <motion.div {...fadeUp} className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink">Every course, four parts</h2>
-            <p className="text-soft mt-2">A proven path from zero to paid — not just theory.</p>
+            <p className="text-soft mt-2">A proven path from zero to paid, not just theory.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {([1, 2, 3, 4] as const).map((p, i) => {
@@ -217,7 +216,7 @@ export default function Landing() {
           <div className="text-center mb-7">
             <span className="glass-pill text-teal">✨ Find your starting point</span>
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-ink mt-4">What do you want to achieve?</h2>
-            <p className="text-soft mt-2">Pick a goal — I'll show you the exact path to get there.</p>
+            <p className="text-soft mt-2">Pick a goal, I'll show you the exact path to get there.</p>
           </div>
           <GoalExplorer />
         </motion.div>
@@ -227,16 +226,16 @@ export default function Landing() {
       <section className="px-4 pb-20">
         <motion.div {...fadeUp} className="max-w-4xl mx-auto glass-card p-8 md:p-10 grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <h2 className="font-heading font-bold text-2xl md:text-3xl text-ink">Learn it properly — modules unlock as you go</h2>
+            <h2 className="font-heading font-bold text-2xl md:text-3xl text-ink">Learn it properly, modules unlock as you go</h2>
             <p className="text-soft mt-3">
               No skipping ahead. Finish a module to unlock the next, so you actually build the foundations
               before the advanced work. Earn XP, keep a streak, and collect a certificate at the end.
             </p>
           </div>
           <div className="space-y-3">
-            <div className="flex items-center gap-3 rounded-xl bg-teal/5 border border-teal/15 px-4 py-3"><CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 1 — Foundations <b className="text-teal">unlocked</b></span></div>
-            <div className="flex items-center gap-3 rounded-xl bg-surface/60 border border-line px-4 py-3"><CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 2 — Practice <b className="text-teal">unlocked</b></span></div>
-            <div className="flex items-center gap-3 rounded-xl bg-surface/40 border border-line px-4 py-3 opacity-70"><Lock className="w-5 h-5 text-ink/40" /> <span className="text-soft">Part 3 — Career &amp; Clients <i>locked</i></span></div>
+            <div className="flex items-center gap-3 rounded-xl bg-teal/5 border border-teal/15 px-4 py-3"><CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 1, Foundations <b className="text-teal">unlocked</b></span></div>
+            <div className="flex items-center gap-3 rounded-xl bg-surface/60 border border-line px-4 py-3"><CheckCircle2 className="w-5 h-5 text-teal" /> <span className="text-ink/80">Part 2, Practice <b className="text-teal">unlocked</b></span></div>
+            <div className="flex items-center gap-3 rounded-xl bg-surface/40 border border-line px-4 py-3 opacity-70"><Lock className="w-5 h-5 text-ink/40" /> <span className="text-soft">Part 3, Career &amp; Clients <i>locked</i></span></div>
           </div>
         </motion.div>
       </section>
@@ -276,7 +275,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Work with Yasir — ecosystem showcase */}
+      {/* Work with Yasir, ecosystem showcase */}
       <SiteShowcase />
 
       {/* Instructor / final CTA */}
@@ -288,7 +287,7 @@ export default function Landing() {
             <div className="mt-4 inline-flex items-center gap-1.5 text-sm text-gold font-semibold"><Star className="w-4 h-4 fill-current" /> Taught by a practitioner who ships</div>
             <h2 className="font-heading font-extrabold text-3xl md:text-4xl text-ink mt-3">Stop watching. Start building.</h2>
             <p className="text-soft mt-3 max-w-xl mx-auto">
-              I'll teach you the exact systems I use for clients — and how to get paid for them.
+              I'll teach you the exact systems I use for clients, and how to get paid for them.
               Your first lesson is one click away.
             </p>
             <Link to={user ? "/courses" : "/login"} className="btn-primary text-base mt-7 inline-flex">

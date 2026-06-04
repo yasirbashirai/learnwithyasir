@@ -4,7 +4,7 @@ import { X, ArrowRight, Sparkles } from "lucide-react";
 import { CHAT_SITE } from "@/data/links";
 
 /**
- * Floating "Chat with Yasir" launcher — a glass pill that gently floats and
+ * Floating "Chat with Yasir" launcher, a glass pill that gently floats and
  * morphs into a card on click, opening the standalone chatwithyasir site.
  * Mirrors the widget on the main services website.
  */
@@ -98,7 +98,7 @@ export default function ChatLauncher() {
                   <button onClick={(e) => { e.stopPropagation(); go(); }} className="btn-primary w-full text-sm">
                     Open the full chat <ArrowRight className="w-4 h-4" />
                   </button>
-                  <p className="mt-2 text-center text-[11px] text-soft">Opens chatwithyasir — instant, no forms.</p>
+                  <p className="mt-2 text-center text-[11px] text-soft">Opens chatwithyasir, instant, no forms.</p>
                 </div>
               </motion.div>
             )}

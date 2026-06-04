@@ -61,16 +61,16 @@ export default function CoursePage() {
   };
 
   const faqs = [
-    { q: "Do I need experience?", a: `This course is built for ${course.level === "Advanced" ? "people with some grounding who want to go deep" : "beginners — I start from zero and build up"}.` },
-    { q: "How long does it take?", a: "It's a focused one month (4 parts), but self-paced — go faster or slower, progress is saved." },
+    { q: "Do I need experience?", a: `This course is built for ${course.level === "Advanced" ? "people with some grounding who want to go deep" : "beginners, I start from zero and build up"}.` },
+    { q: "How long does it take?", a: "It's a focused one month (4 parts), but self-paced, go faster or slower, progress is saved." },
     { q: "Are the videos ready?", a: "The full curriculum and written lessons are here now. Video lessons appear in each lesson's player as they're recorded." },
-    { q: "Will I get a certificate?", a: "Yes — finish all four parts and you'll unlock a shareable certificate of completion." },
+    { q: "Will I get a certificate?", a: "Yes, finish all four parts and you'll unlock a shareable certificate of completion." },
   ];
 
   return (
     <div className="min-h-screen">
       <Seo
-        title={`${course.title} — Course`}
+        title={`${course.title}, Course`}
         description={course.tagline}
         path={`/courses/${course.slug}`}
         type="article"
@@ -120,7 +120,7 @@ export default function CoursePage() {
 
           {/* Course trailer */}
           <div className="mt-4">
-            <VideoPlayer title={`${course.title} — course trailer`} icon={course.icon} partLabel="Course trailer" minutes={2} />
+            <VideoPlayer title={`${course.title}, course trailer`} icon={course.icon} partLabel="Course trailer" minutes={2} />
           </div>
         </div>
       </section>
@@ -224,7 +224,7 @@ export default function CoursePage() {
               </div>
               <div className="inline-flex items-center gap-1 text-xs text-gold font-semibold mb-1.5"><Star className="w-3.5 h-3.5 fill-current" /> Practitioner, not just a teacher</div>
               <p className="text-sm text-soft">
-                I build {course.category.toLowerCase()} systems for real clients and teach exactly how I work — everything here is something I've shipped and been paid for.
+                I build {course.category.toLowerCase()} systems for real clients and teach exactly how I work, everything here is something I've shipped and been paid for.
               </p>
               <a href="https://yasirbashiraisite.vercel.app" target="_blank" rel="noopener noreferrer" className="text-teal text-sm font-semibold mt-2 inline-flex items-center gap-1">Work with Yasir ↗</a>
             </div>

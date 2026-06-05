@@ -34,6 +34,11 @@ export default function Navbar() {
             <a href={SERVICES_SITE} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="btn-ghost justify-start text-sm text-teal">
               <Briefcase className="w-4 h-4" /> Work with Yasir ↗
             </a>
+            {!user && (
+              <Link to="/login" onClick={() => setMenuOpen(false)} className="btn-primary justify-center text-sm mt-1">
+                Get started
+              </Link>
+            )}
           </div>
         )}
         <div className="ml-auto flex items-center gap-1 sm:gap-1.5">
@@ -88,7 +93,7 @@ export default function Navbar() {
           ) : (
             <>
               <ThemeToggle />
-              <Link to="/login" className="btn-primary text-sm py-2">Get started</Link>
+              <Link to="/login" className="btn-primary text-sm py-2 hidden sm:inline-flex">Get started</Link>
             </>
           )}
           {/* Hamburger — toggles the mobile nav menu (phones only) */}

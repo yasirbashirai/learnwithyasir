@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, BookOpen, Hammer, Briefcase, Rocket, Lock, CheckCircle2, PlayCircle, Star, Quote } from "lucide-react";
+import { ArrowRight, BookOpen, Hammer, Briefcase, Rocket, Lock, CheckCircle2, PlayCircle, Star, Quote, Compass } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
@@ -120,6 +120,11 @@ export default function Landing() {
                 {user ? "Go to dashboard" : "Start learning free"} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link to="/courses" className="btn-outline text-base"><PlayCircle className="w-4 h-4" /> Browse courses</Link>
+            </div>
+            <div className="mt-4">
+              <Link to="/quiz" className="text-teal font-semibold text-sm inline-flex items-center gap-1.5 hover:underline">
+                <Compass className="w-4 h-4" /> Not sure where to start? Find your skill
+              </Link>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 mt-9 text-sm text-soft">
               <span>📚 {courses.length} courses</span>

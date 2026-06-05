@@ -18,22 +18,11 @@ const CHIPS = [
 
 export default function ChatLauncher() {
   const [open, setOpen] = useState(false);
-  // On phones the collapsed launcher is a compact circular bubble (not the wide
-  // pill), and the open card is capped to the viewport so it never overflows.
-  const [isMobile, setIsMobile] = useState(false);
 
   const go = (q?: string) => {
     const url = q ? `${CHAT_SITE}/?q=${encodeURIComponent(q)}` : CHAT_SITE;
     window.open(url, "_blank", "noopener,noreferrer");
   };
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const update = () => setIsMobile(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -42,15 +31,12 @@ export default function ChatLauncher() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const collapsedW = isMobile ? 58 : 226;
-  const expandedH = isMobile ? 384 : 360;
-
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-50 print:hidden">
       <div className={open ? "" : "animate-float"}>
         <motion.div
           initial={false}
-          animate={{ width: open ? 320 : collapsedW, height: open ? expandedH : 58, borderRadius: open ? 24 : 999 }}
+          animate={{ width: open ? 320 : 226, height: open ? 360 : 58, borderRadius: open ? 24 : 999 }}
           transition={{ duration: 0.5, ease: EASE }}
           onClick={() => !open && setOpen(true)}
           role={!open ? "button" : undefined}
@@ -64,13 +50,13 @@ export default function ChatLauncher() {
           <AnimatePresence>
             {!open && (
               <motion.div key="pill" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.1 } }} exit={{ opacity: 0, transition: { duration: 0.12 } }}
-                className="absolute inset-0 flex items-center gap-2.5 justify-center sm:justify-start sm:pl-2 sm:pr-4">
+                className="absolute inset-0 flex items-center gap-2.5 pl-2 pr-4">
                 <img src="/yasir-avatar.png" alt="Yasir Bashir" className="w-10 h-10 rounded-full object-cover shrink-0" />
-                <span className="hidden sm:flex flex-col leading-tight min-w-0">
+                <span className="flex flex-col leading-tight min-w-0">
                   <span className="text-sm font-bold text-ink truncate">Chat with Yasir</span>
                   <span className="text-[12px] text-teal font-medium flex items-center gap-1">● Online now</span>
                 </span>
-                <Sparkles className="hidden sm:block ml-auto w-4 h-4 text-gold shrink-0" />
+                <Sparkles className="ml-auto w-4 h-4 text-gold shrink-0" />
               </motion.div>
             )}
           </AnimatePresence>

@@ -3,8 +3,8 @@ export const SITE_URL = "https://learnwith.yasirbashir.com";
 export const SITE_NAME = "Learn With Yasir";
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
 export const TWITTER_HANDLE = "@YasirBashirai";
-export const SERVICES_SITE = "https://yasirbashiraisite.vercel.app";
-export const CHAT_SITE = "https://chatwithyasir.vercel.app";
+export const SERVICES_SITE = "https://yasirbashir.com";
+export const CHAT_SITE = "https://chatwith.yasirbashir.com";
 export const CONTACT_EMAIL = "hello@yasirbashir.com";
 
 export type SocialKey = "linkedin" | "instagram" | "github" | "facebook" | "youtube";

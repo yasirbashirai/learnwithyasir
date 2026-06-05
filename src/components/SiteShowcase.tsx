@@ -81,7 +81,7 @@ export default function SiteShowcase() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Services site */}
           <div className="glass-card card-hover p-5">
-            <BrowserFrame url="yasirbashiraisite.vercel.app"><ServicesPreview /></BrowserFrame>
+            <BrowserFrame url="yasirbashir.com"><ServicesPreview /></BrowserFrame>
             <div className="flex items-center justify-between mt-4">
               <div>
                 <h3 className="font-heading font-bold text-ink">My services website</h3>
@@ -93,7 +93,7 @@ export default function SiteShowcase() {
 
           {/* Chat */}
           <div className="glass-card card-hover p-5">
-            <BrowserFrame url="chatwithyasir.vercel.app"><ChatPreview /></BrowserFrame>
+            <BrowserFrame url="chatwith.yasirbashir.com"><ChatPreview /></BrowserFrame>
             <div className="flex items-center justify-between mt-4">
               <div>
                 <h3 className="font-heading font-bold text-ink">Chat with Yasir</h3>

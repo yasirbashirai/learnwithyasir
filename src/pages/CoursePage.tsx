@@ -226,7 +226,7 @@ export default function CoursePage() {
               <p className="text-sm text-soft">
                 I build {course.category.toLowerCase()} systems for real clients and teach exactly how I work, everything here is something I've shipped and been paid for.
               </p>
-              <a href="https://yasirbashiraisite.vercel.app" target="_blank" rel="noopener noreferrer" className="text-teal text-sm font-semibold mt-2 inline-flex items-center gap-1">Work with Yasir ↗</a>
+              <a href="https://yasirbashir.com" target="_blank" rel="noopener noreferrer" className="text-teal text-sm font-semibold mt-2 inline-flex items-center gap-1">Work with Yasir ↗</a>
             </div>
 
             <div className="glass-card p-6">

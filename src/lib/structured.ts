@@ -7,7 +7,7 @@ const PROVIDER = {
   name: SITE_NAME,
   url: SITE_URL,
   sameAs: [
-    "https://yasirbashiraisite.vercel.app",
+    "https://yasirbashir.com",
     "https://www.linkedin.com/in/yasirbashiraiengineer/",
     "https://github.com/yasirbashirai",
     "https://www.youtube.com/@YasirBashirai",
@@ -17,7 +17,7 @@ const PROVIDER = {
 const INSTRUCTOR = {
   "@type": "Person",
   name: "Yasir Bashir",
-  url: "https://yasirbashiraisite.vercel.app",
+  url: "https://yasirbashir.com",
   jobTitle: "AI Automation Engineer & Web Developer",
 };
 

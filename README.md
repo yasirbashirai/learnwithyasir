@@ -2,7 +2,7 @@
 
 A practical, project-first **Learning Management System (LMS)** that teaches the
 exact skills Yasir Bashir uses to build AI automation, web apps and growth
-systems for clients. Each skill on [yasirbashir.com](https://yasirbashiraisite.vercel.app)
+systems for clients. Each skill on [yasirbashir.com](https://yasirbashir.com)
 maps to a **one-month course** with locked/unlocking modules.
 
 It's the third site in the family:

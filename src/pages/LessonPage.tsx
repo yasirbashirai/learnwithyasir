@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Check, ChevronLeft, ChevronRight, Lock, CheckCircle2, Circle, List, BookOpen, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 import LessonBody from "@/components/LessonBody";
 import VideoPlayer from "@/components/VideoPlayer";
 import { courseBySlug } from "@/data/courses";
@@ -38,9 +39,14 @@ export default function LessonPage() {
   useEffect(() => { loadVideos().then(() => setVideoMap(getVideos())); }, []);
 
   // Learner chooses how to consume each lesson: Read (text) or Watch (video).
-  // Written content is complete, so Read is the default. Reset on lesson change.
+  // Written content is complete, so Read is the default. Reset on lesson change
+  // during render (React's recommended pattern over a setState-in-effect).
   const [mode, setMode] = useState<"read" | "watch">("read");
-  useEffect(() => { setMode("read"); }, [lessonId]);
+  const [modeLesson, setModeLesson] = useState(lessonId);
+  if (lessonId !== modeLesson) {
+    setModeLesson(lessonId);
+    setMode("read");
+  }
 
   // Auto-enrol when a logged-in learner opens a lesson directly.
   useEffect(() => {
@@ -132,6 +138,7 @@ export default function LessonPage() {
 
   return (
     <div className="min-h-screen">
+      <Seo title={`${current.lesson.title} — ${course.title}`} description={`Lesson: ${current.lesson.title} in the ${course.title} course.`} noindex />
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-6 grid lg:grid-cols-[280px_1fr] gap-6">
         {/* Sidebar curriculum */}

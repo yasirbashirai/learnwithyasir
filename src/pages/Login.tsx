@@ -5,6 +5,7 @@ import { ShieldCheck, Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabaseEnabled } from "@/lib/supabase";
 import Logo from "@/components/Logo";
+import Seo from "@/components/Seo";
 
 function GoogleIcon() {
   return (
@@ -45,6 +46,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen grid place-items-center px-4 grid-bg">
+      <Seo title="Sign in" description="Sign in to track progress, unlock modules and earn certificates at learnwithyasir." noindex />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

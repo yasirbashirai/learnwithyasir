@@ -96,7 +96,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen">
       <Seo
-        title="learnwithyasir, Master AI, Automation & Web"
+        title="Learn With Yasir"
         description="Hands-on, project-first courses in AI automation, web apps, chatbots, funnels and more. One month per skill, real projects, and a clear path from learning to landing clients."
         path="/"
         jsonLd={[itemListJsonLd(courses)]}

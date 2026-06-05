@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Award, Download, ArrowLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 import { courseBySlug } from "@/data/courses";
 import { useAuth } from "@/lib/auth";
 import { courseProgress } from "@/lib/progress";
@@ -18,6 +19,7 @@ export default function Certificate() {
 
   return (
     <div className="min-h-screen">
+      <Seo title={`${course.title} — Certificate`} description={`Certificate of completion for ${course.title}.`} noindex />
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-10">
         <div className="flex items-center justify-between mb-5 print:hidden">

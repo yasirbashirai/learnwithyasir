@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SITE = "https://learnwithyasir.vercel.app";
+const SITE = "https://learnwith.yasirbashir.com";
 
 // Pull course slugs out of the course specs.
 const coursesSrc = readFileSync(join(root, "src/data/courses.ts"), "utf8");

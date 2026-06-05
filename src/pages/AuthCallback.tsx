@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
+import Seo from "@/components/Seo";
 
 /**
  * Public landing target for OAuth redirects. Supabase returns here with the
@@ -18,6 +19,7 @@ export default function AuthCallback() {
 
   return (
     <div className="min-h-screen grid place-items-center">
+      <Seo title="Signing you in…" description="Completing sign-in." noindex />
       <div className="flex flex-col items-center gap-4">
         <div className="w-10 h-10 rounded-full border-2 border-teal/30 border-t-teal animate-spin" />
         <p className="text-soft text-sm">Signing you in…</p>

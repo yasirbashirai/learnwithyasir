@@ -20,6 +20,8 @@ function countdown(iso: string) {
 export default function LiveSessionCard({ courseSlug }: { courseSlug: string }) {
   const [session, setSession] = useState<LiveSession | null>(null);
   const [loaded, setLoaded] = useState(false);
+  // Capture "now" once on mount — calling Date.now() during render is impure.
+  const [now] = useState(() => Date.now());
 
   useEffect(() => { nextSession(courseSlug).then((s) => { setSession(s); setLoaded(true); }); }, [courseSlug]);
 
@@ -35,7 +37,7 @@ export default function LiveSessionCard({ courseSlug }: { courseSlug: string }) 
   }
   if (!session) return null;
 
-  const live = new Date(session.starts_at).getTime() - Date.now() <= 0;
+  const live = new Date(session.starts_at).getTime() - now <= 0;
   return (
     <div className="glass-card p-6 relative overflow-hidden">
       <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(54,200,169,0.3), transparent 70%)" }} />

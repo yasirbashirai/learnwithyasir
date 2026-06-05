@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /dashboard
 
-Sitemap: https://learnwithyasir.vercel.app/sitemap.xml
+Sitemap: https://learnwith.yasirbashir.com/sitemap.xml

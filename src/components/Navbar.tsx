@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame, ShieldCheck, Briefcase, Compass } from "lucide-react";
+import { LogOut, LayoutDashboard, BookOpen, Route as RouteIcon, Flame, ShieldCheck, Briefcase, Compass, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { useAuth } from "@/lib/auth";
@@ -12,11 +13,29 @@ export default function Navbar() {
   const navigate = useNavigate();
   useProgressTick();
   const stats = user ? userStats(user.id) : null;
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 px-4 py-3">
-      <nav className="glass max-w-6xl mx-auto rounded-2xl px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3">
+      <nav className="glass max-w-6xl mx-auto rounded-2xl px-3 sm:px-4 py-2.5 flex items-center gap-2 sm:gap-3 relative">
         <Logo />
+        {/* Mobile dropdown — primary nav that's hidden on phones */}
+        {menuOpen && (
+          <div className="absolute top-full left-0 right-0 mt-2 sm:hidden glass rounded-2xl p-2 flex flex-col gap-1 shadow-card z-50">
+            <Link to="/courses" onClick={() => setMenuOpen(false)} className="btn-ghost justify-start text-sm">
+              <BookOpen className="w-4 h-4" /> Courses
+            </Link>
+            <Link to="/quiz" onClick={() => setMenuOpen(false)} className="btn-ghost justify-start text-sm text-teal">
+              <Compass className="w-4 h-4" /> Find your skill
+            </Link>
+            <Link to="/paths" onClick={() => setMenuOpen(false)} className="btn-ghost justify-start text-sm">
+              <RouteIcon className="w-4 h-4" /> Paths
+            </Link>
+            <a href={SERVICES_SITE} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="btn-ghost justify-start text-sm text-teal">
+              <Briefcase className="w-4 h-4" /> Work with Yasir ↗
+            </a>
+          </div>
+        )}
         <div className="ml-auto flex items-center gap-1 sm:gap-1.5">
           <Link to="/courses" className="btn-ghost text-sm hidden sm:inline-flex">
             <BookOpen className="w-4 h-4" /> Courses
@@ -72,6 +91,15 @@ export default function Navbar() {
               <Link to="/login" className="btn-primary text-sm py-2">Get started</Link>
             </>
           )}
+          {/* Hamburger — toggles the mobile nav menu (phones only) */}
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="btn-ghost sm:hidden p-2"
+            aria-label="Menu"
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </nav>
     </header>

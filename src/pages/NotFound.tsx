@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen">
+      <Seo title="Page not found" description="That page doesn't exist. Browse project-first courses in AI, automation and web." noindex />
       <Navbar />
       <div className="max-w-2xl mx-auto px-4 py-28 text-center">
         <div className="text-7xl">🧭</div>

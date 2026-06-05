@@ -7,7 +7,7 @@ import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
-const SITE = "https://learnwithyasir.vercel.app";
+const SITE = "https://learnwith.yasirbashir.com";
 const base = readFileSync(join(dist, "index.html"), "utf8");
 
 // Parse {slug, title, tagline} from each course spec.
@@ -39,17 +39,17 @@ function write(path, html) {
 }
 
 const routes = [
-  { path: "/courses", title: "All Courses — AI, Automation & Web · learnwithyasir", description: "Browse 24 project-first courses across AI automation, chatbots, web apps, funnels, CRM and more." },
-  { path: "/paths", title: "Learning Paths — Guided Tracks · learnwithyasir", description: "Curated tracks that stack courses in the right order — from foundations to landing real clients." },
-  { path: "/privacy", title: "Privacy Policy · learnwithyasir", description: "How learnwithyasir collects, uses and protects your information." },
-  { path: "/terms", title: "Terms & Conditions · learnwithyasir", description: "The terms for using learnwithyasir and its course content." },
-  { path: "/disclaimer", title: "Disclaimer · learnwithyasir", description: "Educational-use disclaimer for learnwithyasir." },
+  { path: "/courses", title: "All Courses — AI, Automation & Web · Learn With Yasir", description: "Browse 24 project-first courses across AI automation, chatbots, web apps, funnels, CRM and more." },
+  { path: "/paths", title: "Learning Paths — Guided Tracks · Learn With Yasir", description: "Curated tracks that stack courses in the right order — from foundations to landing real clients." },
+  { path: "/privacy", title: "Privacy Policy · Learn With Yasir", description: "How Learn With Yasir collects, uses and protects your information." },
+  { path: "/terms", title: "Terms & Conditions · Learn With Yasir", description: "The terms for using Learn With Yasir and its course content." },
+  { path: "/disclaimer", title: "Disclaimer · Learn With Yasir", description: "Educational-use disclaimer for Learn With Yasir." },
 ];
 
 let n = 0;
 for (const r of routes) { write(r.path, pageHtml(r)); n++; }
 for (const c of courses) {
-  write(`/courses/${c.slug}`, pageHtml({ path: `/courses/${c.slug}`, title: `${c.title} — Course · learnwithyasir`, description: c.tagline }));
+  write(`/courses/${c.slug}`, pageHtml({ path: `/courses/${c.slug}`, title: `${c.title} — Course · Learn With Yasir`, description: c.tagline }));
   n++;
 }
 console.log(`✅ prerendered meta for ${n} routes (${courses.length} courses)`);

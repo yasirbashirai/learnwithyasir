@@ -41,6 +41,8 @@ export default function Admin() {
       setLoading(false);
     });
   };
+  // Intentional fetch-on-mount; the loading flip is the desired effect.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { refresh(); loadVideos(); }, []);
   if (!user) return null;
 

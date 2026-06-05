@@ -25,6 +25,8 @@ export default function CourseCommunity({ courseSlug }: { courseSlug: string }) 
   const admin = isSuperAdmin();
 
   const refresh = () => { setLoading(true); listDiscussions(courseSlug).then((d) => { setPosts(d); setLoading(false); }); };
+  // Intentional fetch-on-mount / on-slug-change; the loading flip is the desired effect.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(refresh, [courseSlug]);
 
   const submit = async (e: React.FormEvent) => {

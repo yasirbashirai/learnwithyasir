@@ -68,6 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabaseEnabled || !supabase) {
       // Offline fallback: read mock session.
+      // Synchronous session bootstrap from localStorage — the setState here is the
+      // intended one-time hydration, not a render-driven update.
+      /* eslint-disable react-hooks/set-state-in-effect */
       try {
         const raw = localStorage.getItem(MOCK_KEY);
         if (raw) {
@@ -77,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } catch { /* ignore */ }
       setLoading(false);
+      /* eslint-enable react-hooks/set-state-in-effect */
       return;
     }
 
@@ -176,6 +180,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth(): AuthState {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");

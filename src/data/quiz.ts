@@ -168,7 +168,6 @@ const QUESTION_DEFS: Question[] = [
     title: "First, where are you in life right now?",
     help: "There's no wrong answer here, it just helps me give you the right kind of plan.",
     choices: [
-      { id: "school", emoji: "🎒", label: "Still in school", set: { timeHours: 8, experience: 0 } },
       { id: "college", emoji: "🎓", label: "College or university student", set: { timeHours: 10 } },
       { id: "job", emoji: "💼", label: "Working a job", desc: "Learning on the side", set: { timeHours: 6 } },
       { id: "professional", emoji: "🩺", label: "An established professional", desc: "Doctor, teacher, lawyer, engineer", dims: { data: 1, people: 1 }, set: { timeHours: 5, techComfort: 3 } },

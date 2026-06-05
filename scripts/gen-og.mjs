@@ -28,7 +28,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
   <g transform="translate(80,506)">
     <rect width="232" height="64" rx="32" fill="url(#brand)"/>
     <text x="116" y="41" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#0f2e27" text-anchor="middle">Start learning free</text>
-    <text x="270" y="41" font-family="Arial, sans-serif" font-size="22" fill="#9fdccb">learnwithyasir.vercel.app</text>
+    <text x="270" y="41" font-family="Arial, sans-serif" font-size="22" fill="#9fdccb">learnwith.yasirbashir.com</text>
   </g>
   <g opacity="0.9">
     <text x="980" y="250" font-size="120" text-anchor="middle">🤖</text>

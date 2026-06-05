@@ -46,7 +46,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen grid place-items-center px-4 grid-bg">
-      <Seo title="Sign in" description="Sign in to track progress, unlock modules and earn certificates at learnwithyasir." noindex />
+      <Seo title="Sign in" description="Sign in to track progress, unlock modules and earn certificates at LearnwithYasir." noindex />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

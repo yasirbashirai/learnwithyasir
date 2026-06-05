@@ -45,7 +45,7 @@ export default function Certificate() {
             <div className="mt-10 flex items-center justify-between gap-6">
               <div className="text-left">
                 <div className="font-serif italic text-2xl text-ink">Yasir Bashir</div>
-                <div className="text-xs text-soft border-t border-line pt-1 mt-1">Instructor · learnwithyasir</div>
+                <div className="text-xs text-soft border-t border-line pt-1 mt-1">Instructor · LearnwithYasir</div>
               </div>
               <div className="text-right">
                 <div className="text-sm font-semibold text-ink">{date}</div>

@@ -51,7 +51,7 @@ export default function ChatLauncher() {
             {!open && (
               <motion.div key="pill" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.1 } }} exit={{ opacity: 0, transition: { duration: 0.12 } }}
                 className="absolute inset-0 flex items-center gap-2.5 pl-2 pr-4">
-                <span className="grid place-items-center w-10 h-10 rounded-full text-white font-extrabold shrink-0" style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}>Y</span>
+                <img src="/yasir-avatar.png" alt="Yasir Bashir" className="w-10 h-10 rounded-full object-cover shrink-0" />
                 <span className="flex flex-col leading-tight min-w-0">
                   <span className="text-sm font-bold text-ink truncate">Chat with Yasir</span>
                   <span className="text-[12px] text-teal font-medium flex items-center gap-1">● Online now</span>
@@ -67,7 +67,7 @@ export default function ChatLauncher() {
               <motion.div key="card" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.12 } }} exit={{ opacity: 0, transition: { duration: 0.1 } }}
                 className="absolute inset-0 flex flex-col">
                 <div className="flex items-center gap-3 px-4 pt-4 pb-3">
-                  <span className="grid place-items-center w-9 h-9 rounded-full text-white font-extrabold" style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}>Y</span>
+                  <img src="/yasir-avatar.png" alt="Yasir Bashir" className="w-9 h-9 rounded-full object-cover" />
                   <div className="leading-tight">
                     <div className="text-sm font-bold text-ink">Yasir Bashir</div>
                     <div className="text-[12px] text-teal font-medium">● Replies instantly</div>
@@ -79,7 +79,7 @@ export default function ChatLauncher() {
                 <div className="h-px mx-4 bg-line" />
                 <div className="flex-1 px-4 py-3.5 overflow-y-auto">
                   <div className="flex gap-2 items-end">
-                    <span className="grid place-items-center w-6 h-6 rounded-full text-white text-[11px] font-bold shrink-0" style={{ background: "linear-gradient(135deg,#288672,#36c8a9)" }}>Y</span>
+                    <img src="/yasir-avatar.png" alt="Yasir Bashir" className="w-6 h-6 rounded-full object-cover shrink-0" />
                     <div className="max-w-[80%] rounded-2xl rounded-bl-md bg-surface-2 border border-line px-3.5 py-2.5 text-[13px] text-ink">
                       Hey 👋 Not sure where to start, or want it built for you? Ask me anything.
                     </div>

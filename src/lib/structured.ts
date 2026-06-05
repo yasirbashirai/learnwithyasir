@@ -64,7 +64,7 @@ export function itemListJsonLd(courses: Course[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Courses on learnwithyasir",
+    name: "Courses on LearnwithYasir",
     itemListElement: courses.map((c, i) => ({
       "@type": "ListItem",
       position: i + 1,

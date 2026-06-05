@@ -8,7 +8,7 @@ export default function Logo({ className = "" }: { className?: string }) {
         YB
       </span>
       <span className="text-lg leading-none">
-        learn<span className="gradient-text">withyasir</span>
+        Learn<span className="gradient-text">withYasir</span>
       </span>
     </Link>
   );

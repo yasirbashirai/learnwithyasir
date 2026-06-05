@@ -5,7 +5,7 @@ import { CONTACT_EMAIL } from "@/data/links";
 
 export type LegalDoc = "privacy" | "terms" | "disclaimer";
 
-const BRAND = "learnwithyasir";
+const BRAND = "LearnwithYasir";
 const OWNER = "Yasir Bashir";
 const EFFECTIVE = "1 June 2026";
 

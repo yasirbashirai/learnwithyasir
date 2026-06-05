@@ -63,7 +63,7 @@ export default function VideoPlayer({
           <Play className="w-7 h-7 translate-x-0.5 fill-current" />
         </button>
         <h3 className="mt-5 text-white font-heading font-bold text-lg md:text-2xl max-w-lg leading-tight drop-shadow">{title}</h3>
-        <p className="mt-1.5 text-white/55 text-xs font-medium">learnwithyasir · Yasir is recording this lesson. The full written version is ready under Read.</p>
+        <p className="mt-1.5 text-white/55 text-xs font-medium">LearnwithYasir · Yasir is recording this lesson. The full written version is ready under Read.</p>
       </div>
 
       {/* control bar */}

@@ -67,7 +67,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   /* ---- Supabase session bootstrap ---- */
   useEffect(() => {
     if (!supabaseEnabled || !supabase) {
-      // Offline fallback: read mock session.
+      // SECURITY: the localStorage mock session is a DEV-ONLY convenience so the
+      // app runs without Supabase. In production it must NEVER authenticate anyone
+      // (otherwise a missing env var silently disables all auth). Stay logged out.
+      if (import.meta.env.PROD) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+      // Offline fallback (dev only): read mock session.
       // Synchronous session bootstrap from localStorage — the setState here is the
       // intended one-time hydration, not a render-driven update.
       /* eslint-disable react-hooks/set-state-in-effect */
@@ -131,13 +139,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signInWithEmail = async (email: string, password: string): Promise<AuthResult> => {
-    if (!supabase) { mockSignIn(email, email.split("@")[0]); return {}; }
+    if (!supabase) {
+      if (import.meta.env.PROD) return { error: "Sign-in is temporarily unavailable. Please try again shortly." };
+      mockSignIn(email, email.split("@")[0]);
+      return {};
+    }
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     return error ? { error: error.message } : {};
   };
 
   const signUpWithEmail = async (name: string, email: string, password: string): Promise<AuthResult> => {
-    if (!supabase) { mockSignIn(email, name); return {}; }
+    if (!supabase) {
+      if (import.meta.env.PROD) return { error: "Sign-up is temporarily unavailable. Please try again shortly." };
+      mockSignIn(email, name);
+      return {};
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -149,7 +165,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const mockSignIn = (email: string, name: string) => {
-    const u: User = { id: `u_${email}`, email, name, isAdmin: email.toLowerCase() === ADMIN_EMAIL };
+    // SECURITY: a mock (dev-only) session is NEVER admin. Admin is granted solely
+    // from a real, verified Supabase session whose JWT email matches ADMIN_EMAIL,
+    // and is enforced server-side by RLS regardless of this client flag.
+    const u: User = { id: `u_${email}`, email, name, isAdmin: false };
     localStorage.setItem(MOCK_KEY, JSON.stringify(u));
     setSuperAdmin(u.isAdmin);
     setUser(u);

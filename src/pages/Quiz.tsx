@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -29,6 +29,22 @@ export default function Quiz() {
   const cur = answers[q?.id];
   const answered = q ? isAnswered(q, cur) : false;
 
+  // Jump back to the top whenever the question or phase changes. This runs
+  // *after* the new content renders (via requestAnimationFrame), which is the
+  // part mobile browsers need, calling scrollTo inside the click handler fires
+  // before the new question lays out and iOS Safari then ignores it, leaving
+  // the user stranded where the "Next" button was.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      // Belt-and-braces for older mobile WebKit, which doesn't always move the
+      // window via scrollTo but does respond to these.
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    return () => cancelAnimationFrame(id);
+  }, [phase, step]);
+
   function setAnswer(value: AnswerValue) {
     setAnswers((prev) => ({ ...prev, [q.id]: value }));
   }
@@ -36,23 +52,20 @@ export default function Quiz() {
   function next() {
     if (step < total - 1) {
       setStep((s) => s + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       // Last question, score and show the result preview right away.
       setResult(scoreQuiz(answers));
       setPhase("result");
-      window.scrollTo(0, 0);
     }
   }
   function back() {
     if (step > 0) setStep((s) => s - 1);
     else setPhase("intro");
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function restart() {
     setAnswers({}); setStep(0); setResult(null);
-    setPhase("intro"); window.scrollTo(0, 0);
+    setPhase("intro");
   }
 
   // Optional, the person can choose to send their result to Yasir.

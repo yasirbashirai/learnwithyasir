@@ -18,6 +18,13 @@ function GoogleIcon() {
   );
 }
 
+/**
+ * Email + password sign-up/sign-in is temporarily HIDDEN (Google-only for now).
+ * Flip this to `true` to bring the email form, the divider and the
+ * sign-in/sign-up toggle back. Nothing was removed — only hidden.
+ */
+const EMAIL_AUTH_ENABLED: boolean = false;
+
 export default function Login() {
   const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
   const navigate = useNavigate();
@@ -62,7 +69,7 @@ export default function Login() {
       >
         <div className="flex justify-center mb-6"><Logo /></div>
         <h1 className="font-heading font-extrabold text-2xl text-center text-ink">
-          {mode === "signup" ? "Create your account" : "Welcome back"}
+          {!EMAIL_AUTH_ENABLED ? "Welcome" : mode === "signup" ? "Create your account" : "Welcome back"}
         </h1>
         <p className="text-center text-soft text-sm mt-1">Track progress, unlock modules, earn certificates.</p>
 
@@ -75,47 +82,51 @@ export default function Login() {
           </button>
         )}
 
-        {supabaseEnabled && (
+        {EMAIL_AUTH_ENABLED && supabaseEnabled && (
           <div className="flex items-center gap-3 my-5 text-xs text-soft">
             <div className="h-px flex-1 bg-line" /> or {mode === "signup" ? "sign up" : "sign in"} with email <div className="h-px flex-1 bg-line" />
           </div>
         )}
 
-        <form onSubmit={submit} className="space-y-3">
-          {mode === "signup" && (
-            <input
-              value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required
-              className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
-            />
-          )}
-          <input
-            type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" required
-            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
-          />
-          <input
-            type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required minLength={6}
-            className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
-          />
-          <button type="submit" disabled={busy} className="btn-primary w-full">
-            {busy && <Loader2 className="w-4 h-4 animate-spin" />}
-            {mode === "signup" ? "Create account" : "Sign in"}
-          </button>
-        </form>
+        {EMAIL_AUTH_ENABLED && (
+          <>
+            <form onSubmit={submit} className="space-y-3">
+              {mode === "signup" && (
+                <input
+                  value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required
+                  className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+                />
+              )}
+              <input
+                type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" required
+                className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+              />
+              <input
+                type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required minLength={6}
+                className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10"
+              />
+              <button type="submit" disabled={busy} className="btn-primary w-full">
+                {busy && <Loader2 className="w-4 h-4 animate-spin" />}
+                {mode === "signup" ? "Create account" : "Sign in"}
+              </button>
+            </form>
 
-        {msg && (
-          <p className={`mt-3 text-sm text-center rounded-xl px-3 py-2 ${
-            msg.kind === "notice"
-              ? "text-teal bg-teal/10 border border-teal/30"
-              : "text-gold-dark bg-gold/10 border border-gold/30"
-          }`}>{msg.text}</p>
+            {msg && (
+              <p className={`mt-3 text-sm text-center rounded-xl px-3 py-2 ${
+                msg.kind === "notice"
+                  ? "text-teal bg-teal/10 border border-teal/30"
+                  : "text-gold-dark bg-gold/10 border border-gold/30"
+              }`}>{msg.text}</p>
+            )}
+
+            <p className="text-center text-sm text-soft mt-5">
+              {mode === "signup" ? "Already have an account?" : "New here?"}{" "}
+              <button onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setMsg(null); }} className="text-teal font-semibold">
+                {mode === "signup" ? "Sign in" : "Create one"}
+              </button>
+            </p>
+          </>
         )}
-
-        <p className="text-center text-sm text-soft mt-5">
-          {mode === "signup" ? "Already have an account?" : "New here?"}{" "}
-          <button onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setMsg(null); }} className="text-teal font-semibold">
-            {mode === "signup" ? "Sign in" : "Create one"}
-          </button>
-        </p>
 
         <div className="mt-5 flex items-start gap-2 text-xs text-soft">
           <ShieldCheck className="w-4 h-4 shrink-0 text-teal mt-0.5" />

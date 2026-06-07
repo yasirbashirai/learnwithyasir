@@ -756,6 +756,46 @@ function buildActionPlan(
 
 function dedupe(arr: string[]): string[] { return [...new Set(arr)]; }
 
+/* ================================================================== */
+/* Human-readable answers (for the PDF report + the email to Yasir)    */
+/* ================================================================== */
+
+/** Turn one stored answer into plain text, e.g. "Building, Creating". */
+export function formatAnswer(q: Question, a: AnswerValue | undefined): string {
+  if (!a) return q.optional ? "(skipped)" : "(no answer)";
+  switch (a.type) {
+    case "choices": {
+      const labels = a.ids
+        .map((id) => q.choices?.find((c) => c.id === id)?.label)
+        .filter((l): l is string => Boolean(l));
+      return labels.length ? labels.join(", ") : "(no answer)";
+    }
+    case "rank": {
+      const labels = a.order
+        .map((id, i) => { const c = q.choices?.find((x) => x.id === id); return c ? `${i + 1}. ${c.label}` : null; })
+        .filter((l): l is string => Boolean(l));
+      return labels.length ? labels.join("  ") : "(no answer)";
+    }
+    case "rating": {
+      const parts = (q.items ?? [])
+        .map((it) => { const v = a.values[it.id]; return v == null ? null : `${it.text} — ${v}/5`; })
+        .filter((l): l is string => Boolean(l));
+      return parts.length ? parts.join("; ") : "(no answer)";
+    }
+    case "text": {
+      const tags = a.tags.map((id) => q.tags?.find((t) => t.id === id)?.label).filter(Boolean);
+      const txt = a.text.trim();
+      const tagStr = tags.length ? ` [${tags.join(", ")}]` : "";
+      return (txt || (tags.length ? "" : "(skipped)")) + tagStr;
+    }
+  }
+}
+
+/** Every question with the person's answer, in the order they were shown. */
+export function reportAnswers(answers: Answers): { question: string; answer: string }[] {
+  return QUESTIONS.map((q) => ({ question: q.title, answer: formatAnswer(q, answers[q.id]) }));
+}
+
 export function profileHeadline(result: QuizResult): string {
   const [a, b] = result.topDims;
   const t = result.practical.timeHours;

@@ -14,6 +14,7 @@ import {
   type Answers, type AnswerValue, type Question, type QuizResult,
 } from "@/data/quiz";
 import { saveQuiz, notifyYasir, summarizeResult, type QuizLead } from "@/lib/quizStore";
+import { downloadResultPdf, resultPdfBase64 } from "@/lib/pdf";
 import { useAuth } from "@/lib/auth";
 
 type Phase = "intro" | "quiz" | "result";
@@ -95,6 +96,17 @@ export default function Quiz() {
   // realtime email alert to Yasir's inbox with any contact details + a summary.
   async function submitToYasir(lead: QuizLead & { message?: string }) {
     if (!result) return;
+    // Build the same PDF the learner can download and attach it to Yasir's email.
+    let attachment: { filename: string; contentBase64: string } | undefined;
+    try {
+      const contentBase64 = await resultPdfBase64(result, answers, {
+        name: lead.name || user?.name,
+        date: new Date().toISOString().slice(0, 10),
+      });
+      attachment = { filename: "skill-fit-report.pdf", contentBase64 };
+    } catch {
+      /* attachment is best-effort; still send the email without it */
+    }
     await notifyYasir({
       type: "quiz",
       name: lead.name,
@@ -102,6 +114,7 @@ export default function Quiz() {
       phone: lead.phone,
       message: lead.message,
       summary: summarizeResult(result),
+      attachment,
     });
   }
 
@@ -193,6 +206,7 @@ export default function Quiz() {
             {phase === "result" && result && (
               <ResultView
                 result={result}
+                answers={answers}
                 onRestart={restart}
                 onSubmit={submitToYasir}
                 defaults={{ name: user?.name ?? "", email: user?.email ?? "" }}
@@ -202,8 +216,6 @@ export default function Quiz() {
         </main>
         <Footer />
       </div>
-
-      {result && <PrintReport result={result} />}
     </div>
   );
 }
@@ -379,8 +391,9 @@ function Bars({ data }: { data: Record<string, number> }) {
   );
 }
 
-function ResultView({ result, onRestart, onSubmit, defaults }: {
+function ResultView({ result, answers, onRestart, onSubmit, defaults }: {
   result: QuizResult;
+  answers: Answers;
   onRestart: () => void;
   onSubmit: (lead: QuizLead & { message?: string }) => Promise<void>;
   defaults: { name: string; email: string };
@@ -393,6 +406,19 @@ function ResultView({ result, onRestart, onSubmit, defaults }: {
   const [lead, setLead] = useState({ name: defaults.name, email: defaults.email, phone: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+
+  async function handleDownload() {
+    setDownloading(true);
+    try {
+      await downloadResultPdf(result, answers, {
+        name: defaults.name || undefined,
+        date: new Date().toISOString().slice(0, 10),
+      });
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
@@ -564,8 +590,8 @@ function ResultView({ result, onRestart, onSubmit, defaults }: {
         <button onClick={() => { setShowForm((v) => !v); setSent(false); }} className="btn-primary inline-flex items-center gap-2 px-6 py-3">
           <Send className="w-5 h-5" /> Submit to Yasir
         </button>
-        <button onClick={() => window.print()} className="btn-ghost inline-flex items-center gap-2">
-          <Download className="w-5 h-5" /> Download PDF
+        <button onClick={handleDownload} disabled={downloading} className="btn-ghost inline-flex items-center gap-2 disabled:opacity-50">
+          <Download className="w-5 h-5" /> {downloading ? "Preparing…" : "Download PDF"}
         </button>
         <button onClick={onRestart} className="btn-ghost inline-flex items-center gap-2">
           <RotateCcw className="w-4 h-4" /> Retake
@@ -604,93 +630,7 @@ function ResultView({ result, onRestart, onSubmit, defaults }: {
         </motion.div>
       )}
 
-      <p className="text-center text-ink/40 text-xs mt-4">Tip, for the PDF choose Save as PDF as the destination in the print dialog.</p>
+      <p className="text-center text-ink/40 text-xs mt-4">Your PDF includes the full result and every question with your answers.</p>
     </motion.div>
-  );
-}
-
-/* ================================================================== */
-/* Print report (the downloadable PDF, all data arranged)             */
-/* ================================================================== */
-
-function PrintReport({ result }: { result: QuizResult }) {
-  const top = result.matches[0];
-  const sc = result.scorecard;
-  const barRow = (label: string, val: number) => (
-    <tr key={label}>
-      <td style={{ padding: "3px 8px 3px 0", width: "110px" }}>{label}</td>
-      <td style={{ padding: "3px 0" }}>
-        <div style={{ background: "#E2E8F0", borderRadius: "4px", height: "10px", width: "100%" }}>
-          <div style={{ background: "#288672", height: "10px", borderRadius: "4px", width: `${val}%` }} />
-        </div>
-      </td>
-      <td style={{ padding: "3px 0 3px 8px", width: "30px", textAlign: "right" }}>{val}</td>
-    </tr>
-  );
-  return (
-    <div id="print-report" className="hidden print:block" style={{ color: "#0F2E27", padding: "22px", fontFamily: "Inter, sans-serif" }}>
-      <div style={{ borderBottom: "3px solid #288672", paddingBottom: "10px", marginBottom: "14px" }}>
-        <div style={{ fontSize: "12px", color: "#A67B30", fontWeight: 700, letterSpacing: "0.5px" }}>SKILL-FIT EVALUATION REPORT</div>
-        <div style={{ fontSize: "24px", fontWeight: 800 }}>LearnwithYasir</div>
-      </div>
-
-      <h1 style={{ fontSize: "21px", margin: "0 0 4px" }}>{result.archetype.emoji} You are, {result.archetype.title}</h1>
-      <p style={{ fontSize: "13px", margin: "0 0 3px" }}>{result.archetype.blurb}</p>
-      <p style={{ fontSize: "13px", color: "#288672", fontWeight: 600 }}>{profileHeadline(result)}</p>
-
-      <div style={{ display: "flex", gap: "20px", marginTop: "14px" }}>
-        <div style={{ flex: 1 }}>
-          <h2 style={{ fontSize: "14px", color: "#165A4C", margin: "0 0 4px" }}>What you enjoy</h2>
-          <table style={{ width: "100%", fontSize: "11px", borderCollapse: "collapse" }}><tbody>{DIMS.map((d) => barRow(DIM_META[d].label, sc.interests[d]))}</tbody></table>
-        </div>
-        <div style={{ flex: 1 }}>
-          <h2 style={{ fontSize: "14px", color: "#165A4C", margin: "0 0 4px" }}>What you're good at</h2>
-          <table style={{ width: "100%", fontSize: "11px", borderCollapse: "collapse" }}><tbody>{DIMS.map((d) => barRow(DIM_META[d].label, sc.aptitudes[d]))}</tbody></table>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", gap: "20px", marginTop: "10px" }}>
-        <div style={{ flex: 1 }}>
-          <h2 style={{ fontSize: "14px", color: "#165A4C", margin: "0 0 4px" }}>What you value most</h2>
-          <ol style={{ fontSize: "12px", margin: "2px 0", paddingLeft: "18px" }}>{sc.values.slice(0, 3).map((v) => <li key={v.key}>{v.label}</li>)}</ol>
-        </div>
-        <div style={{ flex: 1 }}>
-          <h2 style={{ fontSize: "14px", color: "#165A4C", margin: "0 0 4px" }}>Readiness to start</h2>
-          <p style={{ fontSize: "12px", margin: "2px 0" }}><b>{sc.readiness} out of 100, {sc.readinessBand.label}.</b> {sc.readinessBand.blurb}</p>
-        </div>
-      </div>
-
-      <h2 style={{ fontSize: "15px", marginTop: "14px", color: "#165A4C" }}>Your number one match, {top.icon} {top.title} ({top.score}% fit)</h2>
-      <ul style={{ fontSize: "12px", margin: "4px 0" }}>{top.reasons.map((r) => <li key={r}>{r}</li>)}</ul>
-
-      <h2 style={{ fontSize: "14px", marginTop: "10px", color: "#165A4C" }}>Other strong fits</h2>
-      <ul style={{ fontSize: "12px", margin: "4px 0" }}>{result.matches.slice(1).map((m) => <li key={m.slug}>{m.title}, {m.score}% ({m.level})</li>)}</ul>
-
-      {result.path && (
-        <p style={{ fontSize: "12px", marginTop: "8px" }}><b>Recommended path,</b> {result.path.icon} {result.path.title}, {result.path.blurb}</p>
-      )}
-
-      {result.actionPlan.length > 0 && (
-        <>
-          <h2 style={{ fontSize: "14px", marginTop: "10px", color: "#165A4C" }}>Your personalised next steps</h2>
-          <ol style={{ fontSize: "12px", margin: "4px 0", paddingLeft: "18px" }}>{result.actionPlan.map((s, i) => <li key={i}>{s}</li>)}</ol>
-        </>
-      )}
-
-      <div style={{ display: "flex", gap: "18px", marginTop: "12px" }}>
-        <div style={{ flex: 1 }}>
-          <h3 style={{ fontSize: "13px", color: "#288672", margin: "0 0 4px" }}>Your strengths</h3>
-          <ul style={{ fontSize: "12px", margin: 0, paddingLeft: "16px" }}>{result.archetype.strengths.map((s) => <li key={s}>{s}</li>)}</ul>
-        </div>
-        <div style={{ flex: 1 }}>
-          <h3 style={{ fontSize: "13px", color: "#A67B30", margin: "0 0 4px" }}>Things to watch</h3>
-          <ul style={{ fontSize: "12px", margin: 0, paddingLeft: "16px" }}>{result.archetype.watchOuts.map((s) => <li key={s}>{s}</li>)}</ul>
-        </div>
-      </div>
-
-      <div style={{ borderTop: "1px solid #E2E8F0", marginTop: "16px", paddingTop: "8px", fontSize: "11px", color: "#64748B" }}>
-        Generated by LearnwithYasir, start your match at /courses/{top.slug}
-      </div>
-    </div>
   );
 }

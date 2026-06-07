@@ -48,6 +48,12 @@ export default async function handler(req, res) {
   const phone = String(body.phone || "").slice(0, 60);
   const message = String(body.message || "").slice(0, 2000);
   const summaryLines = Array.isArray(body.summary) ? body.summary.slice(0, 40) : [];
+  // Optional PDF attachment ({ filename, contentBase64 }).
+  const att = body.attachment;
+  const attachments =
+    att && typeof att.contentBase64 === "string" && att.contentBase64.length < 8_000_000
+      ? [{ filename: String(att.filename || "report.pdf").slice(0, 120), content: att.contentBase64 }]
+      : undefined;
 
   const subject =
     type === "message"
@@ -107,6 +113,7 @@ export default async function handler(req, res) {
         reply_to: email || undefined,
         subject,
         html,
+        attachments,
       }),
     });
 

@@ -87,6 +87,8 @@ export async function notifyYasir(payload: {
   phone?: string;
   message?: string;
   summary?: string[];
+  /** Optional PDF report to attach to the email (base64, no data-URI prefix). */
+  attachment?: { filename: string; contentBase64: string };
 }): Promise<boolean> {
   try {
     const res = await fetch("/api/notify", {

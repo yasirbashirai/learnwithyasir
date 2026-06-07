@@ -19,6 +19,8 @@ export interface User {
 
 interface AuthResult {
   error?: string;
+  /** A non-error message to show in success styling (e.g. "check your email"). */
+  notice?: string;
 }
 
 interface AuthState {
@@ -109,10 +111,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       resolved = true;
       const su = session.user;
       const name = (su.user_metadata?.name as string) || (su.email ?? "Learner").split("@")[0];
-      const profile = await loadProfile(su.id, su.email ?? "", name);
-      setSuperAdmin(profile.isAdmin);
-      await hydrateProgress(su.id);
-      if (active) { setUser(profile); setLoading(false); }
+
+      // Log the user in IMMEDIATELY from the session we already hold, and stop the
+      // spinner right away. We never block the UI on the profile/progress network
+      // calls — if those are slow or stall (e.g. a token refresh), the app must
+      // still load. They enrich the user in the background once they return.
+      const base: User = { id: su.id, email: su.email ?? "", name, isAdmin: (su.email ?? "").toLowerCase() === ADMIN_EMAIL };
+      if (active) { setSuperAdmin(base.isAdmin); setUser(base); setLoading(false); }
+
+      loadProfile(su.id, su.email ?? "", name)
+        .then((profile) => { if (active) { setSuperAdmin(profile.isAdmin); setUser(profile); } })
+        .catch(() => { /* keep base user */ });
+      void hydrateProgress(su.id);
     };
 
     // Subscribe first so the SIGNED_IN event (fired after the code exchange) is caught.
@@ -124,8 +134,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // else: an OAuth redirect is being processed, wait for onAuthStateChange.
     });
 
-    // Safety net so we never hang on the spinner if the exchange fails.
-    const timeout = setTimeout(() => { if (active && !resolved) setLoading(false); }, 6000);
+    // Safety net so we never hang on the spinner — always clear loading after a
+    // few seconds no matter what (a stalled getSession / code exchange must not
+    // leave the user stuck behind a ProtectedRoute spinner forever).
+    const timeout = setTimeout(() => { if (active) setLoading(false); }, 4000);
     return () => { active = false; clearTimeout(timeout); sub.subscription.unsubscribe(); };
   }, []);
 
@@ -160,7 +172,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       options: { data: { name }, emailRedirectTo: `${window.location.origin}/dashboard` },
     });
     if (error) return { error: error.message };
-    if (!data.session) return { error: "Check your email to confirm your account, then sign in." };
+    if (!data.session) return { notice: "Account created! Check your email (including the spam/promotions folder) for a confirmation link, then come back and sign in." };
     return {};
   };
 

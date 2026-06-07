@@ -49,7 +49,14 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/courses" element={<Catalog />} />
-              <Route path="/quiz" element={<Quiz />} />
+              <Route
+                path="/quiz"
+                element={
+                  <ProtectedRoute>
+                    <Quiz />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/paths" element={<Paths />} />
               <Route path="/courses/:slug" element={<CoursePage />} />
               <Route path="/privacy" element={<Legal doc="privacy" />} />

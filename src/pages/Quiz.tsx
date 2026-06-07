@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -13,15 +13,36 @@ import {
   DIM_META, DIMS,
   type Answers, type AnswerValue, type Question, type QuizResult,
 } from "@/data/quiz";
-import { saveQuiz, type QuizLead } from "@/lib/quizStore";
+import { saveQuiz, notifyYasir, summarizeResult, type QuizLead } from "@/lib/quizStore";
+import { useAuth } from "@/lib/auth";
 
 type Phase = "intro" | "quiz" | "result";
 
 export default function Quiz() {
+  const { user } = useAuth();
   const [phase, setPhase] = useState<Phase>("intro");
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [result, setResult] = useState<QuizResult | null>(null);
+  // Capture the lead to the backend exactly once, the moment the result is ready.
+  const capturedRef = useRef(false);
+
+  // Auto-capture: the user is logged in (route is gated), so the moment they
+  // finish we save their result to Supabase tied to their name/email. No form
+  // needed — emailing Yasir is a separate, optional action below.
+  useEffect(() => {
+    if (phase !== "result" || !result || capturedRef.current) return;
+    capturedRef.current = true;
+    void saveQuiz(
+      {
+        name: user?.name ?? "Learner",
+        email: user?.email ?? "",
+        goal: chosenId(answers, "goal") ?? "",
+      },
+      answers,
+      result
+    );
+  }, [phase, result, user, answers]);
 
   const q = QUESTIONS[step];
   const total = QUESTIONS.length;
@@ -65,13 +86,23 @@ export default function Quiz() {
 
   function restart() {
     setAnswers({}); setStep(0); setResult(null);
+    capturedRef.current = false;
     setPhase("intro");
   }
 
-  // Optional, the person can choose to send their result to Yasir.
-  async function submitToYasir(lead: QuizLead) {
+  // Optional, the person can choose to send their result to Yasir. The result is
+  // already captured in the backend on completion (above); this just fires the
+  // realtime email alert to Yasir's inbox with any contact details + a summary.
+  async function submitToYasir(lead: QuizLead & { message?: string }) {
     if (!result) return;
-    await saveQuiz({ ...lead, goal: chosenId(answers, "goal") ?? "" }, answers, result);
+    await notifyYasir({
+      type: "quiz",
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone,
+      message: lead.message,
+      summary: summarizeResult(result),
+    });
   }
 
   return (
@@ -160,7 +191,12 @@ export default function Quiz() {
             )}
 
             {phase === "result" && result && (
-              <ResultView result={result} onRestart={restart} onSubmit={submitToYasir} />
+              <ResultView
+                result={result}
+                onRestart={restart}
+                onSubmit={submitToYasir}
+                defaults={{ name: user?.name ?? "", email: user?.email ?? "" }}
+              />
             )}
           </div>
         </main>
@@ -343,20 +379,30 @@ function Bars({ data }: { data: Record<string, number> }) {
   );
 }
 
-function ResultView({ result, onRestart, onSubmit }: { result: QuizResult; onRestart: () => void; onSubmit: (lead: QuizLead) => Promise<void> }) {
+function ResultView({ result, onRestart, onSubmit, defaults }: {
+  result: QuizResult;
+  onRestart: () => void;
+  onSubmit: (lead: QuizLead & { message?: string }) => Promise<void>;
+  defaults: { name: string; email: string };
+}) {
   const top = result.matches[0];
   const headline = useMemo(() => profileHeadline(result), [result]);
   const sc = result.scorecard;
 
   const [showForm, setShowForm] = useState(false);
-  const [lead, setLead] = useState({ name: "", email: "", phone: "", message: "" });
+  const [lead, setLead] = useState({ name: defaults.name, email: defaults.email, phone: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
     setSending(true);
-    await onSubmit({ name: lead.name.trim(), email: lead.email.trim(), phone: lead.phone.trim() });
+    await onSubmit({
+      name: lead.name.trim(),
+      email: lead.email.trim(),
+      phone: lead.phone.trim(),
+      message: lead.message.trim(),
+    });
     setSending(false);
     setSent(true);
   }
@@ -480,6 +526,23 @@ function ResultView({ result, onRestart, onSubmit }: { result: QuizResult; onRes
         </div>
       )}
 
+      {/* personalised action plan */}
+      {result.actionPlan.length > 0 && (
+        <div className="mt-8">
+          <h3 className="font-heading font-bold text-xl text-ink mb-3 flex items-center gap-2">
+            <Compass className="w-5 h-5 text-teal" /> Your personalised next steps
+          </h3>
+          <ol className="rounded-3xl border border-teal/25 bg-teal/[0.04] p-5 space-y-3">
+            {result.actionPlan.map((step, i) => (
+              <li key={i} className="flex gap-3 items-start">
+                <span className="w-7 h-7 rounded-full bg-teal text-white grid place-items-center text-sm font-bold shrink-0">{i + 1}</span>
+                <span className="text-ink/80 pt-0.5">{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
       {/* strengths + watch-outs */}
       <div className="mt-8 grid sm:grid-cols-2 gap-4">
         <div className="rounded-2xl border border-teal/25 bg-teal/[0.05] p-5">
@@ -522,6 +585,9 @@ function ResultView({ result, onRestart, onSubmit }: { result: QuizResult; onRes
               className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10" />
             <input value={lead.phone} onChange={(e) => setLead({ ...lead, phone: e.target.value })} placeholder="Phone or WhatsApp (optional)"
               className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10" />
+            <textarea value={lead.message} onChange={(e) => setLead({ ...lead, message: e.target.value })} rows={3}
+              placeholder="Anything you'd like to tell Yasir? (optional)"
+              className="w-full rounded-xl border border-teal/20 bg-surface/80 px-4 py-3 outline-none focus:border-teal focus:ring-4 focus:ring-teal/10 resize-none" />
           </div>
           <button type="submit" disabled={sending} className="btn-primary w-full mt-4 py-3 inline-flex items-center justify-center gap-2">
             {sending ? "Sending…" : <>Send to Yasir <Send className="w-4 h-4" /></>}
@@ -602,6 +668,13 @@ function PrintReport({ result }: { result: QuizResult }) {
 
       {result.path && (
         <p style={{ fontSize: "12px", marginTop: "8px" }}><b>Recommended path,</b> {result.path.icon} {result.path.title}, {result.path.blurb}</p>
+      )}
+
+      {result.actionPlan.length > 0 && (
+        <>
+          <h2 style={{ fontSize: "14px", marginTop: "10px", color: "#165A4C" }}>Your personalised next steps</h2>
+          <ol style={{ fontSize: "12px", margin: "4px 0", paddingLeft: "18px" }}>{result.actionPlan.map((s, i) => <li key={i}>{s}</li>)}</ol>
+        </>
       )}
 
       <div style={{ display: "flex", gap: "18px", marginTop: "12px" }}>

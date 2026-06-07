@@ -63,6 +63,44 @@ export async function saveQuiz(lead: QuizLead, answers: Answers, result: QuizRes
   }
 }
 
+/** A few human-readable lines describing a result, for the email to Yasir. */
+export function summarizeResult(result: QuizResult): string[] {
+  const lines = [
+    `Profile: ${result.archetype.title}`,
+    `Top match: ${result.matches[0]?.title ?? "—"} (${result.matches[0]?.score ?? 0}% fit)`,
+  ];
+  const others = result.matches.slice(1, 4).map((m) => `${m.title} ${m.score}%`).join(", ");
+  if (others) lines.push(`Other fits: ${others}`);
+  if (result.path) lines.push(`Recommended path: ${result.path.title}`);
+  lines.push(`Readiness: ${result.scorecard.readiness}/100 (${result.scorecard.readinessBand.label})`);
+  return lines;
+}
+
+/**
+ * Email the lead to Yasir in realtime via the /api/notify serverless function.
+ * Never throws — in local dev (no serverless runtime) it simply no-ops.
+ */
+export async function notifyYasir(payload: {
+  type: "quiz" | "message";
+  name: string;
+  email: string;
+  phone?: string;
+  message?: string;
+  summary?: string[];
+}): Promise<boolean> {
+  try {
+    const res = await fetch("/api/notify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    return Boolean(data?.ok);
+  } catch {
+    return false;
+  }
+}
+
 /** Read back the last saved quiz on this device, if any. */
 export function loadLastQuiz(): SavedQuiz | null {
   try {

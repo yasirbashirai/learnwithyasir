@@ -514,6 +514,8 @@ export interface QuizResult {
   path: LearningPath | null;
   pathReason: string;
   scorecard: Scorecard;
+  /** A short, personalised "what to do next" plan tailored to their answers. */
+  actionPlan: string[];
 }
 
 /* ================================================================== */
@@ -690,14 +692,66 @@ export function scoreQuiz(answers: Answers): QuizResult {
     if (avg > bestPathScore) { bestPathScore = avg; path = p; }
   }
 
+  const topMatches = matches.slice(0, 4);
+  const actionPlan = buildActionPlan(topMatches[0], practical, readiness, primary, path);
+
   return {
     profile, topDims: topDims.slice(0, 3), practical,
     archetype: ARCHETYPES[primary],
-    matches: matches.slice(0, 4),
+    matches: topMatches,
     path,
     pathReason: path ? `Your strengths point at ${DIM_META[primary].label.toLowerCase()}, and this track stacks the right skills in the right order.` : "",
     scorecard: { interests, aptitudes, values: rankedValues, readiness, readinessBand },
+    actionPlan,
   };
+}
+
+/**
+ * Turns the raw scores into a concrete, personalised next-steps plan. This is
+ * the "evaluation" layer on top of the match, it adapts the advice to the
+ * person's real situation (time, budget, tech comfort, readiness) so two people
+ * with the same #1 skill still get different, fitting guidance.
+ */
+function buildActionPlan(
+  top: SkillMatch | undefined,
+  p: Practical,
+  readiness: number,
+  primary: Dim,
+  path: LearningPath | null,
+): string[] {
+  if (!top) return [];
+  const plan: string[] = [];
+
+  // 1) Where to begin, scaled to readiness + tech comfort.
+  if (readiness < 40 || p.techComfort <= 2) {
+    plan.push(`Start gentle with the first module of ${top.title}, just 1 short lesson to build momentum.`);
+  } else if (readiness >= 70) {
+    plan.push(`You're ready to go all in, enrol in ${top.title} and aim to finish the first module this week.`);
+  } else {
+    plan.push(`Begin ${top.title}, it sits right at your level so you'll move steadily without feeling lost.`);
+  }
+
+  // 2) A weekly rhythm based on the hours they actually have.
+  const sessions = p.timeHours <= 3 ? "two 45-minute sessions" : p.timeHours <= 7 ? "three or four short sessions" : "a focused session most days";
+  plan.push(`Block ${sessions} a week, consistency beats long rare bursts every time.`);
+
+  // 3) Money-fit nudge, tied to their stated goal + budget.
+  if (p.income === "fast") {
+    plan.push(`Your goal is quick income, so pick one small real task in ${top.title} and offer it to a friend or local business within 2 weeks.`);
+  } else if (p.toolBudget === "low") {
+    plan.push(`Stick to the free tools to begin, you can upgrade only once this skill starts paying for itself.`);
+  } else {
+    plan.push(`Build one portfolio project in ${top.title} you can proudly show, proof beats certificates with clients.`);
+  }
+
+  // 4) Lean into the archetype's edge + cover its blind spot.
+  const arch = ARCHETYPES[primary];
+  if (arch.watchOuts[0]) plan.push(`One thing to watch as a ${arch.title}, ${arch.watchOuts[0].charAt(0).toLowerCase()}${arch.watchOuts[0].slice(1)}.`);
+
+  // 5) Point at the wider path if one fits.
+  if (path) plan.push(`When you've found your footing, the ${path.title} path stacks the next skills in the right order.`);
+
+  return plan;
 }
 
 function dedupe(arr: string[]): string[] { return [...new Set(arr)]; }
